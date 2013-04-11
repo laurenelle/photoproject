@@ -22,7 +22,7 @@ def allowed_file(filename):
 
 # def get_exif(filename):
 #     ret = {}
-#     i = Image.open(filename)
+#     i = Image.open(filename)  --> filename must be a string of the file path
 #     info = i._getexif()
 #     # if info returns none = cannot access metadata with this method
 #     # so check that info exists

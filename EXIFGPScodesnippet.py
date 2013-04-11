@@ -71,7 +71,7 @@ def get_lat_lon(exif_data):
 # Example ######
 ################
 if __name__ == "__main__":
-    image = Image.open("/Users/lauren/Downloads/photo.jpg") # load an image through PIL's Image object
+    image = Image.open("/Users/lauren/Downloads/photo.jpg") # load an image through PIL's Image object --> image path as a string
     #/Users/lauren/Downloads/photo.jp
     exif_data = get_exif_data(image)
     print get_lat_lon(exif_data)

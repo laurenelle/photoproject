@@ -19,18 +19,82 @@
         };
         var map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
+        //instantiate a new latlng object to pass to the market object
         var myLatlng = new google.maps.LatLng(37.69716666666667,-122.446);
         var mapOptions = {
-        zoom: 4,
+        zoom: 11,
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
         }
+        // instantiate a marker object
         var marker = new google.maps.Marker({
         position: myLatlng,
         map: map,
-        title:"Hello World!"
+        // alt text - temporary caption
+        title:"Possible place for a caption!"
+
   });
-        
+
+        var content = 'testing one two three!';
+        var infoWindow = new google.maps.InfoWindow({content: content});
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.open(map, marker);
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ var content = '<div class="infoWindow">' + details + '<br/>' + 
+          '<a href="' + url + '">See this deal</a></div>';
+        var infoWindow = new google.maps.InfoWindow({content: content});
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.open(map, marker);
+            });
+
+        destinationInfoWindows[i] = infoWindow;
+
+
+
+
+
+
+
+function createMarkerAndWindow(address, details, url, i) {
+  geocoder.geocode({'address': address + ' airport'}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var marker = new google.maps.Marker({
+          map: map,
+              position: results[0].geometry.location
+              });
+
+        destinationMarkers[i] = marker;
+
+        var content = '<div class="infoWindow">' + details + '<br/>' + 
+          '<a href="' + url + '">See this deal</a></div>';
+        var infoWindow = new google.maps.InfoWindow({content: content});
+
+        google.maps.event.addListener(marker, 'click', function() {
+            infoWindow.open(map, marker);
+            });
+
+        destinationInfoWindows[i] = infoWindow;
+      } else {
+        alert("Geocode was not successful for the following reason: " + address + status);
+      }
+    });
+}
 
 
 
