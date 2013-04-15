@@ -1,0 +1,36 @@
+
+306: 
+u'2007:06:27 19:32:45'
+
+36868: 
+u'2013:04:10 17:45:55',
+
+
+OR
+
+(None, None)
+
+36868:
+u'2013:04:10 17:45:55',
+ 'YYYY:MM:DD HH:MM:SS'
+
+ {36864: '0220', 40960: '\x00\x00\x00\x00', 37122: (0, 1), 40963: 2592, 36868: u'2013:04:10 17:45:55', 37381: (275, 100), 37382: (0, 1), 40961: 1, 37384: 3, 37385: 0, 37386: (3430, 1000), 41483: (0, 1), 41996: 0, 40962: 1944, 271: u'Samsung', 272: u'Galaxy Nexus', 274: 0, 531: 1, 41493: (0, 0), 41495: 2, 41988: (65536, 65536), 282: (72, 1), 283: (72, 1), 33434: (39996, 1000000), 42016: u'OAEL01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', 34850: 3, 34853: {1: u'N', 2: ((37, 1), (47, 1), (19962, 1000)), 3: u'W', 4: ((122, 1), (24, 1), (41275, 1000)), 5: '\x00', 6: (0, 1), 7: ((0, 1), (45, 1), (54, 1)), 27: 'ASCII\x00\x00\x00NETWORK\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', 29: u'2013:04:11'}, 34855: (125, 0, 0), 296: 2, 41987: 0, 37383: 4, 37121: '\x01\x02\x03\x00', 33437: (275, 100), 41992: 0, 306: u'2013:04:10 17:45:55', 41993: 0, 41729: '\x01', 41994: 0, 41985: 1, 37378: (275, 100), 41990: 0, 36867: u'2013:04:10 17:45:55', 41986: 0, 34665: 455}
+{'LightSource': 3, 'YResolution': (72, 1), 'ResolutionUnit': 2, 'Sharpness': 0, 'Make': u'Samsung', 'Flash': 0, 'SceneCaptureType': 0, 'GPSInfo': {'GPSTimeStamp': ((0, 1), (45, 1), (54, 1)), 'GPSLongitude': ((122, 1), (24, 1), (41275, 1000)), 'GPSProcessingMethod': 'ASCII\x00\x00\x00NETWORK\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', 'GPSLatitudeRef': u'N', 'GPSDateStamp': u'2013:04:11', 'GPSAltitude': (0, 1), 'GPSLatitude': ((37, 1), (47, 1), (19962, 1000)), 'GPSLongitudeRef': u'W', 'GPSAltitudeRef': '\x00'}, 'YCbCrPositioning': 1, 'XResolution': (72, 1), 'ImageUniqueID': u'OAEL01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00', 'FlashEnergy': (0, 1), 'Contrast': 0, 'Saturation': 0, 'ExposureProgram': 3, 'ColorSpace': 1, 'ExifImageWidth': 1944,
+
+ 'DateTimeDigitized': u'2013:04:10 17:45:55', 
+
+
+
+ 'ApertureValue': (275, 100), 'SceneType': '\x01', 'SubjectDistanceRange': 0, 'WhiteBalance': 0, 'CompressedBitsPerPixel': (0, 1), 'SensingMethod': 2, 'FNumber': (275, 100), 'CustomRendered': 1, 
+
+'DateTimeOriginal': u'2013:04:10 17:45:55',
+
+
+
+ 'FocalLength': (3430, 1000), 'ExposureMode': 0, 'ComponentsConfiguration': '\x01\x02\x03\x00', 'SubjectDistance': (0, 1), 'ExifOffset': 455, 'ExifImageHeight': 2592, 'ISOSpeedRatings': (125, 0, 0), 'Model': u'Galaxy Nexus', 
+
+'DateTime': u'2013:04:10 17:45:55', 
+
+
+
+'Orientation': 0, 'ExposureTime': (39996, 1000000), 'MaxApertureValue': (275, 100), 'FlashPixVersion': '\x00\x00\x00\x00', 'ExposureIndex': (0, 0), 'MeteringMode': 4, 'DigitalZoomRatio': (65536, 65536), 'ExifVersion': '0220'}

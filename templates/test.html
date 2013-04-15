@@ -1,8 +1,42 @@
 
-    <!doctype html>
-    <title>Testing123</title>
-    <h1>Upload new photo!</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC_M1BWtN62aRUFVduggenGNTLF3pqSKk&sensor=true">
+    </script>
+    <script type="text/javascript">
+google.maps.event.addListener(map, 'click', function(e) {
+           placeMarker(e.latLng, map);
+       });
+       }
+       function placeMarker(37.463, 122.255, map) {
+         var marker = new google.maps.Marker({
+           position: position,
+           map: map
+         });
+        map.panTo(position);
+       }
+
+
+         var marker = new google.maps.Marker({
+   position: (37.463, 122.255), 
+   map: map, 
+   title:"Hello World!"
+ }); 
+
+ google.maps.event.addListener(map,'click',function(event) { if(self.marker != null) self.marker.setMap(null); self.value = new google.maps.LatLng( event.latLng.lat() , event.latLng.lng());   self.marker = new google.maps.Marker({ position:self.value }); self.zoom = map.getZoom(); self.marker.setMap(map); });
+
+
+ </script>
+  </head>
+  <body>
+    <div id="map-canvas"/>
+  </body>
+</html>
