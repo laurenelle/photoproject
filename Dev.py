@@ -1,8 +1,10 @@
 from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 import os
-from flask import Flask, request, render_template, redirect, url_for, send_from_directory
+from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash
 from werkzeug import secure_filename
+from model import session as db_session, User, Photo, Vote, Tag, Photo_Tag, Location
+import model
 
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
@@ -19,24 +21,55 @@ def home_page():
     return render_template("index.html")
 
 
+@app.route("/signup", methods=["POST"])
+def register():
+    email = request.form['email']
+    password = request.form['password']
+    existing = db_session.query(User).filter_by(email=email).first()
+    if existing:
+        flash("Email already in use", "error")
+        return redirect(url_for("index"))
+
+    u = User(email=email, password=password)
+    db_session.add(u)
+    db_session.commit()
+    db_session.refresh(u)
+    session['user_id'] = u.id 
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    email = request.form['email']
+    password = request.form['password']
+
+    try:
+        user = db_session.query(User).filter_by(email=email, password=password).one()
+    except:
+        flash("Invalid username or password", "error")
+        return redirect(url_for("index"))
+
+    session['user_id'] = user.id
+    return redirect(url_for("upload"))
+
+
+@app.route("/logout")
+def logout():
+    del session['user_id']
+    return redirect(url_for("index"))
+
+
+# ----------------------------------------------------------------------------------------
+#
+
+
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-# def get_exif(filename):
-#     ret = {}
-#     i = Image.open(filename)
-#     info = i._getexif()
-#     # if info returns none = cannot access metadata with this method
-#     # so check that info exists
-    
-#     for tag, value in info.items():
-#         decoded = TAGS.get(tag, tag)
-#         ret[decoded] = value
-#     print ret
 
 def get_exif_data(image):
-    """Returns a dictionary from the exif data of an PIL Image item. Also converts the GPS Tags"""
+    """Returns a dictionary from the exif data of a PIL Image item. Also converts the GPS Tags"""
     print "get_exif_data function"
     exif_data = {}
     print exif_data
@@ -142,22 +175,11 @@ def upload_file():
             print filename,photo_file_path
             
             return redirect(url_for('uploaded_file',
-                                    filename=filename))
-                        
+                                    filename=filename))      
     
-    return"""<!doctype html>
-    <title>Upload</title>
-    <h1>Upload a File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-   
-        <p></p>
-             <input type="text" name="caption"></input>
-                <input type="submit"></p>
-    </form>"""
+    return render_template("upload.html") 
 
-
+#__________________________________________________________________________________________
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
@@ -167,8 +189,8 @@ def uploaded_file(filename):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
     # image = Image.open("file_path") # load an image through PIL's Image object
     # exif_data = get_exif_data(image)
     # print get_lat_lon(exif_data)
-    
     
