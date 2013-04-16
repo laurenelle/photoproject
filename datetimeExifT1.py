@@ -11,7 +11,7 @@ UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
 
 app = Flask(__name__)
 app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
-app.config['UPLOAD_CAPTION_FOLDER'] = UPLOAD_CAPTION_FOLDER
+
 
 
 @app.route('/')
@@ -128,21 +128,22 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             print filename
-            file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
-            print file_path
-            file.save(file_path)
+            photo_file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
+            print photo_file_path
+            file.save(photo_file_path)
             
 
-            image = Image.open(file_path)
+            image = Image.open(photo_file_path)
             exif_data = get_exif_data(image)
             print get_lat_lon(exif_data)
             print get_time(exif_data)
 
             # get_exif_data(file_path)
-            print filename,file_path
+            print filename,photo_file_path
+            
             return redirect(url_for('uploaded_file',
                                     filename=filename))
-            print "hello"
+            
             
     
     return"""<!doctype html>

@@ -5,8 +5,21 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 
+#from sqlalchemy.dialects.postgresql import array
+from sqlalchemy.dialects import postgresql
+from sqlalchemy import select, func, types, sql
+from sqlalchemy.dialects.postgresql import \
+    ARRAY, BIGINT, BIT, BOOLEAN, BYTEA, CHAR, CIDR, DATE, \
+    DOUBLE_PRECISION, ENUM, FLOAT, INET, INTEGER, \
+    INTERVAL, MACADDR, NUMERIC, REAL, SMALLINT, TEXT, TIME, \
+    TIMESTAMP, UUID, VARCHAR
 
-engine = create_engine("sqlite:///ratings.db", echo=False)
+import psycopg2
+
+
+engine = create_engine("postgres://lauren:@localhost/eyetravelv1", echo=False)
+
+#db = postgresql.open("postgres://localhost/eyetravelv1")
 session = scoped_session(sessionmaker(bind=engine, autocommit = False, autoflush = False))
 
 Base = declarative_base()
@@ -27,12 +40,12 @@ class Photo(Base):
 	__tablename__ = "photos"
 
 	id = Column(Integer, primary_key = True)
-	file_location = (String(100), nullable=True)  #????????????? a pointer to..?
+	file_location = Column(String(100), nullable=True)  
 	photo_location_id = Column(Integer, ForeignKey('locations.id'), nullable=True)
-	timestamp = Column(DateTime)
+	timestamp = Column(TIMESTAMP)
 	caption = Column(String(101), nullable=True)
-	up_vote(int)
-	down_vote(int)
+	up_vote = Column(Integer)
+	down_vote = Column(Integer)
 
 # through table linking user and photo
 # use trigger with up and down to automatically update counts  - update that increments by 1
@@ -45,7 +58,7 @@ class Vote(Base):
 	photo_id = Column(Integer, ForeignKey('photos.id'))
 	give_vote_user_id = Column(Integer, ForeignKey('users.id'))
 	receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
-	timestamp = Date.datetime.now() # doublecheck syntax
+	timestamp = Column(TIMESTAMP, default=sql.text('CURRENT_TIMESTAMP'))
 
 	user = relationship("User", backref=backref("votes", order_by=id))
 	photo = relationship("Photo", backref=backref("votes", order_by=id))
@@ -56,11 +69,14 @@ class Tag(Base):
 	id = Column(Integer, primary_key = True)
 	tag_title = Column(String(64), nullable=True)
 
+
+
 #links photos and tags
 class Photo_Tag(Base):
 	__tablename__ = "photo_tags"
-	photo_id = Column(Integer, ForeignKey('photos.id'))
-	tag_id = Column(Integer, ForeignKey('tags.id'))
+	#id = Column(Integer, primary_key = True)
+	photo_id = Column(Integer, ForeignKey('photos.id'), primary_key = True)
+	tag_id = Column(Integer, ForeignKey('tags.id'), primary_key = True)
 
 
 class Location(Base):
@@ -70,12 +86,12 @@ class Location(Base):
 	city = Column(String(64), nullable=True)
 	neighborhood = Column(String(64), nullable=True)
 
-
+#SQLmetadata.create_all(engine)
 
 ### End class declarations
 
 def main():
-    """In case we need this for something"""
+    """   """
     pass
 
 if __name__ == "__main__":

@@ -7,15 +7,16 @@ from werkzeug import secure_filename
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
 #allowed extensions are case sensitive and many other things are as well
-
+UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
 
 app = Flask(__name__)
 app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
 
 
+
 @app.route('/')
 def home_page():
-    return render_template("home.html")
+    return render_template("index.html")
 
 
 def allowed_file(filename):
@@ -55,6 +56,7 @@ def get_exif_data(image):
                 exif_data[decoded] = value
  
     return exif_data
+ 
  
 def _get_if_exist(data, key):
     print "get if exist function"
@@ -106,7 +108,8 @@ def get_lat_lon(exif_data):
                 lon = 0 - lon
  
     return lat, lon
- 
+
+
 
 def get_time(exif_data):
     print "get_time function"
@@ -125,21 +128,23 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             print filename
-            file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
-            print file_path
-            file.save(file_path)
+            photo_file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
+            print photo_file_path
+            file.save(photo_file_path)
             
 
-            image = Image.open(file_path)
+            image = Image.open(photo_file_path)
             exif_data = get_exif_data(image)
             print get_lat_lon(exif_data)
             print get_time(exif_data)
 
-
             # get_exif_data(file_path)
-            print filename,file_path
+            print filename,photo_file_path
+            
             return redirect(url_for('uploaded_file',
                                     filename=filename))
+            
+            
     
     return"""<!doctype html>
     <title>Upload</title>
@@ -166,4 +171,5 @@ if __name__ == '__main__':
     # image = Image.open("file_path") # load an image through PIL's Image object
     # exif_data = get_exif_data(image)
     # print get_lat_lon(exif_data)
+    
     
