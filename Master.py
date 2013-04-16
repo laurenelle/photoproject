@@ -4,12 +4,14 @@ import os
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
 
-UPLOAD_FOLDER = '/Users/lauren/Desktop/PHOTOS'
+UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
 #allowed extensions are case sensitive and many other things are as well
 
+
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
+
 
 @app.route('/')
 def home_page():
@@ -106,7 +108,13 @@ def get_lat_lon(exif_data):
     return lat, lon
  
 
-
+def get_time(exif_data):
+    print "get_time function"
+    if "DateTime" in exif_data:
+        photo_timestamp = exif_data['DateTime']
+        print photo_timestamp
+    else:
+        print "No timestamp available."
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -117,7 +125,7 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             print filename
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
             print file_path
             file.save(file_path)
             
@@ -125,6 +133,7 @@ def upload_file():
             image = Image.open(file_path)
             exif_data = get_exif_data(image)
             print get_lat_lon(exif_data)
+            print get_time(exif_data)
 
 
             # get_exif_data(file_path)
@@ -148,7 +157,7 @@ def upload_file():
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
+    return send_from_directory(app.config['UPLOAD_PHOTO_FOLDER'],
                                filename)
 
 

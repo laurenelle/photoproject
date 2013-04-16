@@ -3,18 +3,20 @@ from PIL.ExifTags import TAGS, GPSTAGS
 import os
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory
 from werkzeug import secure_filename
-import time, datetime, pprint
 
-UPLOAD_FOLDER = '/Users/lauren/Desktop/PHOTOS'
+UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
 #allowed extensions are case sensitive and many other things are as well
+UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
+app.config['UPLOAD_CAPTION_FOLDER'] = UPLOAD_CAPTION_FOLDER
+
 
 @app.route('/')
 def home_page():
-    return render_template("home.html")
+    return render_template("index.html")
 
 
 def allowed_file(filename):
@@ -107,15 +109,6 @@ def get_lat_lon(exif_data):
  
     return lat, lon
 
-# def get_date_time(exif_data):
-#     """WIP: return datetime if available, from the provided exif_data (obtained through get_exif_data)"""
-#     print "get_date_time"
-#     datetime = None
-
-#     if "Datetime" in exif_data:
-#         print "Dateime IF"
-
-#     else: print "Datetime Unavailable"
 
 
 def get_time(exif_data):
@@ -135,7 +128,7 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             print filename
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
             print file_path
             file.save(file_path)
             
@@ -168,7 +161,7 @@ def upload_file():
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
+    return send_from_directory(app.config['UPLOAD_PHOTO_FOLDER'],
                                filename)
 
 
