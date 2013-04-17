@@ -1,7 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, Integer, String, DateTime, Date
-from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
+from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref, session
 from sqlalchemy.orm import relationship, backref, relation
 
 #from sqlalchemy.dialects.postgresql import array

@@ -1,10 +1,17 @@
 from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 import os
-from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash
+from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash, session, request, g
 from werkzeug import secure_filename
 from model import session as db_session, User, Photo, Vote, Tag, Photo_Tag, Location
 import model
+
+# for voting logic
+from datetime import datetime, timedelta
+from math import log
+
+#from flask_heroku import Heroku
+
 
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
@@ -12,18 +19,58 @@ ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF
 UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
 
 app = Flask(__name__)
+app.secret_key = 'balloonicorn'
 app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
+app.config.from_object(__name__) #???
 
+#____________________________________________________
+#voting logic
 
+epoch = datetime(1970, 1, 1)
+
+def epoch_seconds(date):
+    """Returns the number of seconds from the epoch to date."""
+    td = date - epoch
+    return td.days * 86400 + td.seconds + (float(td.microseconds) / 1000000)
+
+def score(ups, downs):
+    return ups - downs
+
+def hot(ups, downs, date):
+    """The hot formula. Should match the equivalent function in postgres."""
+    s = score(ups, downs)
+    order = log(max(abs(s), 1), 10)
+    sign = 1 if s > 0 else -1 if s < 0 else 0
+    seconds = epoch_seconds(date) - 1134028003
+    return round(order + sign * seconds / 45000, 7)
+
+#_____________________________________________________
 
 @app.route('/')
 def home_page():
     return render_template("index.html")
 
+@app.route('/vote', methods=['POST', 'GET'])
+def vote():
+    
 
-@app.route("/signup", methods=["POST"])
+    db_session.add(some_variable)
+    db_session.commit()
+    db_session.refresh(some_variable)
+    return render_template("vote.html")
+
+
+
+
+
+
+
+
+
+@app.route("/signup", methods=['POST'])
 def register():
     email = request.form['email']
+    # user_name = request.form['user_name']
     password = request.form['password']
     existing = db_session.query(User).filter_by(email=email).first()
     if existing:
@@ -35,6 +82,7 @@ def register():
     db_session.commit()
     db_session.refresh(u)
     session['user_id'] = u.id 
+    return redirect(url_for("user_page"))
 
 
 @app.route("/login", methods=["POST"])
@@ -45,17 +93,21 @@ def login():
     try:
         user = db_session.query(User).filter_by(email=email, password=password).one()
     except:
-        flash("Invalid username or password", "error")
-        return redirect(url_for("index"))
+        flash("Invalid email or password", "error")
+        return redirect(url_for("home_page"))
 
     session['user_id'] = user.id
-    return redirect(url_for("upload"))
+    return redirect(url_for("user_page"))
+
+@app.route("/userpage")
+def user_page():
+    return render_template("userpage.html")
 
 
 @app.route("/logout")
 def logout():
     del session['user_id']
-    return redirect(url_for("index"))
+    return redirect(url_for("home_page"))
 
 
 # ----------------------------------------------------------------------------------------
@@ -160,9 +212,9 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print filename
+            
             photo_file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
-            print photo_file_path
+            
             file.save(photo_file_path)
             
 
@@ -179,12 +231,12 @@ def upload_file():
     
     return render_template("upload.html") 
 
-#__________________________________________________________________________________________
-
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_PHOTO_FOLDER'],
                                filename)
+
+#__________________________________________________________________________________________
 
 
 if __name__ == '__main__':
