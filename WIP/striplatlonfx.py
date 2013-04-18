@@ -24,6 +24,10 @@ else:
 WORKS!
 
 
+
+
+
+
 l = str(latlon)
 def latlong(l):
 	match = re.search(r"[^)](.*),(.*)\d", l)

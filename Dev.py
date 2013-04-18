@@ -236,7 +236,8 @@ def get_time(exif_data):
 #     render_template("test.html")
 
 @app.route('/upload', methods=['GET', 'POST'])
-def upload_file():
+# this function corresponds to the jinja {{url_for("uploadfile")}} ACTION in upload.html
+def uploadfile():
     # return render_template("upload.html")
     if request.method == 'POST':
         file = request.files['file']
