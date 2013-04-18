@@ -263,20 +263,20 @@ def uploadfile():
             # breaks here!!!!!!!!!!!!!!!!!!!!!!!!!!!
             # file_location = request.form['file_location']
             print photo_file_path
-            # print "before caption"
-            # caption = request.form['caption']
-            # print caption
-            # # #add location latlon string
-            # # #add time stamp
+            print "before caption"
+            caption = request.form['caption']
+            print caption
+            # #add location latlon string
+            # #add time stamp
 
-            # p = Photo(file_location=photo_file_path, caption=caption)
+            p = Photo(file_location=photo_file_path, caption=caption)
             
-            # #end testing section
+            #end testing section
 
-            # db_session.add(p)
-            # db_session.commit()
-            # db_session.refresh(p)
-            # # session['user_id'] = u.id 
+            db_session.add(p)
+            db_session.commit()
+            db_session.refresh(p)
+            # session['user_id'] = u.id 
             
             
             return redirect(url_for('uploaded_file',
