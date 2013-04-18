@@ -46,25 +46,49 @@ def hot(ups, downs, date):
 
 #_____________________________________________________
 
+@app.before_request
+def load_user_id():
+    g.user_id = session.get('user_id')
+
+
+@app.route("/logout")
+def logout():
+    del session['user_id']
+    return redirect(url_for("index"))
+
+
 @app.route('/')
 def home_page():
     return render_template("index.html")
 
 @app.route('/vote', methods=['POST', 'GET'])
 def vote():
-    
+    # if up:
 
-    db_session.add(some_variable)
-    db_session.commit()
-    db_session.refresh(some_variable)
+    # elif down:
+
+
+    # db_session.add(some_variable)
+    # db_session.commit()
+    # db_session.refresh(some_variable)
     return render_template("vote.html")
 
 
 
+    # up = Column(Integer, nullable = True)
+    # down = Column(Integer, nullable = True)
+    # photo_id = Column(Integer, ForeignKey('photos.id'))
+    # give_vote_user_id = Column(Integer, ForeignKey('users.id'))
+    # receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
+    # timestamp = Column(TIMESTAMP, default=sql.text('CURRENT_TIMESTAMP'))
 
-
-
-
+# TAGS --> implement later
+# @app.route("/search", methods=["POST"])
+# def search():
+#     query = request.form['query']
+#     movies = db_session.query(Tag).\
+#             filter(Tag.tag_title.ilike("%" + query + "%")).\
+#             limit(20).all()
 
 
 @app.route("/signup", methods=['POST'])
@@ -94,7 +118,7 @@ def login():
         user = db_session.query(User).filter_by(email=email, password=password).one()
     except:
         flash("Invalid email or password", "error")
-        return redirect(url_for("home_page"))
+        return redirect(url_for("index"))
 
     session['user_id'] = user.id
     return redirect(url_for("user_page"))
@@ -219,22 +243,78 @@ def upload_file():
             
 
             image = Image.open(photo_file_path)
+            Photo.file_location = photo_file_path
             exif_data = get_exif_data(image)
-            print get_lat_lon(exif_data)
-            print get_time(exif_data)
+            latlon = get_lat_lon(exif_data)
+            timestamp = get_time(exif_data)
 
             # get_exif_data(file_path)
             print filename,photo_file_path
+            #testing section
+            print "before file_location"
+            #breaks here!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            # file_location = request.form['file_location']
+            print photo_file_path
+            print "before caption"
+            caption = request.form['caption']
+            print caption
+            # #add location latlon string
+            # #add time stamp
+
+            p = Photo(file_location=photo_file_path, caption=caption)
+            
+            #end testing section
+
+            db_session.add(p)
+            db_session.commit()
+            db_session.refresh(p)
+            # session['user_id'] = u.id 
+            
             
             return redirect(url_for('uploaded_file',
                                     filename=filename))      
     
     return render_template("upload.html") 
 
+
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
+
+
     return send_from_directory(app.config['UPLOAD_PHOTO_FOLDER'],
                                filename)
+
+
+
+
+
+
+# @app.route('/uploads/<filename>', methods=["GET"])
+# def uploaded_file(filename):
+#     photo = db_session.query(Photo).get(filename)
+#     voting = photo.votes
+#     photo_nums = []
+#     user_rating = None
+#     for v in votes:
+#         if r.user_id == session['user_id']:
+#             user_rating = r
+#         rating_nums.append(r.rating)
+#     return send_from_directory(app.config['UPLOAD_PHOTO_FOLDER'],
+#                                filename)
+
+#above modeled after:
+# @app.route("/movie/<int:id>", methods=["GET"])
+# def view_movie(id):
+#     movie = db_session.query(Movie).get(id)
+#     ratings = movie.ratings
+#     rating_nums = []
+#     user_rating = None
+#     for r in ratings:
+#         if r.user_id == session['user_id']:
+#             user_rating = r
+#         rating_nums.append(r.rating)
+#     avg_rating = float(sum(rating_nums))/len(rating_nums)
+
 
 #__________________________________________________________________________________________
 

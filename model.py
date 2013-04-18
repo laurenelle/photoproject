@@ -1,19 +1,25 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy import Column, Integer, String, DateTime, Date
+# importing all data types for columns
+from sqlalchemy import Column, Integer, String, DateTime, Date, Float
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref, session
 from sqlalchemy.orm import relationship, backref, relation
 
 #from sqlalchemy.dialects.postgresql import array
 from sqlalchemy.dialects import postgresql
 from sqlalchemy import select, func, types, sql
-from sqlalchemy.dialects.postgresql import \
-    ARRAY, BIGINT, BIT, BOOLEAN, BYTEA, CHAR, CIDR, DATE, \
-    DOUBLE_PRECISION, ENUM, FLOAT, INET, INTEGER, \
-    INTERVAL, MACADDR, NUMERIC, REAL, SMALLINT, TEXT, TIME, \
-    TIMESTAMP, UUID, VARCHAR
+
+# just in case
+# from sqlalchemy.dialects.postgresql import \
+#     ARRAY, BIGINT, BIT, BOOLEAN, BYTEA, CHAR, CIDR, DATE, \
+#     DOUBLE_PRECISION, ENUM, FLOAT, INET, INTEGER, \
+#     INTERVAL, MACADDR, NUMERIC, REAL, SMALLINT, TEXT, TIME, \
+#     TIMESTAMP, UUID, VARCHAR
 
 import psycopg2
+import decimal
+
+
 
 
 engine = create_engine("postgres://lauren:@localhost/eyetravelv1", echo=True)
@@ -39,9 +45,11 @@ class Photo(Base):
 	__tablename__ = "photos"
 
 	id = Column(Integer, primary_key = True)
-	file_location = Column(String(100), nullable=True)  
+	file_location = Column(String(100), nullable=True) 
+	latitude = Column(Float, nullable=True) 
+	longitude = Column(Float, nullable=True) 
 	photo_location_id = Column(Integer, ForeignKey('locations.id'), nullable=True)
-	timestamp = Column(TIMESTAMP)
+	timestamp = Column(DateTime)
 	caption = Column(String(101), nullable=True)
 	up_vote = Column(Integer)
 	down_vote = Column(Integer)
@@ -51,13 +59,13 @@ class Photo(Base):
 class Vote(Base):
 	__tablename__ = "votes"
 	id = Column(Integer, primary_key = True)
-	# use enum for up/down vote? 
+	# use enum for up/down vote? maybe later
 	up = Column(Integer, nullable = True)
 	down = Column(Integer, nullable = True)
 	photo_id = Column(Integer, ForeignKey('photos.id'))
 	give_vote_user_id = Column(Integer, ForeignKey('users.id'))
 	receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
-	timestamp = Column(TIMESTAMP, default=sql.text('CURRENT_TIMESTAMP'))
+	timestamp = Column(DateTime, default=sql.text('CURRENT_TIMESTAMP'))
 
 	give_vote_user = relation("User", primaryjoin="User.id==Vote.give_vote_user_id", backref=backref("votes_given", order_by=id))
 	receive_vote_user = relation("User", primaryjoin="User.id==Vote.receive_vote_user_id", backref=backref("votes_received", order_by=id))
