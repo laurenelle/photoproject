@@ -4,13 +4,15 @@
 {% block body %}
 <html>
     <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
+    <h1>Upload a Photo</h1>
+    <div id="upload">
+    <form action="" method="POST" enctype=multipart/form-data>
       File: <input type=file name=file><br>
-    Caption: <input type=text name=note><br>
+    Caption: <input type=text name=caption><br>
 <br>
 <input type=submit value=Upload> !
 </form>
+</div>
 
 
 </html>

@@ -29,6 +29,15 @@ Not working
   <input type="submit" name="submit" value="Submit">
 </form>
 
+-another code snippet
+
+<form method='POST' enctype='multipart/form-data' action='fup.cgi'>
+File to upload: <input type=file name=upfile><br>
+Notes about the file: <input type=text name=note><br>
+<br>
+<input type=submit value=Press> to upload the file!
+</form>
+
 
 
 WIP - not working
@@ -64,15 +73,15 @@ Original
 {% block body %}
 <html>
     <title>Upload new File</title>
-    <h1>Upload new File</h1>
+    <h1>Upload a photo</h1>
     <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-         </p>
-         <p>
-             <input type="text" name="caption"></input>
-                <input type="submit"></p>
-    </form>
+      File: <input type=file name=file><br>
+    Caption: <input type=text name=caption><br>
+<br>
+<input type=submit value=Upload> !
+</form>
+
+
 </html>
 
 {% endblock %}

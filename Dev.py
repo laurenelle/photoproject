@@ -5,10 +5,13 @@ from flask import Flask, request, render_template, redirect, url_for, send_from_
 from werkzeug import secure_filename
 from model import session as db_session, User, Photo, Vote, Tag, Photo_Tag, Location
 import model
+import re
 
 # for voting logic
 from datetime import datetime, timedelta
 from math import log
+
+
 
 #from flask_heroku import Heroku
 
@@ -249,8 +252,9 @@ def upload_file():
             # Photo.file_location = photo_file_path
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
+            print latlon
             timestamp = get_time(exif_data)
-
+            print timestamp
             # get_exif_data(file_path)
             print filename,photo_file_path
             #testing section
