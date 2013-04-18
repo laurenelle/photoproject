@@ -37,6 +37,6 @@ def latlong(l):
 		longitude = match.group(2)
 		print longitude
 	else:
-		print "?"
+		print "No latlong data"
 
 

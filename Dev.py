@@ -235,6 +235,32 @@ def get_time(exif_data):
 # def test():
 #     render_template("test.html")
 
+
+def lat(l):
+    match = re.search(r"[^)](.*),(.*)\d", l)
+    if match:
+        latitude = match.group(1)
+        print latitude
+        longitude = match.group(2)
+        print longitude   
+    else:
+        print "No latlong data"
+    return latitude  
+
+def lon(l):
+    match = re.search(r"[^)](.*),(.*)\d", l)
+    if match:
+        latitude = match.group(1)
+        print latitude
+        longitude = match.group(2)
+        print longitude   
+    else:
+        print "No latlong data"
+    return longitude
+
+   
+
+
 @app.route('/upload', methods=['GET', 'POST'])
 # this function corresponds to the jinja {{url_for("uploadfile")}} ACTION in upload.html
 def uploadfile():
@@ -254,14 +280,15 @@ def uploadfile():
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
             print latlon
+            l = str(latlon)
+            print l
+            latitude = lat(l)
+            longitude = lon(l)
             timestamp = get_time(exif_data)
             print timestamp
             # get_exif_data(file_path)
             print filename,photo_file_path
-            #testing section
             print "before file_location"
-            # breaks here!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            # file_location = request.form['file_location']
             print photo_file_path
             print "before caption"
             caption = request.form['caption']
@@ -269,7 +296,7 @@ def uploadfile():
             # #add location latlon string
             # #add time stamp
 
-            p = Photo(file_location=photo_file_path, caption=caption)
+            p = Photo(file_location=photo_file_path, caption=caption, timestamp=timestamp, latitude=latitude, longitude=longitude)
             
             #end testing section
 
