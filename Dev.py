@@ -228,6 +228,9 @@ def get_time(exif_data):
     else:
         print "No timestamp available."
 
+# @app.route('/upload', methods=['GET'])
+# def test():
+#     render_template("test.html")
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -243,7 +246,7 @@ def upload_file():
             
 
             image = Image.open(photo_file_path)
-            Photo.file_location = photo_file_path
+            # Photo.file_location = photo_file_path
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
             timestamp = get_time(exif_data)
@@ -252,30 +255,29 @@ def upload_file():
             print filename,photo_file_path
             #testing section
             print "before file_location"
-            #breaks here!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            # breaks here!!!!!!!!!!!!!!!!!!!!!!!!!!!
             # file_location = request.form['file_location']
             print photo_file_path
-            print "before caption"
-            caption = request.form['caption']
-            print caption
-            # #add location latlon string
-            # #add time stamp
+            # print "before caption"
+            # caption = request.form['caption']
+            # print caption
+            # # #add location latlon string
+            # # #add time stamp
 
-            p = Photo(file_location=photo_file_path, caption=caption)
+            # p = Photo(file_location=photo_file_path, caption=caption)
             
-            #end testing section
+            # #end testing section
 
-            db_session.add(p)
-            db_session.commit()
-            db_session.refresh(p)
-            # session['user_id'] = u.id 
+            # db_session.add(p)
+            # db_session.commit()
+            # db_session.refresh(p)
+            # # session['user_id'] = u.id 
             
             
             return redirect(url_for('uploaded_file',
                                     filename=filename))      
     
     return render_template("upload.html") 
-
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):

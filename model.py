@@ -17,6 +17,7 @@ from sqlalchemy import select, func, types, sql
 #     TIMESTAMP, UUID, VARCHAR
 
 import psycopg2
+
 import decimal
 
 
