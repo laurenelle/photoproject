@@ -6,11 +6,13 @@ from werkzeug import secure_filename
 from model import session as db_session, User, Photo, Vote, Tag, Photo_Tag, Location
 import model
 import re
+import time
 
 # for voting logic
 from datetime import datetime, timedelta
 from math import log
 
+from time import mktime
 
 
 #from flask_heroku import Heroku
@@ -227,7 +229,7 @@ def get_time(exif_data):
     print "get_time function"
     if "DateTime" in exif_data:
         photo_timestamp = exif_data['DateTime']
-        print photo_timestamp
+        return photo_timestamp
     else:
         print "No timestamp available."
 
@@ -236,29 +238,31 @@ def get_time(exif_data):
 #     render_template("test.html")
 
 
+
+#TEST
+def latlong(latlon):
+    l = str(latlon)    
+    latitude = lat(l)
+    longitude = lon(l)
+  
+
 def lat(l):
     match = re.search(r"[^)](.*),(.*)\d", l)
     if match:
         latitude = match.group(1)
-        print latitude
-        longitude = match.group(2)
-        print longitude   
-    else:
-        print "No latlong data"
-    return latitude  
+        return latitude
+
 
 def lon(l):
     match = re.search(r"[^)](.*),(.*)\d", l)
     if match:
-        latitude = match.group(1)
-        print latitude
         longitude = match.group(2)
-        print longitude   
-    else:
-        print "No latlong data"
-    return longitude
+        return longitude   
+    # else:
+    #     print "No latlong data"
+    #     pass
+    # return longitude
 
-   
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -274,31 +278,30 @@ def uploadfile():
             
             file.save(photo_file_path)
             
-
             image = Image.open(photo_file_path)
-            # Photo.file_location = photo_file_path
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
             print latlon
             l = str(latlon)
-            print l
             latitude = lat(l)
-            longitude = lon(l)
-            timestamp = get_time(exif_data)
-            print timestamp
-            # get_exif_data(file_path)
-            print filename,photo_file_path
-            print "before file_location"
-            print photo_file_path
-            print "before caption"
-            caption = request.form['caption']
-            print caption
-            # #add location latlon string
-            # #add time stamp
+                
 
-            p = Photo(file_location=photo_file_path, caption=caption, timestamp=timestamp, latitude=latitude, longitude=longitude)
-            
-            #end testing section
+
+            longitude = lon(l)
+
+            timestamp = get_time(exif_data)
+            print "timestamp1"
+
+            print timestamp
+            if timestamp != None:
+                timestamp = datetime.strptime(str(timestamp), "%Y:%m:%d %H:%M:%S")
+                # timestamp = datetime.fromtimestamp(mktime(timestamp))
+            caption = request.form['caption']
+
+            p = Photo(file_location=photo_file_path, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp)
+            # add location stuff and connect to location table
+            l = Location()            
+
 
             db_session.add(p)
             db_session.commit()
@@ -310,6 +313,9 @@ def uploadfile():
                                     filename=filename))      
     
     return render_template("upload.html") 
+
+
+#TEST
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):

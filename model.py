@@ -8,6 +8,7 @@ from sqlalchemy.orm import relationship, backref, relation
 #from sqlalchemy.dialects.postgresql import array
 from sqlalchemy.dialects import postgresql
 from sqlalchemy import select, func, types, sql
+import datetime
 
 # just in case
 # from sqlalchemy.dialects.postgresql import \
@@ -66,7 +67,7 @@ class Vote(Base):
 	photo_id = Column(Integer, ForeignKey('photos.id'))
 	give_vote_user_id = Column(Integer, ForeignKey('users.id'))
 	receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
-	timestamp = Column(DateTime, default=sql.text('CURRENT_TIMESTAMP'))
+	timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
 	give_vote_user = relation("User", primaryjoin="User.id==Vote.give_vote_user_id", backref=backref("votes_given", order_by=id))
 	receive_vote_user = relation("User", primaryjoin="User.id==Vote.receive_vote_user_id", backref=backref("votes_received", order_by=id))

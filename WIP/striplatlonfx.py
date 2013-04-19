@@ -1,6 +1,3 @@
-def latlon(y):
-	split = laton.split(',')
-	print split
 
 
 -split and strip have no tuple object so --> regex
@@ -38,5 +35,4 @@ def latlong(l):
 		print longitude
 	else:
 		print "No latlong data"
-
 
