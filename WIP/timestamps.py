@@ -36,3 +36,4 @@ output = '2013:04:07 12:12:54'
 correctformat = time.strptime(output, "%Y:%m:%d %H:%M:%S")
 
 print correctformat
+

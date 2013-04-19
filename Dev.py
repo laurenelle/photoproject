@@ -12,11 +12,11 @@ import time
 from datetime import datetime, timedelta
 from math import log
 
-from time import mktime
+# home of tested functions
+import allfunctions
 
 
 #from flask_heroku import Heroku
-
 
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
@@ -24,124 +24,15 @@ ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF
 UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
 
 app = Flask(__name__)
-app.secret_key = 'balloonicorn'
+app.secret_key = 'balloonicorn' # temp
 app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
 app.config.from_object(__name__) #???
 
-#____________________________________________________
-#voting logic
-
-epoch = datetime(1970, 1, 1)
-
-def epoch_seconds(date):
-    """Returns the number of seconds from the epoch to date."""
-    td = date - epoch
-    return td.days * 86400 + td.seconds + (float(td.microseconds) / 1000000)
-
-def score(ups, downs):
-    return ups - downs
-
-def hot(ups, downs, date):
-    """The hot formula. Should match the equivalent function in postgres."""
-    s = score(ups, downs)
-    order = log(max(abs(s), 1), 10)
-    sign = 1 if s > 0 else -1 if s < 0 else 0
-    seconds = epoch_seconds(date) - 1134028003
-    return round(order + sign * seconds / 45000, 7)
-
-#_____________________________________________________
-
-@app.before_request
-def load_user_id():
-    g.user_id = session.get('user_id')
-
-
-@app.route("/logout")
-def logout():
-    del session['user_id']
-    return redirect(url_for("index"))
-
-
-@app.route('/')
-def home_page():
-    return render_template("index.html")
-
-@app.route('/vote', methods=['POST', 'GET'])
-def vote():
-    # if up:
-
-    # elif down:
-
-
-    # db_session.add(some_variable)
-    # db_session.commit()
-    # db_session.refresh(some_variable)
-    return render_template("vote.html")
-
-
-
-    # up = Column(Integer, nullable = True)
-    # down = Column(Integer, nullable = True)
-    # photo_id = Column(Integer, ForeignKey('photos.id'))
-    # give_vote_user_id = Column(Integer, ForeignKey('users.id'))
-    # receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
-    # timestamp = Column(TIMESTAMP, default=sql.text('CURRENT_TIMESTAMP'))
-
-# TAGS --> implement later
-# @app.route("/search", methods=["POST"])
-# def search():
-#     query = request.form['query']
-#     movies = db_session.query(Tag).\
-#             filter(Tag.tag_title.ilike("%" + query + "%")).\
-#             limit(20).all()
-
-
-@app.route("/signup", methods=['POST'])
-def register():
-    email = request.form['email']
-    # user_name = request.form['user_name']
-    password = request.form['password']
-    existing = db_session.query(User).filter_by(email=email).first()
-    if existing:
-        flash("Email already in use", "error")
-        return redirect(url_for("index"))
-
-    u = User(email=email, password=password)
-    db_session.add(u)
-    db_session.commit()
-    db_session.refresh(u)
-    session['user_id'] = u.id 
-    return redirect(url_for("user_page"))
-
-
-@app.route("/login", methods=["POST"])
-def login():
-    email = request.form['email']
-    password = request.form['password']
-
-    try:
-        user = db_session.query(User).filter_by(email=email, password=password).one()
-    except:
-        flash("Invalid email or password", "error")
-        return redirect(url_for("index"))
-
-    session['user_id'] = user.id
-    return redirect(url_for("user_page"))
-
-@app.route("/userpage")
-def user_page():
-    return render_template("userpage.html")
-
-
-@app.route("/logout")
-def logout():
-    del session['user_id']
-    return redirect(url_for("home_page"))
-
-
-# ----------------------------------------------------------------------------------------
-#
-
+#______________________________________________________
+#OK
+@app.teardown_request
+def shutdown_session(exception = None):
+    db_session.remove()
 
 
 def allowed_file(filename):
@@ -238,13 +129,9 @@ def get_time(exif_data):
 #     render_template("test.html")
 
 
-
-#TEST
 def latlong(latlon):
     l = str(latlon)    
-    latitude = lat(l)
-    longitude = lon(l)
-  
+
 
 def lat(l):
     match = re.search(r"[^)](.*),(.*)\d", l)
@@ -258,10 +145,143 @@ def lon(l):
     if match:
         longitude = match.group(2)
         return longitude   
-    # else:
-    #     print "No latlong data"
-    #     pass
-    # return longitude
+
+#____________________________________________________
+#voting logic
+
+epoch = datetime(1970, 1, 1)
+
+def epoch_seconds(date):
+    """Returns the number of seconds from the epoch to date."""
+    td = date - epoch
+    return td.days * 86400 + td.seconds + (float(td.microseconds) / 1000000)
+
+def score(ups, downs):
+    return ups - downs
+
+def hot(ups, downs, date):
+    """The hot formula. Should match the equivalent function in postgres."""
+    s = score(ups, downs)
+    order = log(max(abs(s), 1), 10)
+    sign = 1 if s > 0 else -1 if s < 0 else 0
+    seconds = epoch_seconds(date) - 1134028003
+    return round(order + sign * seconds / 45000, 7)
+
+#_____________________________________________________
+
+#OK
+@app.before_request
+def load_user_id():
+    g.user_id = session.get('user_id')
+
+#ALTER LATER
+@app.route('/')
+def home_page():
+    # if g.user_id:
+    #     return redirect(url_for("user_page"))
+    return render_template("index.html")
+
+#OK
+@app.route("/login", methods=["POST"])
+def login():
+    email = request.form['email']
+    password = request.form['password']
+    
+    try:
+        user = db_session.query(User).filter_by(email=email, password=password).one()
+        print "THIS IS THE USER", user.email
+
+    except:
+        flash("Invalid email or password", "error")
+        return redirect(url_for("index"))
+    print "before session" 
+    # breaks here
+    print user.id
+    session['user_id'] = user.id
+    print "THIS IS THE SESSION", session
+    print "after session"
+    return redirect(url_for("user_page"))
+
+#OK
+@app.route("/signup", methods=['POST'])
+def register():
+    email = request.form['email']
+    # user_name = request.form['user_name']
+    password = request.form['password']
+    existing = db_session.query(User).filter_by(email=email).first()
+    if existing:
+        flash("Email already in use", "error")
+        return redirect(url_for("index"))
+    # defines u
+    u = User(email=email, password=password)
+    print u
+    db_session.add(u)
+    db_session.commit()
+    db_session.refresh(u)
+    session['user_id'] = u.id 
+    return redirect(url_for("user_page"))
+
+#OK
+@app.route("/logout")
+def logout():
+    del session['user_id']
+    return redirect(url_for("index"))
+
+
+
+
+@app.route('/vote', methods=['POST', 'GET'])
+def vote():
+    # if up:
+
+    # elif down:
+
+
+    # db_session.add(some_variable)
+    # db_session.commit()
+    # db_session.refresh(some_variable)
+    return render_template("vote.html")
+
+
+
+    # up = Column(Integer, nullable = True)
+    # down = Column(Integer, nullable = True)
+    # photo_id = Column(Integer, ForeignKey('photos.id'))
+    # give_vote_user_id = Column(Integer, ForeignKey('users.id'))
+    # receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
+    # timestamp = Column(TIMESTAMP, default=sql.text('CURRENT_TIMESTAMP'))
+
+# TAGS --> implement later
+# @app.route("/search", methods=["POST"])
+# def search():
+#     query = request.form['query']
+#     movies = db_session.query(Tag).\
+#             filter(Tag.tag_title.ilike("%" + query + "%")).\
+#             limit(20).all()
+
+
+
+
+
+
+@app.route("/userpage")
+def user_page():
+    g.user_id = session.get('user_id')
+    user = db_session.query(User).filter_by(id=g.user_id).one()
+
+    return render_template("userpage.html", u=user)
+
+
+@app.route("/logout")
+def logout():
+    del session['user_id']
+    return redirect(url_for("home_page"))
+
+
+# ----------------------------------------------------------------------------------------
+#
+
+
 
 
 
@@ -281,24 +301,23 @@ def uploadfile():
             image = Image.open(photo_file_path)
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
+            
             print latlon
+
             l = str(latlon)
             latitude = lat(l)
-                
-
-
             longitude = lon(l)
 
             timestamp = get_time(exif_data)
-            print "timestamp1"
-
             print timestamp
+
             if timestamp != None:
                 timestamp = datetime.strptime(str(timestamp), "%Y:%m:%d %H:%M:%S")
-                # timestamp = datetime.fromtimestamp(mktime(timestamp))
+
             caption = request.form['caption']
 
             p = Photo(file_location=photo_file_path, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp)
+            #u = User()
             # add location stuff and connect to location table
             l = Location()            
 
@@ -306,7 +325,7 @@ def uploadfile():
             db_session.add(p)
             db_session.commit()
             db_session.refresh(p)
-            # session['user_id'] = u.id 
+            session['user_id'] = u.id 
             
             
             return redirect(url_for('uploaded_file',
@@ -314,8 +333,6 @@ def uploadfile():
     
     return render_template("upload.html") 
 
-
-#TEST
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
