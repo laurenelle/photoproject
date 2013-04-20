@@ -41,12 +41,15 @@ class User(Base):
 	email = Column(String(64), nullable=True)
 	password = Column(String(64), nullable=True)
 
+	photos = relationship("Photo", backref="users", lazy="joined")
+	# users are the parents of the photo children
 
 #increment function for up and down vote based on when a vote is cast - write this function
 class Photo(Base):
 	__tablename__ = "photos"
 
 	id = Column(Integer, primary_key = True)
+	user_id = Column(Integer, ForeignKey('users.id'))
 	file_location = Column(String(100), nullable=True) 
 	latitude = Column(Float, nullable=True) 
 	longitude = Column(Float, nullable=True) 
@@ -55,6 +58,9 @@ class Photo(Base):
 	caption = Column(String(101), nullable=True)
 	up_vote = Column(Integer)
 	down_vote = Column(Integer)
+
+
+
 
 # through table linking user and photo
 # use trigger with up and down to automatically update counts  - update that increments by 1
@@ -69,11 +75,11 @@ class Vote(Base):
 	receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
 	timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
-	give_vote_user = relation("User", primaryjoin="User.id==Vote.give_vote_user_id", backref=backref("votes_given", order_by=id))
-	receive_vote_user = relation("User", primaryjoin="User.id==Vote.receive_vote_user_id", backref=backref("votes_received", order_by=id))
-	photo = relation("Photo", backref=backref("votes", order_by=id))
+	give_vote_user = relationship("User", primaryjoin="User.id==Vote.give_vote_user_id", backref=backref("votes_given", order_by=id))
+	receive_vote_user = relationship("User", primaryjoin="User.id==Vote.receive_vote_user_id", backref=backref("votes_received", order_by=id))
+	photo = relationship("Photo", backref=backref("votes", order_by=id))
 
-# if tag doesn't already exist - creat a new tag and tag id --> add this logic
+# if tag doesn't already exist - create a new tag and tag id --> add this logic
 class Tag(Base):
 	__tablename__ = "tags"
 	id = Column(Integer, primary_key = True)

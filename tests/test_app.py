@@ -15,3 +15,6 @@ def test_upload():
 # -test functions
 # -database mocks -- test  
 # 200
+
+
+# testing inputs -- right and wrong

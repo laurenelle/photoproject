@@ -31,6 +31,9 @@ google.maps.event.addListener(map, 'click', function(e) {
    title:"Hello World!"
  }); 
 
+
+         // loop through all the markers here-ish and then something with counting the number of markers
+
  google.maps.event.addListener(map,'click',function(event) { if(self.marker != null) self.marker.setMap(null); self.value = new google.maps.LatLng( event.latLng.lat() , event.latLng.lng());   self.marker = new google.maps.Marker({ position:self.value }); self.zoom = map.getZoom(); self.marker.setMap(map); });
 
 
