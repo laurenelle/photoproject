@@ -2,10 +2,15 @@
 from datetime import datetime, timedelta
 import re
 
+
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
 #allowed extensions are case sensitive and many other things are as well
 UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
+
+# for voting logic
+from datetime import datetime, timedelta
+from math import log
 
 
 def allowed_file(filename):
@@ -15,11 +20,9 @@ def allowed_file(filename):
 
 def get_exif_data(image):
     """Returns a dictionary from the exif data of a PIL Image item. Also converts the GPS Tags"""
-    print "get_exif_data function"
+
     exif_data = {}
-    print exif_data
     info = image._getexif()
-    print info
     if info:
         for tag, value in info.items():
             decoded = TAGS.get(tag, tag)
@@ -37,14 +40,13 @@ def get_exif_data(image):
  
  
 def _get_if_exist(data, key):
-    print "get if exist function"
+
     if key in data:
-        return data[key]
-        
+        return data[key]    
     return None
     
 def _convert_to_degress(value):
-    print "convert to degrees function"
+
     """Helper function to convert the GPS coordinates stored in the EXIF to degress in float format"""
     d0 = value[0][0]
     d1 = value[0][1]
@@ -62,12 +64,12 @@ def _convert_to_degress(value):
  
 def get_lat_lon(exif_data):
     """Returns the latitude and longitude, if available, from the provided exif_data (obtained through get_exif_data above)"""
-    print "get_lat_lon function"
+
     lat = None
     lon = None
  
     if "GPSInfo" in exif_data:  
-        print "GPSInfo If"    
+  
         gps_info = exif_data["GPSInfo"]
  
         gps_latitude = _get_if_exist(gps_info, "GPSLatitude")
@@ -76,7 +78,7 @@ def get_lat_lon(exif_data):
         gps_longitude_ref = _get_if_exist(gps_info, 'GPSLongitudeRef')
  
         if gps_latitude and gps_latitude_ref and gps_longitude and gps_longitude_ref:
-            print "gps_latitude if"
+
             lat = _convert_to_degress(gps_latitude)
             if gps_latitude_ref != "N":                     
                 lat = 0 - lat
@@ -87,24 +89,8 @@ def get_lat_lon(exif_data):
  
     return lat, lon
 
-
-
-def get_time(exif_data):
-    print "get_time function"
-    if "DateTime" in exif_data:
-        photo_timestamp = exif_data['DateTime']
-        return photo_timestamp
-    else:
-        print "No timestamp available."
-
-# @app.route('/upload', methods=['GET'])
-# def test():
-#     render_template("test.html")
-
-
 def latlong(latlon):
     l = str(latlon)    
-
 
 def lat(l):
     match = re.search(r"[^)](.*),(.*)\d", l)
@@ -112,12 +98,19 @@ def lat(l):
         latitude = match.group(1)
         return latitude
 
-
 def lon(l):
     match = re.search(r"[^)](.*),(.*)\d", l)
     if match:
         longitude = match.group(2)
         return longitude   
+
+def get_time(exif_data):
+
+    if "DateTime" in exif_data:
+        photo_timestamp = exif_data['DateTime']
+        return photo_timestamp
+    else:
+        print "No timestamp available."
 
 #____________________________________________________
 #voting logic

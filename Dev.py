@@ -10,9 +10,7 @@ import time
 
 from allfunctions import *
 
-# for voting logic
-from datetime import datetime, timedelta
-from math import log
+
 
 
 
@@ -49,7 +47,7 @@ def shutdown_session(exception = None):
 @app.route('/')
 def home_page():
     # if g.user_id:
-    #     return redirect(url_for("user_page"))
+    #     return redirect(url_for("userpage"))
     return render_template("index.html")
 
 #OK
@@ -67,9 +65,9 @@ def login():
         return redirect(url_for("index"))
 
     session['user_id'] = user.id
-    return redirect(url_for("user_page"))
+    return redirect(url_for("userpage"))
 
-#OK
+
 @app.route("/signup", methods=['POST'])
 def register():
     email = request.form['email']
@@ -79,16 +77,15 @@ def register():
     if existing:
         flash("Email already in use", "error")
         return redirect(url_for("index"))
-    # defines u
     u = User(email=email, password=password)
     print u
     db_session.add(u)
     db_session.commit()
     db_session.refresh(u)
     session['user_id'] = u.id 
-    return redirect(url_for("user_page"))
+    return redirect(url_for("userpage"))
 
-#OK
+
 @app.route("/logout")
 def logout():
     del session['user_id']
@@ -128,15 +125,23 @@ def vote():
 
 
 
-
+# @app.route('/upload', methods=['GET'])
+# def test():
+#     render_template("test.html")
 
 
 @app.route("/userpage")
-def user_page():
+def userpage():
     g.user_id = session.get('user_id')
+    if not g.user_id:
+        flash("Please log in", "warning")
+        return redirect(url_for("index"))
     user = db_session.query(User).filter_by(id=g.user_id).one()
+    photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
 
-    return render_template("userpage.html", u=user)
+    return render_template("userpage.html", u=user, photos=photos)
+
+
 
 
 @app.route("/logout")
@@ -165,21 +170,19 @@ def uploadfile():
             image = Image.open(photo_file_path)
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
-            
-            print latlon
 
             l = str(latlon)
             latitude = lat(l)
             longitude = lon(l)
 
             timestamp = get_time(exif_data)
-            print timestamp
+
 
             if timestamp != None:
                 timestamp = datetime.strptime(str(timestamp), "%Y:%m:%d %H:%M:%S")
 
             caption = request.form['caption']
-            
+
             p = Photo(file_location=photo_file_path, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp, user_id=g.user_id)
             # add location stuff and connect to location table LATER
             l = Location()
@@ -189,9 +192,6 @@ def uploadfile():
             db_session.add(p)
             db_session.commit()
             db_session.refresh(p)
-            #u is not defined
-            # session['user_id'] = u.id 
-
 
             g.user_id = session.get('user_id')
             user = db_session.query(User).filter_by(id=g.user_id).one()
@@ -250,7 +250,4 @@ def uploaded_file(filename):
 if __name__ == '__main__':
     app.run(debug=True)
 
-    # image = Image.open("file_path") # load an image through PIL's Image object
-    # exif_data = get_exif_data(image)
-    # print get_lat_lon(exif_data)
     

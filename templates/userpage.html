@@ -1,12 +1,13 @@
-{% extends "layout.html" %}
 
+
+{% extends 'layout.html' %}
 {% block body %}
-<html>
-<h1>User Page</h1>
-<h2>Hey {{ u.email }}<h2>
-
-
-</div>
-</html>
-
+<h2>Your Photos!</h2>
+<ul>
+    {% for photo in photos %}
+    <li><a href="{{url_for("userpage", id=photo.id)}}">{{photo.id}} &mdash; {{photo.caption}}</a></li>
+    {% else %}
+    <li>You haven't uploaded any photos :(</li>
+    {% endfor %}
+</ul>
 {% endblock %}
