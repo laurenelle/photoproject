@@ -56,8 +56,8 @@ class Photo(Base):
 	photo_location_id = Column(Integer, ForeignKey('locations.id'), nullable=True)
 	timestamp = Column(DateTime)
 	caption = Column(String(101), nullable=True)
-	up_vote = Column(Integer, nullable=True)
-	down_vote = Column(Integer, nullable=True)
+	up_vote = Column(Integer, default=0)
+	down_vote = Column(Integer, default=0)
 
 
 

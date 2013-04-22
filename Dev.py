@@ -92,11 +92,18 @@ def register():
     session['user_id'] = u.id 
     return redirect(url_for("userpage"))
 
+@app.route("/popular", methods=['GET', 'POST'])
+def popular():
+    # implement coding logic here
+    photos = db_session.query(Photo).all()
+    return render_template("popular.html", u=g.user, photos=photos)
+
+
+
 
 @app.route("/vote", methods=['GET', 'POST'])
 def vote():
-    # g.user = db_session.query(User).filter_by(id=g.user_id).one()
-    # session['user_id'] = user.id
+    # need to get photo info to remove hard coding of photo_id and receive_vote_user_id
     print "VOTE"
     print "PRINTING: g.user_id =", g.user_id
     if request.form:
@@ -139,7 +146,6 @@ def userpage():
         return redirect(url_for("index"))
 
     return render_template("userpage.html", u=g.user, photos=g.photos)
-
 
 
 
