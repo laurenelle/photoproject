@@ -133,4 +133,4 @@ def hot(upvote, downvote, timestamp):
     seconds = epoch_seconds(date) - 1134028003
     return round(order + sign * seconds / 45000, 7)
 
-# 
+# write a generic 

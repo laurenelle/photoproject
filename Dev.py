@@ -9,6 +9,7 @@ import re
 import time
 
 from allfunctions import *
+from K import *
 
 #from flask_heroku import Heroku
 
@@ -16,10 +17,9 @@ UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
 
 #allowed extensions are case sensitive and many other things are as well
-UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
 
 app = Flask(__name__)
-app.secret_key = 'balloonicorn' # temp
+app.secret_key = 'balloonicorn'
 app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
 app.config.from_object(__name__) #???
 
@@ -28,12 +28,13 @@ app.config.from_object(__name__) #???
 @app.before_request
 def load_user_id():
     g.user_id = session.get('user_id')
-    print "g.user_id", g.user_id
+    print "BEFORE REQUEST g.user_id", g.user_id
     if g.user_id != None:
         g.user = db_session.query(User).filter_by(id=g.user_id).one()
-        print "g.user", g.user
+        print "BEFORE REQUEST g.user", g.user
         g.photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
-        print "g.photos", g.photos
+        print "BEFORE REQUEST g.photos", g.photos
+
 
 @app.teardown_request
 def shutdown_session(exception = None):
@@ -43,7 +44,6 @@ def shutdown_session(exception = None):
 
 #_____________________________________________________
 
-#currently only gets the user id, consider getting email, username etc later
 
 
 @app.route('/')
@@ -106,6 +106,7 @@ def vote():
             db_session.add(v)
             db_session.commit()
             db_session.refresh(v)
+            #DB insert vote for photo_id - increment by 1
             return redirect(url_for("userpage"))
 
             # change hard coded values when photo can be viewed
@@ -115,6 +116,7 @@ def vote():
             db_session.add(v)
             db_session.commit()
             db_session.refresh(v)
+            #DB insert vote for photo_id - increment by 1
             return redirect(url_for("userpage"))
 
     return render_template("vote.html")
@@ -122,17 +124,10 @@ def vote():
 
 @app.route("/userpage")
 def userpage():
-    # g.user_id = session.get('user_id')
     if not g.user_id:
         flash("Please log in", "warning")
         return redirect(url_for("index"))
-    # user = db_session.query(User).filter_by(id=g.user_id).one()
-    # photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
 
-    print "g.user_id =", g.user_id
-    print g.user
-    print g.photos
-    # image = Image.open(photo_file_path)
     return render_template("userpage.html", u=g.user, photos=g.photos)
 
 
@@ -152,10 +147,13 @@ def uploadfile():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             
+            #testing
+            photo_location = "uploads/"+filename
+            print "PHOTO LOCATION:", photo_location
+            #______
             photo_file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
-            
             file.save(photo_file_path)
-            
+
             image = Image.open(photo_file_path)
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
@@ -172,17 +170,18 @@ def uploadfile():
 
             caption = request.form['caption']
 
-            p = Photo(file_location=photo_file_path, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp, user_id=g.user_id)
+            p = Photo(file_location=photo_location, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp, user_id=g.user_id)
             # add location stuff and connect to location table LATER
+            # print "FILE LOCATION:", file_location
+            print "PHOTO LOCATION:", photo_location
             l = Location()
-            u = User()       
+     
 
 
             db_session.add(p)
             db_session.commit()
             db_session.refresh(p)
 
-            g.user_id = session.get('user_id')
             user = db_session.query(User).filter_by(id=g.user_id).one()
 
 
