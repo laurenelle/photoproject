@@ -102,21 +102,21 @@ def vote():
         vote = request.form['vote']
         if vote == "upvote":
             print "upvote"
-            v = Vote(up=1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
+            v = Vote(value=1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
             db_session.add(v)
             db_session.commit()
             db_session.refresh(v)
-            #DB insert vote for photo_id - increment by 1
+
             return redirect(url_for("userpage"))
 
             # change hard coded values when photo can be viewed
         elif vote == "downvote":
             print "downvote"
-            v = Vote(down=1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
+            v = Vote(value=-1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
             db_session.add(v)
             db_session.commit()
             db_session.refresh(v)
-            #DB insert vote for photo_id - increment by 1
+
             return redirect(url_for("userpage"))
 
     return render_template("vote.html")

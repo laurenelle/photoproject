@@ -56,8 +56,8 @@ class Photo(Base):
 	photo_location_id = Column(Integer, ForeignKey('locations.id'), nullable=True)
 	timestamp = Column(DateTime)
 	caption = Column(String(101), nullable=True)
-	up_vote = Column(Integer)
-	down_vote = Column(Integer)
+	# up_vote = Column(Integer)
+	# down_vote = Column(Integer)
 
 
 
@@ -67,9 +67,9 @@ class Photo(Base):
 class Vote(Base):
 	__tablename__ = "votes"
 	id = Column(Integer, primary_key = True)
-	# use enum for up/down vote? maybe later
-	up = Column(Integer, nullable = True)
-	down = Column(Integer, nullable = True)
+	# change to single value column  1 == up -1 == down
+	# Note: did not make nullable=False in postgres
+	value = Column(Integer, nullable=False)
 	photo_id = Column(Integer, ForeignKey('photos.id'))
 	give_vote_user_id = Column(Integer, ForeignKey('users.id'))
 	receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
