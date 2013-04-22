@@ -8,6 +8,8 @@ import model
 import re
 import time
 
+from sqlalchemy import select, func, types, sql, update
+
 from allfunctions import *
 from K import *
 
@@ -103,9 +105,27 @@ def vote():
         if vote == "upvote":
             print "upvote"
             v = Vote(value=1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
+
             db_session.add(v)
+
+            # db_session.refresh(v)
+
+            # db_session.execute(update(Photo, values={photos.up_vote: photos.up_vote + 1}))
+            # db_session.commit()
+
+            # db_session.query(Photo).update({Photo.up_vote: Photo.up_vote + 1})
+            # db_session.commit()
+
+
+            p = db_session.query(Photo).filter_by(id=1).one()
+            p.up_vote = Photo.up_vote + 1
+
+            db_session.add(p)
+            # db_session.execute(update(photos, values={photos.up_vote: photos.up_vote + 1}))
+            # # db_session.query(Clients).filter(Clients.id == client_id_list).update({'status': status})
+            # db_session.query(Photo).filter(g.photos.id == 1).update({'photos.up_vote': photos.up_vote + 1})
             db_session.commit()
-            db_session.refresh(v)
+
 
             return redirect(url_for("userpage"))
 

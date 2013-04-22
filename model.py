@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship, backref, relation
 
 #from sqlalchemy.dialects.postgresql import array
 from sqlalchemy.dialects import postgresql
-from sqlalchemy import select, func, types, sql
+from sqlalchemy import select, func, types, sql, update
 import datetime
 
 # just in case
@@ -56,8 +56,8 @@ class Photo(Base):
 	photo_location_id = Column(Integer, ForeignKey('locations.id'), nullable=True)
 	timestamp = Column(DateTime)
 	caption = Column(String(101), nullable=True)
-	# up_vote = Column(Integer)
-	# down_vote = Column(Integer)
+	up_vote = Column(Integer, nullable=True)
+	down_vote = Column(Integer, nullable=True)
 
 
 
