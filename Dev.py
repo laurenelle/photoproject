@@ -28,6 +28,12 @@ app.config.from_object(__name__) #???
 @app.before_request
 def load_user_id():
     g.user_id = session.get('user_id')
+    print "g.user_id", g.user_id
+    if g.user_id != None:
+        g.user = db_session.query(User).filter_by(id=g.user_id).one()
+        print "g.user", g.user
+        g.photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
+        print "g.photos", g.photos
 
 @app.teardown_request
 def shutdown_session(exception = None):
@@ -42,8 +48,8 @@ def shutdown_session(exception = None):
 
 @app.route('/')
 def home_page():
-    # if g.user_id:
-    #     return redirect(url_for("userpage"))
+    if g.user_id:
+        return redirect(url_for("userpage"))
     return render_template("index.html")
 
 # breaks when user doesn't exist or submits wrong password
@@ -53,18 +59,20 @@ def login():
     password = request.form['password']
     
     try:
-        user = db_session.query(User).filter_by(email=email, password=password).one()
-        print "THIS IS THE USER", user.email
+        u = db_session.query(User).filter_by(email=email, password=password).one()
+        
 
     except:
         flash("Invalid email or password", "error")
         return redirect(url_for("index"))
 
-    session['user_id'] = user.id
+    print "this is a u.id", u.id
+    session['user_id'] = u.id
+    print "session user_id is", session.get('user_id')
     return redirect(url_for("userpage"))
 
 
-# breaks when users already exists
+# breaks when user already exists
 @app.route("/signup", methods=['POST'])
 def register():
     email = request.form['email']
@@ -83,61 +91,49 @@ def register():
     return redirect(url_for("userpage"))
 
 
-@app.route("/logout")
-def logout():
-    del session['user_id']
-    return redirect(url_for("index"))
-    # add logout template
-
-
-
-
-@app.route('/vote', methods=['POST', 'GET'])
+@app.route("/vote", methods=['GET', 'POST'])
 def vote():
-    # if up:
+    # g.user = db_session.query(User).filter_by(id=g.user_id).one()
+    # session['user_id'] = user.id
+    print "VOTE"
+    print "PRINTING: g.user_id =", g.user_id
+    if request.form:
+        print "hi"
+        vote = request.form['vote']
+        if vote == "upvote":
+            print "upvote"
+            v = Vote(up=1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
+            db_session.add(v)
+            db_session.commit()
+            db_session.refresh(v)
+            return redirect(url_for("userpage"))
 
-    # elif down:
+            # change hard coded values when photo can be viewed
+        elif vote == "downvote":
+            print "downvote"
+            v = Vote(down=1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
+            db_session.add(v)
+            db_session.commit()
+            db_session.refresh(v)
+            return redirect(url_for("userpage"))
 
-
-    # db_session.add(some_variable)
-    # db_session.commit()
-    # db_session.refresh(some_variable)
     return render_template("vote.html")
-
-
-
-    # up = Column(Integer, nullable = True)
-    # down = Column(Integer, nullable = True)
-    # photo_id = Column(Integer, ForeignKey('photos.id'))
-    # give_vote_user_id = Column(Integer, ForeignKey('users.id'))
-    # receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
-    # timestamp = Column(TIMESTAMP, default=sql.text('CURRENT_TIMESTAMP'))
-
-# TAGS --> implement later
-# @app.route("/search", methods=["POST"])
-# def search():
-#     query = request.form['query']
-#     movies = db_session.query(Tag).\
-#             filter(Tag.tag_title.ilike("%" + query + "%")).\
-#             limit(20).all()
-
-
-
-# @app.route('/upload', methods=['GET'])
-# def test():
-#     render_template("test.html")
 
 
 @app.route("/userpage")
 def userpage():
-    g.user_id = session.get('user_id')
+    # g.user_id = session.get('user_id')
     if not g.user_id:
         flash("Please log in", "warning")
         return redirect(url_for("index"))
-    user = db_session.query(User).filter_by(id=g.user_id).one()
-    photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
+    # user = db_session.query(User).filter_by(id=g.user_id).one()
+    # photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
 
-    return render_template("userpage.html", u=user, photos=photos)
+    print "g.user_id =", g.user_id
+    print g.user
+    print g.photos
+    # image = Image.open(photo_file_path)
+    return render_template("userpage.html", u=g.user, photos=g.photos)
 
 
 
@@ -145,7 +141,7 @@ def userpage():
 @app.route("/logout")
 def logout():
     del session['user_id']
-    return redirect(url_for("home_page"))
+    return render_template("logout.html")
 
 @app.route('/upload', methods=['GET', 'POST'])
 # this function corresponds to the jinja {{url_for("uploadfile")}} ACTION in upload.html

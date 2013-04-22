@@ -18,5 +18,6 @@ def test_upload():
 
 
 # testing inputs -- right and wrong
+# all exif function
 
 #

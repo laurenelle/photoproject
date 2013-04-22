@@ -3,9 +3,13 @@
 {% extends 'layout.html' %}
 {% block body %}
 <h2>Your Photos!</h2>
+<p>
+</p>
 <ul>
     {% for photo in photos %}
-    <li><a href="{{url_for("userpage", id=photo.id)}}">{{photo.id}} &mdash; {{photo.caption}}</a></li>
+    <li><a href="{{url_for("userpage", id=photo.id)}}">{{photo.id}} &mdash; {{photo.caption}}
+    	&mdash; 
+    	<img src="{{photo.file_location}}" alt="" height="100" width="100"/></a></li>
     {% else %}
     <li>You haven't uploaded any photos :(</li>
     {% endfor %}
