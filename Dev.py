@@ -1,5 +1,5 @@
 from PIL import Image
-from PIL.ExifTags import TAGS, GPSTAGS
+
 import os
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash, session, request, g
 from werkzeug import secure_filename
@@ -10,14 +10,11 @@ import time
 
 from allfunctions import *
 
-
-
-
-
 #from flask_heroku import Heroku
 
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
+
 #allowed extensions are case sensitive and many other things are as well
 UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
 
@@ -26,8 +23,7 @@ app.secret_key = 'balloonicorn' # temp
 app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
 app.config.from_object(__name__) #???
 
-#______________________________________________________
-#OK
+
 
 @app.before_request
 def load_user_id():
@@ -43,14 +39,14 @@ def shutdown_session(exception = None):
 
 #currently only gets the user id, consider getting email, username etc later
 
-#ALTER LATER
+
 @app.route('/')
 def home_page():
     # if g.user_id:
     #     return redirect(url_for("userpage"))
     return render_template("index.html")
 
-#OK
+# breaks when user doesn't exist or submits wrong password
 @app.route("/login", methods=["POST"])
 def login():
     email = request.form['email']
@@ -68,16 +64,17 @@ def login():
     return redirect(url_for("userpage"))
 
 
+# breaks when users already exists
 @app.route("/signup", methods=['POST'])
 def register():
     email = request.form['email']
-    # user_name = request.form['user_name']
+    username = request.form['username']
     password = request.form['password']
     existing = db_session.query(User).filter_by(email=email).first()
     if existing:
         flash("Email already in use", "error")
         return redirect(url_for("index"))
-    u = User(email=email, password=password)
+    u = User(email=email, password=password, user_name=username)
     print u
     db_session.add(u)
     db_session.commit()
@@ -90,6 +87,7 @@ def register():
 def logout():
     del session['user_id']
     return redirect(url_for("index"))
+    # add logout template
 
 
 
@@ -149,11 +147,6 @@ def logout():
     del session['user_id']
     return redirect(url_for("home_page"))
 
-
-# ----------------------------------------------------------------------------------------
-#
-
-
 @app.route('/upload', methods=['GET', 'POST'])
 # this function corresponds to the jinja {{url_for("uploadfile")}} ACTION in upload.html
 def uploadfile():
@@ -198,7 +191,7 @@ def uploadfile():
 
 
             
-            # create a template that shows the view of a uploaded photo and then the user's other photos
+            # create a template that shows the view of an uploaded photo and then the user's other photos
             return redirect(url_for('uploaded_file',filename=filename))      
     
     return render_template("upload.html") 
@@ -208,7 +201,7 @@ def uploadfile():
 def uploaded_file(filename):
 
 
-
+    # create a template for this
     return send_from_directory(app.config['UPLOAD_PHOTO_FOLDER'],
                                filename)
 

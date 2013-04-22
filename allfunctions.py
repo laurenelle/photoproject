@@ -1,11 +1,11 @@
 
 from datetime import datetime, timedelta
 import re
+from PIL.ExifTags import TAGS, GPSTAGS
 
 
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
-#allowed extensions are case sensitive and many other things are as well
 UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
 
 # for voting logic
