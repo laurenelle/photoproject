@@ -5,21 +5,20 @@
 
 <html>
     <head>
-      <head>
         <title>Eye Travel</title>
-    </head>
-    <body>
-        <h1>Welcome to Eye Travel</h1>
+        {% block head %}{% endblock %}        
+
         <link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css">
     </head>
     <body>
-
+        <h1>Welcome to Eye Travel</h1>
             <a href="{{url_for('userpage')}}">USERNAME</a>
 
 
-
+{% block body %}{% endblock %}
         <div class="container">
-        {% block body %}{% endblock %}
+            
         </div>
+
     </body>
 </html>

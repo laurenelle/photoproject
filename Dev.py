@@ -94,18 +94,12 @@ def register():
 
 @app.route("/popular", methods=['GET', 'POST'])
 def popular():
-    # implement coding logic here
+    # ranking logic
 
-    votes = db_session.query(Vote).all()
-
-
-    # raw sql query -- for now?
-    select photo_id,  sum( 1 / ( (extract(epoch from now()) - extract(epoch from timestamp))/60/60/24 ) * value ) from votes group by photo_id;
-
-
-
-
-
+    #photo rank
+    print "BEFORE PHOTOS"
+    photos = db_session.execute('select photo_id, sum( 1 / ( (extract(epoch from now()) - extract(epoch from timestamp))/60/60/24 ) * value ) from votes group by photo_id;')
+    print "PHOTOS", photos
 
     #end test
     return render_template("popular.html", u=g.user, photos=photos)
@@ -115,8 +109,10 @@ def popular():
 
 
 
+@app.route("/map", methods=['GET', 'POST'])
+def map():
 
-
+    return render_template("map.html", u=g.user, photos=g.photos)
 
 
 
