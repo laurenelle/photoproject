@@ -95,8 +95,38 @@ def register():
 @app.route("/popular", methods=['GET', 'POST'])
 def popular():
     # implement coding logic here
-    photos = db_session.query(Photo).all()
+
+    votes = db_session.query(Vote).all()
+
+
+    # raw sql query -- for now?
+    select photo_id,  sum( 1 / ( (extract(epoch from now()) - extract(epoch from timestamp))/60/60/24 ) * value ) from votes group by photo_id;
+
+
+
+
+
+
+    #end test
     return render_template("popular.html", u=g.user, photos=photos)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
