@@ -30,44 +30,35 @@ function makeInfoWindowEvent(map, infowindow, marker) {
         };
         var map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
-        //instantiate a new latlng object to pass to the marker object
-        
-        // create variables for LatLng and pass them in create the correct location
 
 
         
         // FOR LOOP PLACEMARKER
+        // look up syntax for iterating through the photos list
+        {% for i, photo in photos %}
 
-        // RESIZE PHOTO _______________________________
-        // var offset = Math.floor(Math.random() * 3) * 16; // pick one of the three icons in the sprite
-
-        // // Calculate desired pixel-size of the marker
-        // var size = Math.floor(4*(count-1) + 8);
-        // var scaleFactor = size/16;
-        //______________________________
-
-        var photo = new google.maps.MarkerImage('{{photos[1].file_location}}');
-          photo.style.width = '50%'
-          photo.style.height = 'auto' 
-        var latitude = {{photos[1].latitude}};
-        var longitude = {{photos[1].longitude}};
-        var caption = "{{photos[1].caption}}";
-        var myLatlng = new google.maps.LatLng(latitude,longitude);
+        // var photo = new google.maps.MarkerImage('{{photos[9].thumbnail}}');
+        var {{i}}photo = '{{photo.thumbnail}}';
+        var {{i}}latitude = {{photo.latitude}};
+        var {{i}}longitude = {{photo.longitude}};
+        var {{i}}caption = "{{photo.caption}}";
+        var {{i}}myLatlng = new google.maps.LatLng(latitude,longitude);
         
-        var mapOptions = {
+        var {{i}}mapOptions = {
         zoom: 11,
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
         }
 
-        var marker = new google.maps.Marker({
+        var {{i}}marker = new google.maps.Marker({
           position: myLatlng,
           map: map,
           content: content,
+          // icon: photo
           // icon: new google.maps.MarkerImage(photo),
 
 
-          icon: photo,
+          // icon: photo,
 
 
 
@@ -78,15 +69,14 @@ function makeInfoWindowEvent(map, infowindow, marker) {
         });
 
         //caption and photo?
-            var content = caption;
+            var {{i}}content = '<IMG BORDER="0" ALIGN="Left" SRC="' + photo + '">';
 
-            
-            var image = photo;
+          
 
         //content: '<IMG BORDER="0" ALIGN="Left" SRC="stagleton.jpg">'
 
 
-        var infoWindow = new google.maps.InfoWindow({content: content});
+        var {{i}}infoWindow = new google.maps.InfoWindow({content: content});
 
         google.maps.event.addListener(marker, 'click', function() {
      
@@ -96,8 +86,10 @@ function makeInfoWindowEvent(map, infowindow, marker) {
    
       }
 
+          {% endfor %}
 
       //PLACEMARKER END OF FOR LOOP
+
 
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
