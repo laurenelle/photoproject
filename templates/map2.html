@@ -2,6 +2,46 @@
 
 
 
+
+
+
+
+___________________________ resizing an image?
+
+var offset = Math.floor(Math.random() * 3) * 16; // pick one of the three icons in the sprite
+
+// Calculate desired pixel-size of the marker
+var size = Math.floor(4*(count-1) + 8);
+var scaleFactor = size/16;
+
+// Create custom marker
+var marker = new google.maps.Marker({
+    position: new google.maps.LatLng(lat, lng),
+    icon: new google.maps.MarkerImage(
+        'img/dot.png', // my 16x48 sprite with 3 circular icons
+        new google.maps.Size(16*scaleFactor, 16*scaleFactor), // desired size
+        new google.maps.Point(0, offset*scaleFactor), // offset within the scaled sprite
+        new google.maps.Point(size/2, size/2), // anchor point is half of the desired size
+        new google.maps.Size(16*scaleFactor, 48*scaleFactor) // scaled size of the entire sprite
+
+
+--------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+working__________________________ for loop reference
+
+
 function makeInfoWindowEvent(map, infowindow, marker) {  
    return function() {  
       infowindow.open(map, marker);

@@ -58,6 +58,8 @@ class Photo(Base):
 	caption = Column(String(101), nullable=True)
 	up_vote = Column(Integer, default=0)
 	down_vote = Column(Integer, default=0)
+	thumbnail = Column(String(101), nullable=True)
+	# add upload_timestamp? for freshness algorithm?
 
 
 

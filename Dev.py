@@ -32,7 +32,7 @@ def load_user_id():
     g.user_id = session.get('user_id')
     print "BEFORE REQUEST g.user_id", g.user_id
     if g.user_id != None:
-        g.user = db_session.query(User).filter_by(id=g.user_id).one()
+        g.user = db_session.query(User).filter_by(id=g.user_id)
         print "BEFORE REQUEST g.user", g.user
         g.photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
         print "BEFORE REQUEST g.photos", g.photos
@@ -97,12 +97,12 @@ def popular():
     # ranking logic
 
     #photo rank
-    print "BEFORE PHOTOS"
-    photos = db_session.execute('select photo_id, sum( 1 / ( (extract(epoch from now()) - extract(epoch from timestamp))/60/60/24 ) * value ) from votes group by photo_id;')
-    print "PHOTOS", photos
 
+    photos = db_session.execute('select photo_id, sum( 1 / ( (extract(epoch from now()) - extract(epoch from timestamp))/60/60/24 ) * value ) from votes group by photo_id;')
+    print "photo type", type(photos)
+    print "methods for photo", dir(photos)
     #end test
-    return render_template("popular.html", u=g.user, photos=photos)
+    return render_template("popular.html", u=g.user, photos=g.photos)
 
 
 
@@ -113,16 +113,6 @@ def popular():
 def map():
 
     return render_template("map.html", u=g.user, photos=g.photos)
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -187,19 +177,19 @@ def uploadfile():
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
             
-            #testing
+            filename = secure_filename(file.filename)
             photo_location = "uploads/"+filename
-            print "PHOTO LOCATION:", photo_location
-            #______
             photo_file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
             file.save(photo_file_path)
-
+            
+            thumbnail_file_path = os.path.splitext(photo_file_path)[0] + ".thumbnail"
+            create_thumbnail(filename, photo_file_path, thumbnail_file_path)
+            thumbnail_location = "uploads/"+ os.path.splitext(filename)[0] + ".thumbnail"
+            
             image = Image.open(photo_file_path)
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
-
             l = str(latlon)
             latitude = lat(l)
             longitude = lon(l)
@@ -212,7 +202,7 @@ def uploadfile():
 
             caption = request.form['caption']
 
-            p = Photo(file_location=photo_location, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp, user_id=g.user_id)
+            p = Photo(file_location=photo_location, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp, user_id=g.user_id, thumbnail=thumbnail_location)
             # add location stuff and connect to location table LATER
             # print "FILE LOCATION:", file_location
             print "PHOTO LOCATION:", photo_location

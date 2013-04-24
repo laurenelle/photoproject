@@ -13,9 +13,31 @@ from datetime import datetime, timedelta
 from math import log
 
 
+import os, sys
+from PIL import Image
+
+
+
+
+def create_thumbnail(filename, photo_file_path, thumbnail_file_path):
+    size = 100, 100
+
+    if filename != thumbnail_file_path:
+        try:
+            im = Image.open(photo_file_path)
+            print "IM", im
+            im.thumbnail(size, Image.ANTIALIAS)
+            print "SAVE"
+            im.save(thumbnail_file_path, "JPEG")
+            print "DONE"
+        except IOError:
+            print "cannot create thumbnail for '%s'" % filename
+
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 
 def get_exif_data(image):
