@@ -15,18 +15,19 @@
 
     <form id="upvoteform" action="{{url_for("vote")}}" method="POST">
         <button type="button" onclick="document.getElementById('upvoteform').submit();">
-        	<input type="hidden" name="vote" value="upvote">
-<img src="http://upload.wikimedia.org/wikipedia/commons/1/1e/Airplane_silhouette.png" alt="UP" height="50" width="50"/>
-<br />Up Vote</button>
+<a class="btn btn-large" href="#"><i class="icon-star" name="vote" value="upvote"></i></a>
+</button>
 
 </form>
 
 
 <form id="downvoteform" action="{{url_for("vote")}}" method="POST"> 
 <button type="button" onclick="document.getElementById('downvoteform').submit();">
-<input type="hidden" name="vote" value="downvote">
-<img src="http://www.rad-icon.com/images/couch.gif" alt="DOWN" height="50" width="50"/>
-<br />Down Vote</button>
+
+<a class="btn btn-large" href="#"><i class="icon-thumbs-down" name="vote" value="downvote"></i></a>
+
+
+</button>
 
 
 

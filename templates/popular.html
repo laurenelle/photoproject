@@ -6,12 +6,15 @@
 </p>
 <ul>
     {% for photo in photos %}
-    <li><a href="{{url_for("popular")}}">{{photo.id}} &mdash; {{photo.up_vote}}
-    	&mdash; {{photo.down_vote}}
+    <li><a href="{{url_for("popular")}}">{{photo.id}} 
 
-    	<img src="{{photo.file_location}}" alt="" height="100" width="100"/></a></li>
 
-    <li>____________________________</li>
+    	{{photo.POPULAR}} 
+
+    	
+
+    	<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="200" width="200" class="img-rounded"/></a></li>
+
     {% endfor %}
 </ul>
 {% endblock %}

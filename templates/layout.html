@@ -11,12 +11,33 @@
         <link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css">
     </head>
     <body>
+
+
         <h1>Travel</h1>
-            <a href="{{url_for('userpage')}}">USERNAME here</a>
-            <a href="/map">map</a>
-            <a href="/userpage">userpage</a>
-            <a href="/vote">vote</a>
-            <a href="/logout">logout</a>
+
+
+        <div class="navbar">
+  <div class="navbar-inner">
+
+    <ul class="nav">
+      <li class="active">
+
+        <a href="/">Login</a></li>
+
+      <li><a href="{{url_for('userpage')}}">You</a></li>
+
+      <li><a href="/upload">Upload a Photo</a></li>
+      <li><a href="/vote">Vote</a></li>
+      <li><a href="/popular">Fresh</a></li>
+      <li><a href="/map">Map</a></li>
+      <li><a href="/logout">Logout</a></li>
+
+    </ul>
+  </div>
+</div>
+
+
+
 
 
 {% block body %}{% endblock %}

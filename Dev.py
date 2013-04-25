@@ -97,12 +97,21 @@ def popular():
     # ranking logic
 
     #photo rank
+    # <sqlalchemy.engine.base.ResultProxy object at 0x10e0284d0>
+    sql = "select v.photo_id, p.file_location, sum( 1 / ( (extract(epoch from now()) - extract(epoch from v.timestamp))/60/60/24 ) * value ) as POPULAR from votes v inner join photos p on p.id = v.photo_id group by v.photo_id, p.file_location;"
+    photos = db_session.execute(sql)
 
-    photos = db_session.execute('select photo_id, sum( 1 / ( (extract(epoch from now()) - extract(epoch from timestamp))/60/60/24 ) * value ) from votes group by photo_id;')
-    print "photo type", type(photos)
-    print "methods for photo", dir(photos)
+    #db_session.execute('select photo_id, file_location, sum( 1 / ( (extract(epoch from now()) - extract(epoch from timestamp))/60/60/24 ) * value ) as POPULAR from votes group by photo_id;')
+    
+    # iterated = iter(photos)
+    # <generator object __iter__ at 0x105ed2c80>
+    # print "methods for photo", dir(photos)
+    #methods for photo ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__iter__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_can_close_connection', '_cursor_description', '_echo', '_fetchall_impl', '_fetchmany_impl', '_fetchone_impl', '_init_metadata', '_metadata', '_non_result', '_process_row', '_saved_cursor', 'close', 'closed', 'connection', 'context', 'cursor', 'dialect', 'fetchall', 'fetchmany', 'fetchone', 'first', 'inserted_primary_key', 'is_insert', 'keys', 'last_inserted_ids', 'last_inserted_params', 'last_updated_params', 'lastrow_has_defaults', 'lastrowid', 'out_parameters', 'postfetch_cols', 'prefetch_cols', 'process_rows', 'returns_rows', 'rowcount', 'scalar', 'supports_sane_multi_rowcount', 'supports_sane_rowcount']
+
+
+
     #end test
-    return render_template("popular.html", u=g.user, photos=g.photos)
+    return render_template("popular.html", u=g.user, photos=photos)
 
 
 
@@ -116,17 +125,14 @@ def map():
 
 
 
-
+#??????-------------------access photo.id and receive_vote_user_id for each photo that's voted on
 @app.route("/vote", methods=['GET', 'POST'])
 def vote():
     # need to get photo info to remove hard coding of photo_id and receive_vote_user_id
-    print "VOTE"
-    print "PRINTING: g.user_id =", g.user_id
     if request.form:
-        print "hi"
+
         vote = request.form['vote']
         if vote == "upvote":
-            print "upvote"
             v = Vote(value=1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
             db_session.add(v)
 
@@ -135,6 +141,12 @@ def vote():
             p.up_vote = Photo.up_vote + 1
             db_session.add(p)
             db_session.commit()
+
+
+
+            # vote?photoid=3&vote=upvote
+
+            # request.args["photoid"]  --> a dict
 
 
             return redirect(url_for("userpage"))
@@ -149,6 +161,9 @@ def vote():
             p.down_vote = Photo.down_vote + 1
             db_session.add(p)
             db_session.commit()
+
+            # vote?photoid=3&vote=upvote
+            # request.args["photoid"]  --> a dict
 
             return redirect(url_for("userpage"))
 
@@ -204,8 +219,7 @@ def uploadfile():
 
             p = Photo(file_location=photo_location, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp, user_id=g.user_id, thumbnail=thumbnail_location)
             # add location stuff and connect to location table LATER
-            # print "FILE LOCATION:", file_location
-            print "PHOTO LOCATION:", photo_location
+
             l = Location()
      
 
