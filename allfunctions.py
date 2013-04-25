@@ -133,6 +133,19 @@ def get_time(exif_data):
         return photo_timestamp
     else:
         print "No timestamp available."
+#__________________________________________________
+
+def lat2(l2):
+    match = re.search(r"[^A-Z], .* .(.*),(.*)\d.*", l2)
+    if match:
+        latitude = match.group(1)
+        return latitude
+
+def lon2(l2):
+    match = re.search(r"[^A-Z], .* .(.*),(.*)\d.*", l2)
+    if match:
+        longitude = match.group(2)
+        return longitude      
 
 #____________________________________________________
 #voting logic

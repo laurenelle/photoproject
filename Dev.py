@@ -11,7 +11,11 @@ import time
 from sqlalchemy import select, func, types, sql, update
 
 from allfunctions import *
+# fix keys file
 from K import *
+
+from geopy import geocoders
+
 
 #from flask_heroku import Heroku
 
@@ -30,23 +34,15 @@ app.config.from_object(__name__) #???
 @app.before_request
 def load_user_id():
     g.user_id = session.get('user_id')
-    print "BEFORE REQUEST g.user_id", g.user_id
     if g.user_id != None:
         g.user = db_session.query(User).filter_by(id=g.user_id)
-        print "BEFORE REQUEST g.user", g.user
         g.photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
-        print "BEFORE REQUEST g.photos", g.photos
+
 
 
 @app.teardown_request
 def shutdown_session(exception = None):
     db_session.remove()
-
-
-
-#_____________________________________________________
-
-
 
 @app.route('/')
 def home_page():
@@ -94,23 +90,10 @@ def register():
 
 @app.route("/popular", methods=['GET', 'POST'])
 def popular():
-    # ranking logic
 
-    #photo rank
-    # <sqlalchemy.engine.base.ResultProxy object at 0x10e0284d0>
     sql = "select v.photo_id, p.file_location, sum( 1 / ( (extract(epoch from now()) - extract(epoch from v.timestamp))/60/60/24 ) * value ) as POPULAR from votes v inner join photos p on p.id = v.photo_id group by v.photo_id, p.file_location;"
     photos = db_session.execute(sql)
 
-    #db_session.execute('select photo_id, file_location, sum( 1 / ( (extract(epoch from now()) - extract(epoch from timestamp))/60/60/24 ) * value ) as POPULAR from votes group by photo_id;')
-    
-    # iterated = iter(photos)
-    # <generator object __iter__ at 0x105ed2c80>
-    # print "methods for photo", dir(photos)
-    #methods for photo ['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__iter__', '__module__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_can_close_connection', '_cursor_description', '_echo', '_fetchall_impl', '_fetchmany_impl', '_fetchone_impl', '_init_metadata', '_metadata', '_non_result', '_process_row', '_saved_cursor', 'close', 'closed', 'connection', 'context', 'cursor', 'dialect', 'fetchall', 'fetchmany', 'fetchone', 'first', 'inserted_primary_key', 'is_insert', 'keys', 'last_inserted_ids', 'last_inserted_params', 'last_updated_params', 'lastrow_has_defaults', 'lastrowid', 'out_parameters', 'postfetch_cols', 'prefetch_cols', 'process_rows', 'returns_rows', 'rowcount', 'scalar', 'supports_sane_multi_rowcount', 'supports_sane_rowcount']
-
-
-
-    #end test
     return render_template("popular.html", u=g.user, photos=photos)
 
 
@@ -144,7 +127,12 @@ def vote():
 
 
 
-            # vote?photoid=3&vote=upvote
+            # vote?photoid=3&vote=upvote -- url formatting
+            # research request parameters
+
+
+            # default location - determined by latlng of IP address --
+
 
             # request.args["photoid"]  --> a dict
 
@@ -188,7 +176,7 @@ def logout():
 @app.route('/upload', methods=['GET', 'POST'])
 # this function corresponds to the jinja {{url_for("uploadfile")}} ACTION in upload.html
 def uploadfile():
-    # return render_template("upload.html")
+
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
@@ -205,9 +193,12 @@ def uploadfile():
             image = Image.open(photo_file_path)
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
+            print latlon
             l = str(latlon)
+            print l
             latitude = lat(l)
             longitude = lon(l)
+
 
             timestamp = get_time(exif_data)
 
@@ -216,12 +207,44 @@ def uploadfile():
                 timestamp = datetime.strptime(str(timestamp), "%Y:%m:%d %H:%M:%S")
 
             caption = request.form['caption']
+            city = request.form['city']
+            print city
+
+            print "LATITUDE", latitude
+
+            if latitude == None:
+                print "NO LATITUDE"
+                goo = geocoders.GoogleV3()
+                print "GOOGLE", goo
+                # results = []
+                # try:
+                geocodes = goo.geocode(city, exactly_one=False)
+                print geocodes
+                # split 
+                l2 = str(geocodes)
+                latitude = lat2(l2)
+                longitude = lon2(l2)
+
+
+
+                    # for geocode in geocodes:
+                    #     location, (latitude, longitude) = geocode
+                    #     pnt = fromstr("POINT(%s %s)" % (latitude, longitude))
+                    #     print "THIS IS A PNT",pnt
+                    #     results.append(pnt)
+                    #     return
+
+                        # except ValueError:
+                        #     print "VALUE ERROR!!!!!!!!!!"
+                        #     [place, (latitude, longitude)] = goo.geocode('city')
+
 
             p = Photo(file_location=photo_location, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp, user_id=g.user_id, thumbnail=thumbnail_location)
-            # add location stuff and connect to location table LATER
+
 
             l = Location()
-     
+
+
 
 
             db_session.add(p)

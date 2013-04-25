@@ -24,7 +24,7 @@ import decimal
 
 
 
-engine = create_engine("postgres://lauren:@localhost/eyetravelv1", echo=True)
+engine = create_engine("postgres://lauren:@localhost/eyetravelv1", echo=False)
 
 #db = postgresql.open("postgres://localhost/eyetravelv1")
 session = scoped_session(sessionmaker(bind=engine, autocommit = False, autoflush = False))
