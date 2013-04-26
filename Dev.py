@@ -108,29 +108,29 @@ def map():
 
 
 
-#??????-------------------access photo.id and receive_vote_user_id for each photo that's voted on
 @app.route("/vote", methods=['GET', 'POST'])
 def vote():
-    # need to get photo info to remove hard coding of photo_id and receive_vote_user_id
-    if request.form:
 
+    allphotos=db_session.query(Photo).all()
+    if request.form:
         vote = request.form['vote']
+        print "VOTE"
+        photoid = request.form['photoid']
+        photoowner = request.form['photoowner']
         if vote == "upvote":
-            v = Vote(value=1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
+            v = Vote(value=1, give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
             db_session.add(v)
 
-            # increment in postgres not python - eliminates concurrency issue
             p = db_session.query(Photo).filter_by(id=1).one()
             p.up_vote = Photo.up_vote + 1
             db_session.add(p)
             db_session.commit()
 
-            return redirect(url_for("userpage"))
-
+            return redirect(url_for("vote"))
 
         elif vote == "downvote":
             print "downvote"
-            v = Vote(value=-1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
+            v = Vote(value=-1, give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
             db_session.add(v)
 
             p = db_session.query(Photo).filter_by(id=1).one()
@@ -138,9 +138,9 @@ def vote():
             db_session.add(p)
             db_session.commit()
 
-            return redirect(url_for("userpage"))
+            return redirect(url_for("vote"))
 
-    return render_template("vote.html")
+    return render_template("vote.html", u=g.user, photos=allphotos)
 
 
 @app.route("/userpage")

@@ -4,38 +4,36 @@
 <html>
 <h2>Vote Test</h2>
 
-
-
+    {% for photo in photos %}
 <div id="photo_vote">
-<p>Photo Placeholder</p>
+    <li><a href="{{url_for("userpage", id=photo.id)}}">{{photo.id}} &mdash; {{photo.caption}}
+    	&mdash; 
+		<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded"/></a>
+	</li>
 </div>
-
 
 <div id="vote">
 
-    <form id="upvoteform" action="{{url_for("vote")}}" method="POST">
-        <button type="button" onclick="document.getElementById('upvoteform').submit();">
-<a class="btn btn-large" href="#"><i class="icon-star" name="vote" value="upvote"></i></a>
-</button>
+    <form id="upvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST">
+    	<input type="hidden" name="photoid" value="{{photo.id}}">
+    	<input type="hidden" name="photoowner" value="{{photo.user_id}}">
+    	<input type="hidden" name="vote" value="upvote">
+        <button type="button" onclick="document.getElementById('upvoteform{{photo.id}}').submit();">
+			<a class="btn btn-large" href="#"><i class="icon-star"></i></a>
+		</button>
+	</form>
 
-</form>
+	<form id="downvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST"> 
+		<input type="hidden" name="photoid" value="{{photo.id}}">
+		<input type="hidden" name="photoowner" value="{{photo.user_id}}">
+		<input type="hidden" name="vote" value="downvote">
+		<button type="button" onclick="document.getElementById('downvoteform{{photo.id}}').submit();">
+			<a class="btn btn-large" href="#"><i class="icon-thumbs-down"></i></a>
+		</button>
+	</form>   
 
-
-<form id="downvoteform" action="{{url_for("vote")}}" method="POST"> 
-<button type="button" onclick="document.getElementById('downvoteform').submit();">
-
-<a class="btn btn-large" href="#"><i class="icon-thumbs-down" name="vote" value="downvote"></i></a>
-
-
-</button>
-
-
-
-
-    </form>
 </div>
-
-
+	{% endfor %}
 </html>
 
 {% endblock %}
