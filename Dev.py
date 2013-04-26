@@ -125,21 +125,9 @@ def vote():
             db_session.add(p)
             db_session.commit()
 
-
-
-            # vote?photoid=3&vote=upvote -- url formatting
-            # research request parameters
-
-
-            # default location - determined by latlng of IP address --
-
-
-            # request.args["photoid"]  --> a dict
-
-
             return redirect(url_for("userpage"))
 
-            # change hard coded values when photo can be viewed
+
         elif vote == "downvote":
             print "downvote"
             v = Vote(value=-1, give_vote_user_id=g.user_id, photo_id=1, receive_vote_user_id=1)
@@ -149,9 +137,6 @@ def vote():
             p.down_vote = Photo.down_vote + 1
             db_session.add(p)
             db_session.commit()
-
-            # vote?photoid=3&vote=upvote
-            # request.args["photoid"]  --> a dict
 
             return redirect(url_for("userpage"))
 
@@ -193,59 +178,29 @@ def uploadfile():
             image = Image.open(photo_file_path)
             exif_data = get_exif_data(image)
             latlon = get_lat_lon(exif_data)
-            print latlon
+
             l = str(latlon)
-            print l
+
             latitude = lat(l)
             longitude = lon(l)
 
-
             timestamp = get_time(exif_data)
-
 
             if timestamp != None:
                 timestamp = datetime.strptime(str(timestamp), "%Y:%m:%d %H:%M:%S")
 
             caption = request.form['caption']
             city = request.form['city']
-            print city
-
-            print "LATITUDE", latitude
 
             if latitude == None:
-                print "NO LATITUDE"
                 goo = geocoders.GoogleV3()
-                print "GOOGLE", goo
-                # results = []
-                # try:
                 geocodes = goo.geocode(city, exactly_one=False)
-                print geocodes
-                # split 
                 l2 = str(geocodes)
                 latitude = lat2(l2)
                 longitude = lon2(l2)
 
 
-
-                    # for geocode in geocodes:
-                    #     location, (latitude, longitude) = geocode
-                    #     pnt = fromstr("POINT(%s %s)" % (latitude, longitude))
-                    #     print "THIS IS A PNT",pnt
-                    #     results.append(pnt)
-                    #     return
-
-                        # except ValueError:
-                        #     print "VALUE ERROR!!!!!!!!!!"
-                        #     [place, (latitude, longitude)] = goo.geocode('city')
-
-
             p = Photo(file_location=photo_location, caption=caption, latitude=latitude, longitude=longitude, timestamp=timestamp, user_id=g.user_id, thumbnail=thumbnail_location)
-
-
-            l = Location()
-
-
-
 
             db_session.add(p)
             db_session.commit()
@@ -256,6 +211,8 @@ def uploadfile():
 
             
             # create a template that shows the view of an uploaded photo and then the user's other photos
+            
+
             return redirect(url_for('uploaded_file',filename=filename))      
     
     return render_template("upload.html") 

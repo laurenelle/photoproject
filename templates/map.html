@@ -44,16 +44,50 @@
       function makeInfoWindowEvent(map, infowindow, marker) {  
         return function() {  
           infowindow.open(map, marker);
+
         };  
       } 
 
       function init() {
+
+
+         var styles = [
+    {
+      stylers: [
+        { hue: "#00ffe6" },
+        { saturation: -44 }
+      ]
+    },{
+      featureType: "road",
+      elementType: "geometry",
+      stylers: [
+        { lightness: 100 },
+        { visibility: "simplified" }
+      ]
+    },{
+      featureType: "road",
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
+    }
+  ];
+  var styledMap = new google.maps.StyledMapType(styles,
+    {name: "Styled Map"});
+
         var mapOptions = {
           center: new google.maps.LatLng(37.463, 122.255),
           zoom: 2,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
+
+
+mapTypeControlOptions: {
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']}
+
         };
         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+        map.mapTypes.set('map_style', styledMap);
+  map.setMapTypeId('map_style');
 
         {% for photo in photos %}
 
@@ -85,6 +119,8 @@
 
 
 {% block body %}
+
+
 
 
 
