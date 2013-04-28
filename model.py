@@ -2,24 +2,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, ForeignKey
 # importing all data types for columns
 from sqlalchemy import Column, Integer, String, DateTime, Date, Float
+
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref, session
 from sqlalchemy.orm import relationship, backref, relation
-
-#from sqlalchemy.dialects.postgresql import array
 from sqlalchemy.dialects import postgresql
 from sqlalchemy import select, func, types, sql, update
 import datetime
 
-# just in case
-# from sqlalchemy.dialects.postgresql import \
-#     ARRAY, BIGINT, BIT, BOOLEAN, BYTEA, CHAR, CIDR, DATE, \
-#     DOUBLE_PRECISION, ENUM, FLOAT, INET, INTEGER, \
-#     INTERVAL, MACADDR, NUMERIC, REAL, SMALLINT, TEXT, TIME, \
-#     TIMESTAMP, UUID, VARCHAR
-
 import psycopg2
-
-import decimal
+from wtforms import Form, BooleanField, TextField, PasswordField, validators
 
 
 
@@ -33,6 +24,9 @@ Base = declarative_base()
 Base.query = session.query_property()
 
 ### Class declarations go here
+
+
+
 
 class User(Base):
 	__tablename__ = "users"
@@ -65,7 +59,6 @@ class Photo(Base):
 
 
 # through table linking user and photo
-# use trigger with up and down to automatically update counts  - update that increments by 1
 class Vote(Base):
 	__tablename__ = "votes"
 	id = Column(Integer, primary_key = True)
@@ -80,6 +73,7 @@ class Vote(Base):
 	give_vote_user = relationship("User", primaryjoin="User.id==Vote.give_vote_user_id", backref=backref("votes_given", order_by=id))
 	receive_vote_user = relationship("User", primaryjoin="User.id==Vote.receive_vote_user_id", backref=backref("votes_received", order_by=id))
 	photo = relationship("Photo", backref=backref("votes", order_by=id))
+
 
 # if tag doesn't already exist - create a new tag and tag id --> add this logic
 class Tag(Base):
@@ -104,12 +98,13 @@ class Location(Base):
 	city = Column(String(64), nullable=True)
 	neighborhood = Column(String(64), nullable=True)
 
-#SQLmetadata.create_all(engine)
 
 ### End class declarations
 
+
 def create_db():
     Base.metadata.create_all(engine)
+
 
 def connect(db_uri="postgres://lauren:@localhost/eyetravelv1"):
     global engine

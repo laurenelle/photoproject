@@ -7,10 +7,11 @@
     <h1>Upload a Photo</h1>
     <div id="upload">
     <form action="{{url_for("uploadfile")}}" method="POST" enctype=multipart/form-data>
-
+</br>
       File: <input type=file name=file><br>
+  </br>
     Caption: <input type=text name=caption><br>
-     City: <input type=text name=city><br>
+
 <br>
 <button type=submit class="btn btn-primary" data-loading-text="Loading...">Upload</button>
 

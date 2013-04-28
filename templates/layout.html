@@ -5,49 +5,33 @@
 
 <html>
     <head>
-        <title>Eye Travel</title>
+        <title>E+W</title>
         {% block head %}{% endblock %}        
-
         <link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css">
-<style>
-          body{background: url('PHOTO_PROJECT/static/img/Paper-1.png');}
-          </style>
+         <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
     </head>
     <body>
-
-
-        <h1>Travel</h1>
-
+        <h1 class="customfont">Eye Wanderlust</h1>
 
         <div class="navbar">
-  <div class="navbar-inner">
-
+        <div class="navbar-inner">
 
     <ul class="nav">
       <li class="active">
-
-        <a href="/">Login</a></li>
-
+      <a href="/">Login</a></li>
       <li><a href="{{url_for('userpage')}}">You</a></li>
-            <li><a href="/map">Your Map</a></li>
-
+      <li><a href="/map">Your Map</a></li>
       <li><a href="/upload">Upload</a></li>
       <li><a href="/vote">Vote</a></li>
       <li><a href="/popular">Fresh</a></li>
-
       <li><a href="/logout">Logout</a></li>
-
     </ul>
   </div>
 </div>
-
-
-
-
+  <div class="container">   
 {% block body %}{% endblock %}
-        <div class="container">
-            
+      
         </div>
-
+        <a href="http://www.cornify.com" onclick="cornify_add();return false;"><img src="" width="14" height="14" border="0" alt="   " /></a><script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
     </body>
 </html>

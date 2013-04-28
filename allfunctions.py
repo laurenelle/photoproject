@@ -16,25 +16,24 @@ from math import log
 import os, sys
 from PIL import Image
 
-
-
-
 def create_thumbnail(filename, photo_file_path, thumbnail_file_path):
+
     size = 100, 100
 
     if filename != thumbnail_file_path:
+        
         try:
             im = Image.open(photo_file_path)
-            print "IM", im
             im.thumbnail(size, Image.ANTIALIAS)
-            print "SAVE"
             im.save(thumbnail_file_path, "JPEG")
-            print "DONE"
+
         except IOError:
+
             print "cannot create thumbnail for '%s'" % filename
 
 
 def allowed_file(filename):
+
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
@@ -45,16 +44,21 @@ def get_exif_data(image):
 
     exif_data = {}
     info = image._getexif()
+    
     if info:
+        
         for tag, value in info.items():
             decoded = TAGS.get(tag, tag)
+            
             if decoded == "GPSInfo":
                 gps_data = {}
+                
                 for t in value:
                     sub_decoded = GPSTAGS.get(t, t)
                     gps_data[sub_decoded] = value[t]
  
                 exif_data[decoded] = gps_data
+            
             else:
                 exif_data[decoded] = value
  
@@ -100,8 +104,8 @@ def get_lat_lon(exif_data):
         gps_longitude_ref = _get_if_exist(gps_info, 'GPSLongitudeRef')
  
         if gps_latitude and gps_latitude_ref and gps_longitude and gps_longitude_ref:
-
             lat = _convert_to_degress(gps_latitude)
+            
             if gps_latitude_ref != "N":                     
                 lat = 0 - lat
  
@@ -112,15 +116,18 @@ def get_lat_lon(exif_data):
     return lat, lon
 
 def latlong(latlon):
+
     l = str(latlon)    
 
 def lat(l):
+
     match = re.search(r"[^)](.*),(.*)\d", l)
     if match:
         latitude = match.group(1)
         return latitude
 
 def lon(l):
+
     match = re.search(r"[^)](.*),(.*)\d", l)
     if match:
         longitude = match.group(2)
@@ -131,11 +138,13 @@ def get_time(exif_data):
     if "DateTime" in exif_data:
         photo_timestamp = exif_data['DateTime']
         return photo_timestamp
+
     else:
         print "No timestamp available."
 #__________________________________________________
 
 def lat2(l2):
+
     match = re.search(r"[^A-Z], .* .(.*),(.*)\d.*", l2)
     if match:
         latitude = match.group(1)
@@ -148,7 +157,7 @@ def lon2(l2):
         return longitude      
 
 #____________________________________________________
-#voting logic
+#original voting logic
 
 epoch = datetime(1970, 1, 1)
 
@@ -168,4 +177,3 @@ def hot(upvote, downvote, timestamp):
     seconds = epoch_seconds(date) - 1134028003
     return round(order + sign * seconds / 45000, 7)
 
-# write a generic 

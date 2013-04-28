@@ -8,6 +8,76 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
+
+
+
+
+ul#grid {
+  list-style: none;
+  margin: 20px auto 0;
+  width: 550px;  
+  }
+
+#grid li {
+  float: left;
+  margin: 0 5px 10px 5px;
+  } 
+
+.portfolio {
+  padding: 20px;
+  margin-left: auto; margin-right: auto;  margin-top:50px;
+  width: 513px;
+  /*these two properties will be inherited by .portfolio h4 and .portfolio p */
+  font-family: 'GraublauWeb', arial, serif; 
+  text-align: center;
+  }
+  
+.portfolio h4 {
+  clear: both;
+  font-size: 35px;
+  font-weight: normal;
+  color: #58595b;
+  width: 550px;
+  }
+  
+.portfolio p {
+  font-size: 15px;
+  color: #58595b;
+  width: 550px;
+  }
+
+#grid li a:hover img {
+  opacity:0.3;  filter:alpha(opacity=30);
+  }
+
+#grid li img {
+  background-color: white;
+  padding: 7px; margin: 0;
+/*  border: 1px dotted #58595b;*/
+  width: 83px;
+  height: 98px;
+  }
+
+#grid li:first-child img {
+  width: 192px;
+  height: 221px;
+}
+  
+#grid li a {
+  display: block;
+  }      
+
+
+
+
+
+
+
+
+
+
+
+
 .clearfix {
   *zoom: 1;
 }
@@ -223,13 +293,30 @@ textarea {
   }
 }
 
+
+/*@font-face {
+    font-family: "My Custom Font";
+    src: url('theonlyexception-webfont.eot?#iefix') format('embedded-opentype');
+}
+p.customfont { 
+    font-family: "My Custom Font", Verdana, Tahoma;
+}
+
+*/
+
+
 body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
-  background: url("Paper-1.png");
+/*  background-image: url("../img/fabric_plaid.png");*/
+/*  background-image: url("../img/retina_wood.png");*/
+/*  background-image: url("../img/Paper-1.png");*/
+  background-image: url("../img/blue-beige-clouds.png");
+  background-size: 100% 100%;
+  background-size:cover;
   background-repeat:no-repeat;
 };
 }

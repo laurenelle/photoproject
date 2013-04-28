@@ -5,17 +5,15 @@
 <h2>Your Photos!</h2>
 <p>
 </p>
-<ul>
+<ul id="grid">
     {% for photo in photos %}
-    <li><a href="{{url_for("userpage", id=photo.id)}}">{{photo.id}} &mdash; {{photo.caption}}
-    	&mdash; 
-
-
-<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded"/></a>
-
-</li>
+    <li><a href="{{url_for("userpage", id=photo.id)}}"></br> 
+    	<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded" /></br>{{photo.caption}}</br><p></p></a>
+    </li>
     {% else %}
     <li>You haven't uploaded any photos :(</li>
     {% endfor %}
 </ul>
 {% endblock %}
+
+

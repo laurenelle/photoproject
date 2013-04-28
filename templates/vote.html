@@ -1,13 +1,17 @@
 {% extends "layout.html" %}
 
 {% block body %}
+
 <html>
-<h2>Vote Test</h2>
+
+<h2>Vote</h2>
 
     {% for photo in photos %}
+
 <div id="photo_vote">
-    <li><a href="{{url_for("userpage", id=photo.id)}}">{{photo.id}} &mdash; {{photo.caption}}
-    	&mdash; 
+
+    <li><a href="{{url_for("userpage", id=photo.id)}}">{{photo.id}} {{photo.caption}}</br>
+
 		<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded"/></a>
 	</li>
 </div>
@@ -19,7 +23,7 @@
     	<input type="hidden" name="photoowner" value="{{photo.user_id}}">
     	<input type="hidden" name="vote" value="upvote">
         <button type="button" onclick="document.getElementById('upvoteform{{photo.id}}').submit();">
-			<a class="btn btn-large" href="#"><i class="icon-star"></i></a>
+			<a class="btn btn-small" href="#"><i class="icon-arrow-up"></i></a>
 		</button>
 	</form>
 
@@ -28,12 +32,14 @@
 		<input type="hidden" name="photoowner" value="{{photo.user_id}}">
 		<input type="hidden" name="vote" value="downvote">
 		<button type="button" onclick="document.getElementById('downvoteform{{photo.id}}').submit();">
-			<a class="btn btn-large" href="#"><i class="icon-thumbs-down"></i></a>
+			<a class="btn btn-small" href="#"><i class="icon-arrow-down"></i></a>
 		</button>
 	</form>   
 
 </div>
+
 	{% endfor %}
+
 </html>
 
 {% endblock %}
