@@ -39,6 +39,15 @@ def load_user_id():
         g.user = db_session.query(User).filter_by(id=g.user_id)
         g.photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
 
+
+
+def load_photo_id():
+
+    g.photo_id = session.get('id')
+    g.photo = db_session.query(Photo).filter_by(id=g.photo_id).one
+
+
+
 @app.teardown_request
 def shutdown_session(exception = None):
     
@@ -191,9 +200,14 @@ def uploadfile():
             db_session.add(p)
             db_session.commit()
             db_session.refresh(p)
+            print "P.ID", p.id
 
             if latitude == None:
-                return redirect(url_for('addlocation'))
+                # photo_id is a key and p.id is a value
+                #session is a dict
+                session['photo_id'] = p.id
+                # photo_id = session.get('id')
+                return redirect(url_for('addlocation', photo_id=p.id)) # redirect as a post not a get
 
             user = db_session.query(User).filter_by(id=g.user_id).one()
 
@@ -206,6 +220,12 @@ def uploadfile():
 @app.route('/addlocation', methods=['POST', 'GET'])
 def addlocation():
     if request.method == 'POST':
+
+        #searchword = request.args.get('key', '')
+        # photo_id = request.parameters['photo_id']
+        
+        #.get using the key photo_id to get the value which is the photo_id
+        photo_id = session.get('photo_id')
         city = request.form['city']
         print "CITY", city
         goo = geocoders.GoogleV3()
@@ -213,17 +233,22 @@ def addlocation():
         l2 = str(geocodes)
         print "L2", l2
         latitude = lat2(l2)
+        print latitude
         longitude = lon2(l2)
+        print longitude
+
         #query the most recent user's photo
-        db_session.query(Photo).filter_by(user_id=g.user_id).order_by(Photo.id.desc()).first().update({Photo.latitude: latitude, Photo.longitude: longitude})
+        #db_session.query(Photo).filter_by(user_id=g.user_id).order_by(Photo.id.desc()).first().update({Photo.latitude: latitude, Photo.longitude: longitude})
 
-        # print "PHOTO.ID", photo.id
-        # # update the photo's latlng
-        # p = Photo(latitude=latitude, longitude=longitude)
 
-        # db_session.add(p)
-        # db_session.flush()
-        # db_session.refresh(p)
+        # query by photo_id and update latlng
+        db_session.query(Photo).filter_by(id=photo_id).update({"latitude": latitude, "longitude": longitude})
+        db_session.commit()
+
+
+        db_session.flush()
+        del session['photo_id']
+
 
         return redirect(url_for('userpage')) 
     return render_template("upload2.html")
