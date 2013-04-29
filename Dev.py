@@ -26,7 +26,7 @@ ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF
 #allowed extensions are case sensitive and many other things are as well
 
 app = Flask(__name__)
-app.secret_key = 'balloonicorn'
+app.secret_key = 'K.key'
 app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
 app.config.from_object(__name__) #???
 
@@ -40,12 +40,10 @@ def load_user_id():
         g.photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
 
 
-
 def load_photo_id():
 
     g.photo_id = session.get('id')
     g.photo = db_session.query(Photo).filter_by(id=g.photo_id).one
-
 
 
 @app.teardown_request
@@ -53,12 +51,14 @@ def shutdown_session(exception = None):
     
     db_session.remove()
 
+
 @app.route('/')
 def home_page():
     
     if g.user_id:
         return redirect(url_for("userpage"))
     return render_template("index.html")
+
 
 # breaks when user doesn't exist or submits wrong password
 @app.route("/login", methods=["POST"])
@@ -71,7 +71,6 @@ def login():
         u = db_session.query(User).filter_by(email=email, password=password).one()
         
     except:
-
         flash("Invalid email or password", "error")
         return redirect(url_for("index"))
 
@@ -97,6 +96,7 @@ def register():
     session['user_id'] = u.id 
     return redirect(url_for("userpage"))
 
+
 @app.route("/popular", methods=['GET', 'POST'])
 def popular():
 
@@ -104,10 +104,12 @@ def popular():
     photos = db_session.execute(sql)
     return render_template("popular.html", u=g.user, photos=photos)
 
+
 @app.route("/map", methods=['GET', 'POST'])
 def map():
 
     return render_template("map.html", u=g.user, photos=g.photos)
+
 
 @app.route("/vote", methods=['GET', 'POST'])
 def vote():
@@ -122,7 +124,6 @@ def vote():
 
 
         if vote == "upvote":
-
             v = Vote(value=1, give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
             db_session.add(v)
             p = db_session.query(Photo).filter_by(id=photoid).one()
@@ -133,7 +134,6 @@ def vote():
             return redirect(url_for("vote"))
 
         elif vote == "downvote":
-            print "DOWNVOTE"
             v = Vote(value=-1, give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
             db_session.add(v)
             p = db_session.query(Photo).filter_by(id=photoid).one()
@@ -145,16 +145,15 @@ def vote():
 
     return render_template("vote.html", u=g.user, photos=allphotos)
 
+
 @app.route("/userpage")
 def userpage():
 
     if not g.user_id:
-
         flash("Please log in", "warning")
         return redirect(url_for("index"))
 
     return render_template("userpage.html", u=g.user, photos=g.photos)
-
 
 
 @app.route("/logout")
@@ -163,15 +162,15 @@ def logout():
     del session['user_id']
     return render_template("logout.html")
 
+
 @app.route('/upload', methods=['GET', 'POST'])
 # this function corresponds to the jinja {{url_for("uploadfile")}} ACTION in upload.html
 def uploadfile():
 
     if request.method == 'POST':
-
         file = request.files['file']
+
         if file and allowed_file(file.filename):
-            
             filename = secure_filename(file.filename)
             photo_location = "uploads/"+filename
             photo_file_path = os.path.join(app.config['UPLOAD_PHOTO_FOLDER'], filename)
@@ -190,7 +189,6 @@ def uploadfile():
             timestamp = get_time(exif_data)
 
             if timestamp != None:
-
                 timestamp = datetime.strptime(str(timestamp), "%Y:%m:%d %H:%M:%S")
 
             caption = request.form['caption']
@@ -200,17 +198,13 @@ def uploadfile():
             db_session.add(p)
             db_session.commit()
             db_session.refresh(p)
-            print "P.ID", p.id
 
             if latitude == None:
-                # photo_id is a key and p.id is a value
-                #session is a dict
+                # photo_id is a key and p.id is a value and session is a dict
                 session['photo_id'] = p.id
-                # photo_id = session.get('id')
-                return redirect(url_for('addlocation', photo_id=p.id)) # redirect as a post not a get
+                return redirect(url_for('addlocation', photo_id=p.id))
 
             user = db_session.query(User).filter_by(id=g.user_id).one()
-
             # create a template that shows the view of an uploaded photo and then the user's other photos
             return redirect(url_for('uploaded_file',filename=filename))      
     
@@ -220,9 +214,6 @@ def uploadfile():
 @app.route('/addlocation', methods=['POST', 'GET'])
 def addlocation():
     if request.method == 'POST':
-
-        #searchword = request.args.get('key', '')
-        # photo_id = request.parameters['photo_id']
         
         #.get using the key photo_id to get the value which is the photo_id
         photo_id = session.get('photo_id')
@@ -237,19 +228,11 @@ def addlocation():
         longitude = lon2(l2)
         print longitude
 
-        #query the most recent user's photo
-        #db_session.query(Photo).filter_by(user_id=g.user_id).order_by(Photo.id.desc()).first().update({Photo.latitude: latitude, Photo.longitude: longitude})
-
-
         # query by photo_id and update latlng
         db_session.query(Photo).filter_by(id=photo_id).update({"latitude": latitude, "longitude": longitude})
         db_session.commit()
-
-
         db_session.flush()
         del session['photo_id']
-
-
         return redirect(url_for('userpage')) 
     return render_template("upload2.html")
 

@@ -3,18 +3,32 @@
 <!-- layout.html -->
 
 
+
+ 
+
+
+
+
+
 <html>
     <head>
-        <title>E+W</title>
+        <title>Wanderlust!</title>
         {% block head %}{% endblock %}        
         <link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css">
          <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
     </head>
-    <body>
+<img id="bgimg" src="img/Paper-1.png">
+    <body id="maintable">
+      <div id="realBody">
+
+
         <h1 class="customfont">Eye Wanderlust</h1>
 
-        <div class="navbar">
-        <div class="navbar-inner">
+
+<div class="navbar navbar-fixed-top center">
+     <div class="navbar-inner">
+
+
 
     <ul class="nav">
       <li class="active">
@@ -26,12 +40,21 @@
       <li><a href="/popular">Fresh</a></li>
       <li><a href="/logout">Logout</a></li>
     </ul>
+<!--   </div>
+</div> -->
+
   </div>
 </div>
+
   <div class="container">   
 {% block body %}{% endblock %}
       
         </div>
+
+
+</div>
+<div>
         <a href="http://www.cornify.com" onclick="cornify_add();return false;"><img src="" width="14" height="14" border="0" alt="   " /></a><script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+      </div>
     </body>
 </html>
