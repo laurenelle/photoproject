@@ -315,19 +315,19 @@ body {
 /*  background-image: url("../img/fabric_plaid.png");*/
 /*  background-image: url("../img/retina_wood.png");*/
 /*  background-image: url("../img/Paper-1.png");*/
-  background-image: url("../img/blue-beige-clouds.png");
-  background-size: 100% 100%;
+/*  background-image: url("../img/blue-beige-clouds.png");*/
+/*  background-size: 100% 100%;*/
   background-size:cover;
   background-repeat:no-repeat;
 };
 }
 
-#maintable {
+/*#maintable {
 width: 880px;
 margin: 50px auto;
 background: url("../img/Paper-1.png") repeat; 
 }
-
+*/
 
 
 
@@ -4097,13 +4097,28 @@ input[type="submit"].btn.btn-mini {
 .nav-header {
   display: block;
   padding: 3px 15px;
+  font: normal 24px/24px 'Yellowtail', Helvetica, serif; color: #fff;;
   font-size: 11px;
   font-weight: bold;
   line-height: 20px;
-  color: #999999;
+  color: #fff;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
 }
+
+
+
+/* Header */
+/*#header { padding-top: 56px; text-align: center; }
+#header h5 { font: normal 24px/24px 'Yellowtail', Helvetica, serif; color: #fff; }
+#header h1 { margin-top: 20px; }
+
+*/
+
+
+
+
+
 
 .nav li + .nav-header {
   margin-top: 9px;

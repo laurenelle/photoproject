@@ -29,6 +29,9 @@
             makeInfoWindowEvent(map, infoWindow{{photo.id}}, marker{{photo.id}}));
 
 
+          
+
+
 
         {% endfor %}
 

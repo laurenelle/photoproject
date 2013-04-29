@@ -33,7 +33,7 @@
       elementType: "geometry",
       stylers: [
         { lightness: 100 },
-        { visibility: "simplified" }
+        { visibility: "off" }
       ]
     },{
       featureType: "road",
@@ -41,14 +41,36 @@
       stylers: [
         { visibility: "off" }
       ]
-    }
+    },{
+      featureType: "water",
+      stylers: [
+        {color: "#7fc8ed"},
+        { visibility: "on" }
+      ]
+    },{
+        elementType: "labels",
+            stylers: [{
+            visibility: "off"
+        }]
+    },{
+      featureType: "landscape",
+      stylers: [
+        {color: "#f3f4f4"},
+        { visibility: "on" }
+      ]  
+}
+
   ];
   var styledMap = new google.maps.StyledMapType(styles,
     {name: "Styled Map"});
 
+
         var mapOptions = {
           center: new google.maps.LatLng(37.463, 122.255),
           zoom: 2,
+
+
+
 
 mapTypeControlOptions: {
       mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']}
