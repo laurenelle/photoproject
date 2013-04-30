@@ -19,7 +19,6 @@
 <div id="vote">
 
     <form id="upvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST">
-    	<input type="hidden" name="photoid" value="{{photo.id}}">
     	<input type="hidden" name="photoowner" value="{{photo.user_id}}">
     	<input type="hidden" name="vote" value="upvote">
         <button type="button" onclick="document.getElementById('upvoteform{{photo.id}}').submit();">
@@ -43,3 +42,4 @@
 </html>
 
 {% endblock %}
+

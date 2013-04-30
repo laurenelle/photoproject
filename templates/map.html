@@ -56,7 +56,7 @@
     },{
       featureType: "landscape",
       stylers: [
-        {color: "#f3f4f4"},
+        {color: "#2ECC71"},
         { visibility: "on" }
       ]  
 }
@@ -93,6 +93,7 @@ mapTypeControlOptions: {
           google.maps.event.addListener(marker{{photo.id}}, 'mouseover',
 
             makeInfoWindowEvent(map, infoWindow{{photo.id}}, marker{{photo.id}}));
+
 
         {% endfor %}
 
