@@ -4,15 +4,38 @@
 {% block body %}
 <html>
 	<head>
-		<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
-		<script>
-			var input = document.getElementById('searchTextField');
-			var options = {
-		    	types: [],
-		    	componentRestrictions: {country: 'us'}
-			};
-			var autocomplete = new google.maps.places.Autocomplete(input, options);
-		</script>
+
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC_M1BWtN62aRUFVduggenGNTLF3pqSKk&sensor=true">
+    </script>
+    <!--     places library for autocomplete -->
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+
+<script type="text/javascript">
+  var placeSearch,autocomplete;
+  var component_form = {
+    'street_number': 'short_name',
+    'route': 'long_name',
+    'locality': 'long_name',
+    'administrative_area_level_1': 'short_name',
+    'country': 'long_name',
+    'postal_code': 'short_name'
+  };
+  function initialize() {
+    autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      fillInAddress();
+    });
+          function geolocate() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var geolocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+        autocomplete.setBounds(new google.maps.LatLngBounds(geolocation, geolocation));
+      });
+    }
+  }
+    </script>
+
 
 	</head>
 
@@ -22,11 +45,11 @@
     <form action="{{url_for("addlocation")}}" method="POST" enctype=multipart/form-data>
 
 
-     City: <input id=​"searchTextField" type=​"text" size=​"77" name="city" placeholder=​city autocomplete=​"off">​
+     City: <input name=city id=​"autocomplete" type=​"text" size=​"77" placeholder=​City autocomplete=​"off" onfocus=​"geolocate()​">​
 
 <br>
 <button type=submit class="btn btn-primary" data-loading-text="Loading...">Submit</button>
-
+</form
 </div>
 
 
