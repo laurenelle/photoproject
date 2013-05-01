@@ -18,20 +18,105 @@
      
 /*div, img, hr, ul, li, img {
   border: 1px solid red;
+}*/
+
+/*TRANSPARENT NAV BAR*/
+/*change to a transluscent white?*/
+
+   .navbar-inner{
+    background:transparent !important;
+    }
+.navbar-inner container{
+    background:transparent !important;
+    }
+.navbar{
+    background:transparent !important;
+    }
+#nav-main{
+    background:transparent !important;
+    }
+#banner{
+    background:transparent !important;
+    }​
+
+/*
+--------------------------------*/
+
+
+div#photobox{
+  position: relative;
+
 }
+/*when photobox= hover
+display
 */
-ul#grid {
+
+div#caption{
+  position: absolute;
+
+}
+
+div#votes{
+  position: absolute;
+  right: 10px;
+}
+
+/*
+CREATE A VOTES CLASS*/
+
+/*
+.copyright_style {font-face: arial; font-size: 10px;}*/
+
+/*.votesgrid
+
+.votesgrid ul {
   list-style: none;
-  margin: 20px auto 0;
-  width: 550px;  
+  margin: 50px auto 0;
+  width: 800px;  
   }
 
-#grid li {
+.votesgrid li {
   float: left;
-  margin: 0 5px 10px 5px;
+  margin: 0 30px 30px 30px;
   } 
 
-#grid li a:hover img {
+.votesgrid li a:hover img {
+  opacity:0.3;  filter:alpha(opacity=30);
+  }
+
+.votesgrid li img {
+  background-color: white;
+  padding: 7px; margin: 0;
+
+  width: 192px;
+  height: 221px;
+  }
+
+
+.votesgrid li:first-child img {
+  width: 192px;
+  height: 221px;
+}
+.votesgrid li a {
+  display: block;
+  }  */    
+
+/*
+---------------------------*/
+.usergrid
+
+ul {
+  list-style: none;
+  margin: 20px auto 0;
+  width: 850px;  
+  }
+
+li {
+  float: left;
+  margin: 0 30px 30px 30px;
+  } 
+
+li a:hover img {
   opacity:0.3;  filter:alpha(opacity=40);
   }
 
@@ -47,14 +132,41 @@ a:focus {
           border-radius: 7px;
 }
 
+li:first-child img {
+  width: 192px;
+  height: 221px;
+}
 
+li img {
+  background-color: white;
+  padding: 7px; margin: 0;
+
+  width: 192px;
+  height: 221px;
+  }
+
+  
+li a {
+  display: block;
+  } 
+
+li a:hover img {
+  opacity:0.3;  filter:alpha(opacity=30);
+  }
+
+li img {
+  background-color: white;
+  padding: 7px; margin: 0;
+}
+
+/*-------------------------------*/
 
 body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 20px;
   line-height: 30px;
-  color: #fff;
+  color: #000;
 /*  background-image: url("../img/fabric_plaid.png");*/
   background-image: url("../img/retina_wood.png");
 /*  background-image: url("../img/Paper-1.png");*/

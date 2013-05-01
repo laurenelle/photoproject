@@ -8,34 +8,34 @@
 
     {% for photo in photos %}
 
-<div id="photo_vote">
+<ul id="votegrid">
 
-    <li><a href="{{url_for("userpage", id=photo.id)}}">{{photo.id}} {{photo.caption}}</br>
+    <li><div id="photobox">
 
+    	<a href="{{url_for("userpage", id=photo.id)}}"></br>
 		<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded"/></a>
+		<div id="caption">
+			{{photo.caption}}
+		<div>
+		
+		    <form id="upvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST">
+		    	<input type="hidden" name="photoid" value="{{photo.id}}">
+		    	<input type="hidden" name="photoowner" value="{{photo.user_id}}">
+		    	<input type="hidden" name="vote" value="upvote">
+				<button type="button" onclick="document.getElementById('upvoteform{{photo.id}}').submit();">
+					<a href="#"><i class="icon-arrow-up"></i></a>
+			</form>
+			<form id="downvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST"> 
+				<input type="hidden" name="photoid" value="{{photo.id}}">
+				<input type="hidden" name="photoowner" value="{{photo.user_id}}">
+				<input type="hidden" name="vote" value="downvote">
+				<button type="button" onclick="document.getElementById('downvoteform{{photo.id}}').submit();">
+					<a href="#"><i class="icon-arrow-down"></i></a>
+			</form>   
+		</div>
+		</div>
 	</li>
-</div>
-
-<div id="vote">
-
-    <form id="upvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST">
-    	<input type="hidden" name="photoowner" value="{{photo.user_id}}">
-    	<input type="hidden" name="vote" value="upvote">
-        <button type="button" onclick="document.getElementById('upvoteform{{photo.id}}').submit();">
-			<a class="btn btn-small" href="#"><i class="icon-arrow-up"></i></a>
-		</button>
-	</form>
-
-	<form id="downvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST"> 
-		<input type="hidden" name="photoid" value="{{photo.id}}">
-		<input type="hidden" name="photoowner" value="{{photo.user_id}}">
-		<input type="hidden" name="vote" value="downvote">
-		<button type="button" onclick="document.getElementById('downvoteform{{photo.id}}').submit();">
-			<a class="btn btn-small" href="#"><i class="icon-arrow-down"></i></a>
-		</button>
-	</form>   
-
-</div>
+</ul>
 
 	{% endfor %}
 
@@ -43,3 +43,17 @@
 
 {% endblock %}
 
+
+<FORM METHOD="POST" ACTION="/cgi-bin/diag.cgi">
+<PRE>
+ First Name  <INPUT TYPE="text" NAME="first_name" 
+              MAXLENGTH=25 SIZE=15>  
+  Last Name  <INPUT TYPE="text" NAME="last_name"  
+              MAXLENGTH=35 SIZE=20>
+     E-Mail  <INPUT TYPE="text" NAME="last_name"  
+              MAXLENGTH=35 SIZE=20>
+             <INPUT TYPE="image" SRC="../img/down-arrow-black.png" 
+               WIDTH="30"  HEIGHT="30" 
+              BORDER="0" ALT="SUBMIT!"> 
+</PRE>
+</FORM>

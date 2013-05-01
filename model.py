@@ -53,10 +53,6 @@ class Photo(Base):
 	up_vote = Column(Integer, default=0)
 	down_vote = Column(Integer, default=0)
 	thumbnail = Column(String(101), nullable=True)
-	# add upload_timestamp? for freshness algorithm?
-
-
-
 
 # through table linking user and photo
 class Vote(Base):

@@ -8,6 +8,10 @@
         <link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css">
         <link rel="stylesheet" href="/static/css/main.css" type="text/css">
          <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<!--          for lightbox -->
+         <script src="/static/lightbox2/js/jquery-1.7.2.min.js"></script>
+<script src="/static/lightbox2/js/lightbox.js"></script>
+<link href="/static/lightbox2/css/lightbox.css" rel="stylesheet" />
     </head>
 
 <body>
@@ -28,12 +32,13 @@
 
     <ul class="nav">
       <li class="active">
-      <a href="/">Login</a></li>
+     
       <li><a href="{{url_for('userpage')}}">You</a></li>
       <li><a href="/map">Your Map</a></li>
       <li><a href="/upload">Upload</a></li>
       <li><a href="/vote">Vote</a></li>
       <li><a href="/popular">Fresh</a></li>
+       <li><a href="/">Login</a></li>
       <li><a href="/logout">Logout</a></li>
     </ul>
     

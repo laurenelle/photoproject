@@ -5,7 +5,7 @@
 <h2>Your Photos!</h2>
 <p>
 </p>
-<ul id="grid">
+<ul class="usergrid">
     {% for photo in photos %}
     <li><a href="{{url_for("userpage", id=photo.id)}}"></br> 
     	<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="200" width="200" class="img-rounded" /><p></p></a>

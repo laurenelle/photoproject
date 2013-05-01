@@ -4,48 +4,41 @@
 
 
 <html>
-<h2>Log in</h2>
-<div id="login">
-    <form action="{{url_for("login")}}" method="POST">
-        <div>
-            <label for="email">Email</label>
-            <input type="text" name="email">
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input type="password" name="password">
-        </div>
-        <input type="submit">
-    </form>
-</div>
+    <h2>Log in</h2>
+    <div id="login">
+        <form action="{{url_for("login")}}" method="POST">
+            <div>
+                <label for="email">Email</label>
+                <input type="text" name="email">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" name="password">
+            </div>
+            <input type="submit">
+        </form>
+    </div>
 
+    <h2>Sign Up</h2>
 
-
-
-
-
-
-
-<h2>Sign Up</h2>
-
-<div id="new-user">
-    <form action="{{url_for("register")}}" method="POST">
-        <div>
-            <label for="email">Email</label>
-            <input type="text" name="email">
-        </div>
-        <div>
-                    <div>
-            <label for="username">Username</label>
-            <input type="text" name="username">
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input type="password" name="password">
-        </div>
-        <input type="submit">
-    </form>
-</div>
+    <div id="new-user">
+        <form action="{{url_for("register")}}" method="POST">
+            <div>
+                <label for="email">Email</label>
+                <input type="text" name="email">
+            </div>
+            <div>
+                        <div>
+                <label for="username">Username</label>
+                <input type="text" name="username">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" name="password">
+            </div>
+            <input type="submit">
+        </form>
+    </div>
 </html>
 
 {% endblock %}

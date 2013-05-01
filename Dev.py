@@ -1,20 +1,17 @@
 from PIL import Image
-
-import os
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash, session, request, g
 from werkzeug import secure_filename
 from model import session as db_session, User, Photo, Vote, Tag, Photo_Tag, Location
 import model
 import re
 import time
+import os
+import forms
+# import bcrypt
 
 from sqlalchemy import select, func, types, sql, update
-import forms
-
 from allfunctions import *
-# fix keys file
 from K import *
-
 from geopy import geocoders
 
 
@@ -23,12 +20,10 @@ from geopy import geocoders
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
 
-#allowed extensions are case sensitive and many other things are as well
-
 app = Flask(__name__)
 app.secret_key = 'K.key'
 app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
-app.config.from_object(__name__) #???
+app.config.from_object(__name__)
 
 @app.before_request
 def load_user_id():
@@ -38,6 +33,7 @@ def load_user_id():
     if g.user_id != None:
         g.user = db_session.query(User).filter_by(id=g.user_id)
         g.photos = db_session.query(Photo).filter_by(user_id=g.user_id).all()
+
 def load_photo_id():
 
     g.photo_id = session.get('id')
@@ -57,8 +53,6 @@ def home_page():
         return redirect(url_for("userpage"))
     return render_template("index.html")
 
-
-
 # breaks when user doesn't exist or submits wrong password
 @app.route("/login", methods=["POST"])
 def login():
@@ -71,12 +65,10 @@ def login():
         
     except:
         flash("Invalid email or password", "error")
-        return redirect(url_for("index"))
+        return redirect(url_for("home_page"))
 
     session['user_id'] = u.id
     return redirect(url_for("userpage"))
-
-    return render_template("index.html")
 
 # breaks when user already exists
 @app.route("/signup", methods=['POST'])
@@ -96,7 +88,6 @@ def register():
     db_session.refresh(u)
     session['user_id'] = u.id 
     return render_template("index.html")
-
 
 
 @app.route("/popular", methods=['GET', 'POST'])
@@ -153,7 +144,7 @@ def userpage():
 
     if not g.user_id:
         flash("Please log in", "warning")
-        return redirect(url_for("index"))
+        return redirect(url_for("/"))
 
     return render_template("userpage.html", u=g.user, photos=g.photos)
 
@@ -221,20 +212,16 @@ def addlocation():
         #.get using the key photo_id to get the value which is the photo_id
         photo_id = session.get('photo_id')
         city = request.form['city']
-        print "CITY", city
+
         goo = geocoders.GoogleV3()
         geocodes = goo.geocode(city, exactly_one=False)
         l2 = str(geocodes)
-        print "L2", l2
         latitude = lat2(l2)
-        print latitude
         longitude = lon2(l2)
-        print longitude
         # query by photo_id and update latlng
         db_session.query(Photo).filter_by(id=photo_id).update({"latitude": latitude, "longitude": longitude})
         db_session.commit()
         db_session.flush()
-
         del session['photo_id']
    
         return redirect(url_for('userpage')) 
