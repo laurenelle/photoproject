@@ -7,9 +7,10 @@
 </p>
 <ul class="usergrid">
     {% for photo in photos %}
-    <li><a href="{{url_for('uploaded_file',filename=photo.filename) }}" rel="lightbox" title="{{photo.caption}}"> 
-    	<img src="{{url_for('uploaded_file', filename=photo.thumbnail_filename)}}" alt="{{photo.caption}}" class="img-rounded" /><p></p></a>
+    <li><a href="{{url_for('uploaded_file',filename=photo.filename)}}" rel="lightbox" title="{{photo.caption}}"> 
+    	<img src="{{url_for('uploaded_file', filename=photo.filename)}}" alt="{{photo.caption}}" class="img-rounded" /><p></p></a>
     </li>
+<!--     img src should technically be the thumbnail, but the thumbnail is saved in a way that renders blurry -->
     {% else %}
     <li>You haven't uploaded any photos :(</li>
     {% endfor %}

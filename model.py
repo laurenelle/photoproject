@@ -15,18 +15,15 @@ from wtforms import Form, BooleanField, TextField, PasswordField, validators
 
 
 
-engine = create_engine("postgres://lauren:@localhost/eyetravelv1", echo=False)
+engine = create_engine("postgres://lauren:@localhost/lauren", echo=False)
 
-#db = postgresql.open("postgres://localhost/eyetravelv1")
+#db = postgresql.open("postgres://localhost/lauren")
 session = scoped_session(sessionmaker(bind=engine, autocommit = False, autoflush = False))
 
 Base = declarative_base()
 Base.query = session.query_property()
 
 ### Class declarations go here
-
-
-
 
 class User(Base):
 	__tablename__ = "users"
@@ -54,6 +51,7 @@ class Photo(Base):
 	down_vote = Column(Integer, default=0)
 	thumbnail = Column(String(101), nullable=True)
 
+	#remove the "/uploads" from the file_location and thumbnail so lightboxes render properly
 	@property
 	def filename(self):
 		return self.file_location.split("/")[-1]
@@ -110,11 +108,11 @@ def create_db():
     Base.metadata.create_all(engine)
 
 
-def connect(db_uri="postgres://lauren:@localhost/eyetravelv1"):
+def connect(db_uri="postgres://lauren:@localhost/lauren"):
     global engine
     global session
     engine = create_engine(db_uri, echo=False) 
-    # engine = create_engine("postgres://lauren:@localhost/eyetravelv1", echo=True)
+    # engine = create_engine("postgres://lauren:@localhost/lauren", echo=True)
     session = scoped_session(sessionmaker(bind=engine,
                              autocommit = False,
                              autoflush = False))

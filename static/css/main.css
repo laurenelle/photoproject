@@ -168,8 +168,10 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 20px;
   line-height: 30px;
+/*  text color*/
   color: #000;
-  background-image: url("../img/fabric_plaid.png");
+  background-color: white;
+/*  background-image: url("../img/fabric_plaid.png");*/
 /*  background-image: url("../img/retina_wood.png");*/
 /*  background-image: url("../img/Paper-1.png");*/
 /*  background-image: url("../img/blue-beige-clouds.png");*/
@@ -179,7 +181,5 @@ body {
   background-repeat:repeat;
 };
 
-.container{
-  margin-top:150;
-}
+
 
