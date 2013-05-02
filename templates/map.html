@@ -16,6 +16,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></script>
+<!--     watercolor map style -->
+    <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.1"></script>
     <script type="text/javascript">
       //create a single infoBubble that will be shared among the markers
       var infoBubble;
@@ -40,18 +42,21 @@
       stylers: [
         { visibility: "off" }
       ]
-    },{
+    },
+    {
       featureType: "water",
       stylers: [
         {color: "#7fc8ed"},
         { visibility: "on" }
       ]
-    },{
+    },
+    {
         elementType: "labels",
             stylers: [{
             visibility: "off"
         }]
-    },{
+    }
+    ,{
       featureType: "landscape",
       stylers: [
         {color: "#2ECC71"},
@@ -61,6 +66,8 @@
 
   ];
 
+var layer = "watercolor";
+
   var styledMap = new google.maps.StyledMapType(styles,
     {name: "Styled Map"});
 
@@ -68,6 +75,7 @@
         var mapOptions = {
           center: new google.maps.LatLng(37.463, 122.255),
           zoom: 2,
+          mapTypeId: layer,
 
 mapTypeControlOptions: {
       mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']}
@@ -75,8 +83,7 @@ mapTypeControlOptions: {
         };
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-        map.mapTypes.set('map_style', styledMap);
-  map.setMapTypeId('map_style');
+        map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
 
         {% for photo in photos %}
 
@@ -101,7 +108,21 @@ mapTypeControlOptions: {
       // if an info window exists close it, this function is called whenever mouseover a different marker
       //only called when the mouseover event happens - dynamic
       if (infoBubble) infoBubble.close();
-      infoBubble = new InfoBubble({content: content, maxWidth: 300});
+      infoBubble = new InfoBubble({
+        content: content, 
+        // FIX STYLE LATER
+        // maxWidth: 300,
+        // shadowStyle: 1,
+        // padding: 5,
+        // backgroundColor: 'rgb(255, 255, 255)',
+        // borderRadius: 10,
+        // arrowSize: 10,
+        // borderWidth: 1,
+        // borderColor: '#2c2c2c',
+        // disableAutoPan: true,
+        // hideCloseButton: true,
+        // arrowPosition: 30
+      });
       infoBubble.open(map, marker);
     });
   }
