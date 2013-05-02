@@ -16,9 +16,9 @@
  opacity:0.3;  filter:alpha(opacity=40);
  }*/
      
-/*div, img, hr, ul, li, img {
+div, img, hr, ul, li, img {
   border: 1px solid red;
-}*/
+}
 
 /*TRANSPARENT NAV BAR*/
 /*change to a transluscent white?*/
@@ -44,21 +44,23 @@
 
 
 div#photobox{
-  position: relative;
+  float: left;
+  height: 300px;
+
 
 }
 /*when photobox= hover
 display
 */
 
+
 div#caption{
-  position: absolute;
+  
 
 }
 
 div#votes{
-  position: absolute;
-  right: 10px;
+  float: right;
 }
 
 /*
@@ -103,7 +105,7 @@ CREATE A VOTES CLASS*/
 
 /*
 ---------------------------*/
-.usergrid
+
 
 ul {
   list-style: none;
@@ -177,5 +179,7 @@ body {
   background-repeat:repeat;
 };
 
-
+.container{
+  margin-top:150;
+}
 
