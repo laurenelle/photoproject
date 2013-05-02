@@ -5,7 +5,7 @@ from PIL.ExifTags import TAGS, GPSTAGS
 
 
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
-ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
+ALLOWED_EXTENSIONS = set(['jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
 UPLOAD_CAPTION_FOLDER = '/Users/lauren/Desktop/PHOTOS/CAPTIONS'
 
 # for voting logic
@@ -48,13 +48,16 @@ def get_exif_data(image):
     # return some_data
 
     exif_data = {}
+    print "BEFORE"
     info = image._getexif()
-
+    # print image
+    # info = image.tag.tags
+    print "AFTER"
     if info:
-
+        "IN INFO"
         for tag, value in info.items():
             decoded = TAGS.get(tag, tag)
-
+            print tag
             if decoded == "GPSInfo":
                 gps_data = {}
 
@@ -73,11 +76,11 @@ def get_exif_data(image):
 # usually reserved and may not be imported when the file is imported
 
 def _get_if_exist(data, key):
-    # you can just do return data[key] and return a default value if the key
-    # doesn't exist (ie default to None). No need for a conditional here.
     if key in data:
-        return data[key]
+       return data[key]
     return None
+
+
 
 def _convert_to_degress(value):
 
