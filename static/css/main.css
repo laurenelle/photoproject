@@ -42,6 +42,12 @@
 /*
 --------------------------------*/
 
+.img-rounded {
+  -webkit-border-radius: 7px;
+     -moz-border-radius: 7px;
+          border-radius: 7px;
+}
+
 
 div#photobox{
   float: left;
@@ -146,7 +152,6 @@ li img {
   width: 192px;
   height: 221px;
   }
-
   
 li a {
   display: block;
