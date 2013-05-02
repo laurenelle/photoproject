@@ -12,7 +12,7 @@
 
     <li><div id="photobox">
 
-    	<a href="{{url_for("userpage", id=photo.id)}}"></br>
+    	<a href="{{url_for("userpage", id=photo.id)}} "></br>
 		<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded"/></a>
 		<div id="caption">
 			{{photo.caption}}
@@ -42,18 +42,3 @@
 </html>
 
 {% endblock %}
-
-
-<FORM METHOD="POST" ACTION="/cgi-bin/diag.cgi">
-<PRE>
- First Name  <INPUT TYPE="text" NAME="first_name" 
-              MAXLENGTH=25 SIZE=15>  
-  Last Name  <INPUT TYPE="text" NAME="last_name"  
-              MAXLENGTH=35 SIZE=20>
-     E-Mail  <INPUT TYPE="text" NAME="last_name"  
-              MAXLENGTH=35 SIZE=20>
-             <INPUT TYPE="image" SRC="../img/down-arrow-black.png" 
-               WIDTH="30"  HEIGHT="30" 
-              BORDER="0" ALT="SUBMIT!"> 
-</PRE>
-</FORM>

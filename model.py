@@ -54,6 +54,14 @@ class Photo(Base):
 	down_vote = Column(Integer, default=0)
 	thumbnail = Column(String(101), nullable=True)
 
+	@property
+	def filename(self):
+		return self.file_location.split("/")[-1]
+
+	@property
+	def thumbnail_filename(self):
+		return self.thumbnail.split("/")[-1]
+
 # through table linking user and photo
 class Vote(Base):
 	__tablename__ = "votes"
