@@ -7,7 +7,7 @@
 <h2>Vote</h2>
 
     {% for photo in photos %}
-
+<div="vote_results">
 <ul id="votegrid">
 
     <li><div id="photobox">
@@ -21,26 +21,71 @@
 		</div>
 
 		<div id="votes">
-		    <form id="upvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST">
-		    	<input type="hidden" name="photoid" value="{{photo.id}}">
-		    	<input type="hidden" name="photoowner" value="{{photo.user_id}}">
-		    	<input type="hidden" name="vote" value="upvote">
-				<button type="button" onclick="document.getElementById('upvoteform{{photo.id}}').submit();">
+		    <!-- <form id="upvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST">
+ -->		    
+				 <form action="/vote" method="post">
+	
+		    	<input type="hidden" id="photoid" name="photoid" value="{{photo.id}}">
+		    	<input type="hidden" id="photoowner" name="photoowner" value="{{photo.user_id}}">
+		    	<input type="hidden" id="vote" name="vote" value="upvote">
+				
+				<button id="upvote_listen" type="button"  onclick="document.getElementById('upvoteform{{photo.id}}').submit();">
+					
 					<a href="#"><i class="icon-arrow-up"></i></a>
 			</form>
 			<form id="downvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST"> 
-				<input type="hidden" name="photoid" value="{{photo.id}}">
-				<input type="hidden" name="photoowner" value="{{photo.user_id}}">
-				<input type="hidden" name="vote" value="downvote">
-				<button type="button" onclick="document.getElementById('downvoteform{{photo.id}}').submit();">
+				
+				<input type="hidden" id="photoid" name="photoid" value="{{photo.id}}">
+				<input type="hidden" id="photoowner" name="photoowner" value="{{photo.user_id}}">
+				<input type="hidden" id="vote" name="vote" value="downvote">
+				
+				<button id="downvote_listen" type="button" onclick="document.getElementById('downvoteform{{photo.id}}').submit();">
+					
 					<a href="#"><i class="icon-arrow-down"></i></a>
 			</form>   
 		</div>	
-		
+		</div>
 
 	</li>
 </ul>
 
+<script>
+    $("#downvote_listen").on("click", function(event){
+      event.preventDefault();
+      var theform = {
+        photoid: $("#photoid").val(),
+        photoowner: $("#photoowner").val(),
+        vote: $("#vote").val()
+      }
+      $.ajax({
+          type: "POST",
+          url: "/vote",
+          data: theform,
+          success: displayResults
+        });
+    });
+    function displayResults(html){
+      $("#results_container").html(html)
+    }
+
+        $("#upvote_listen").on("click", function(event){
+      event.preventDefault();
+      var theform = {
+        photoid: $("#photoid").val(),
+        photoowner: $("#photoowner").val(),
+        vote: $("#vote").val()
+      }
+      $.ajax({
+          type: "POST",
+          url: "/vote",
+          data: theform,
+          success: displayResults
+        });
+    });
+    function displayResults(html){
+      $("#vote_results").html(html)
+    }
+    </script>
 
 	{% endfor %}
 

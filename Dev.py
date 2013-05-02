@@ -93,7 +93,10 @@ def register():
 @app.route("/popular", methods=['GET', 'POST'])
 def popular():
 
-    sql = "select v.photo_id, p.file_location, sum( 1 / ( (extract(epoch from now()) - extract(epoch from v.timestamp))/60/60/24 ) * value ) as POPULAR from votes v inner join photos p on p.id = v.photo_id group by v.photo_id, p.file_location order by 3 desc;"
+    sql = """select v.photo_id, p.file_location, 
+    sum( 1 / ( (extract(epoch from now()) - extract(epoch from v.timestamp)) ) * value ) as POPULAR 
+    from votes v inner join photos p on p.id = v.photo_id group by v.photo_id, p.file_location order by 3 desc;"""
+    
     photos = db_session.execute(sql)
     return render_template("popular.html", u=g.user, photos=photos)
 

@@ -31,7 +31,6 @@ class User(Base):
 	user_name = Column(String(64), nullable=True)
 	email = Column(String(64), nullable=True)
 	password = Column(String(64), nullable=True)
-
 	photos = relationship("Photo", backref="users", lazy="joined")
 	# users are the parents of the photo children
 
@@ -71,7 +70,6 @@ class Vote(Base):
 	give_vote_user_id = Column(Integer, ForeignKey('users.id'))
 	receive_vote_user_id = Column(Integer, ForeignKey('users.id'))
 	timestamp = Column(DateTime, default=datetime.datetime.utcnow)
-
 	give_vote_user = relationship("User", primaryjoin="User.id==Vote.give_vote_user_id", backref=backref("votes_given", order_by=id))
 	receive_vote_user = relationship("User", primaryjoin="User.id==Vote.receive_vote_user_id", backref=backref("votes_received", order_by=id))
 	photo = relationship("Photo", backref=backref("votes", order_by=id))
