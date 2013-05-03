@@ -127,7 +127,7 @@ def vote():
             db_session.add(p)
             db_session.commit()
 
-            return redirect(url_for("vote"))
+            return render_template("_vote.html", u=g.user, photos=allphotos)
 
         elif vote == "downvote":
             v = Vote(value=-1, give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
@@ -137,7 +137,7 @@ def vote():
             db_session.add(p)
             db_session.commit()
 
-            return redirect(url_for("vote"))
+            return render_template("_vote.html", u=g.user, photos=allphotos)
 
     return render_template("vote.html", u=g.user, photos=allphotos)
 

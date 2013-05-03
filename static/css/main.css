@@ -110,19 +110,28 @@ div#photobox{
   float: left;
   height: 300px;
 
-
 }
+
+
+div.caption {
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+div.votes {
+  text-align: center;
+  font-size: 0.8em;
+}
+
+
+
+
 /*when photobox= hover
 display
 */
 
-div#caption{
-  
-}
-
-div#votes{
-  float: right;
-}
 
 ul {
   list-style: none;
@@ -208,8 +217,5 @@ body {
     background:transparent !important;
     }​
   }
-
-
-
 
 
