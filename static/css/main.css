@@ -1,7 +1,79 @@
+/*seaform green buttons for all pages*/
 
+.btn-custom-darken.active {
+  color: rgba(255, 255, 255, 0.75);
+}
+.btn-custom-darken {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #93e7dd;
+  background-image: -moz-linear-gradient(top, #a4ebe2, #7ae2d5);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#a4ebe2), to(#7ae2d5));
+  background-image: -webkit-linear-gradient(top, #a4ebe2, #7ae2d5);
+  background-image: -o-linear-gradient(top, #a4ebe2, #7ae2d5);
+  background-image: linear-gradient(to bottom, #a4ebe2, #7ae2d5);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa4ebe2', endColorstr='#ff7ae2d5', GradientType=0);
+  border-color: #7ae2d5 #7ae2d5 #3bd4c1;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #7ae2d5;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.btn-custom-darken:hover,
+.btn-custom-darken:focus,
+.btn-custom-darken:active,
+.btn-custom-darken.active,
+.btn-custom-darken.disabled,
+.btn-custom-darken[disabled] {
+  color: #ffffff;
+  background-color: #7ae2d5;
+  *background-color: #65ddce;
+}
+.btn-custom-darken:active,
+.btn-custom-darken.active {
+  background-color: #50d9c7 ;
+}
+/*----------------------------*/
+/*vibrant seaform green*/
 
+.btn-custom-lighten.active {
+  color: rgba(255, 255, 255, 0.75);
+}
+.btn-custom-lighten {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #26eed5;
+  background-image: -moz-linear-gradient(top, #13edd1, #42f1da);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#13edd1), to(#42f1da));
+  background-image: -webkit-linear-gradient(top, #13edd1, #42f1da);
+  background-image: -o-linear-gradient(top, #13edd1, #42f1da);
+  background-image: linear-gradient(to bottom, #13edd1, #42f1da);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff13edd1', endColorstr='#ff42f1da', GradientType=0);
+  border-color: #42f1da #42f1da #10d6bd;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #42f1da;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.btn-custom-lighten:hover,
+.btn-custom-lighten:focus,
+.btn-custom-lighten:active,
+.btn-custom-lighten.active,
+.btn-custom-lighten.disabled,
+.btn-custom-lighten[disabled] {
+  color: #ffffff;
+  background-color: #42f1da;
+  *background-color: #2befd6;
+}
+.btn-custom-lighten:active,
+.btn-custom-lighten.active {
+  background-color: #13edd1 ;
+}
+/*---------------------------*/
 
 /*#container div {
 
@@ -18,26 +90,11 @@
      
 /*div, img, hr, ul, li, img {
   border: 1px solid red;
-}*/
-
+}
+*/
 /*TRANSPARENT NAV BAR*/
 /*change to a transluscent white?*/
 
-   .navbar-inner{
-    background:transparent !important;
-    }
-.navbar-inner container{
-    background:transparent !important;
-    }
-.navbar{
-    background:transparent !important;
-    }
-#nav-main{
-    background:transparent !important;
-    }
-#banner{
-    background:transparent !important;
-    }​
 
 /*
 --------------------------------*/
@@ -134,10 +191,22 @@ body {
   background-size:cover;
   background-repeat:repeat;}
   #content {overflow: auto;}
-  #nav, #feature, #footer {margin: 1%;}
-  #nav, #footer {
-    background-color: #efefef;
-    padding: 0.5em;
+  
+   .navbar-inner{
+    background:transparent !important;
+    }
+.navbar-inner container{
+    background:transparent !important;
+    }
+.navbar{
+    background:transparent !important;
+    }
+#nav-main{
+    background:transparent !important;
+    }
+#banner{
+    background:transparent !important;
+    }​
   }
 
 

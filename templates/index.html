@@ -3,7 +3,10 @@
 {% block body %}
 
 
+
+
 <html>
+<div class="hero-unit">
     <h2>Log in</h2>
     <div id="login">
         <form action="{{url_for("login")}}" method="POST">
@@ -15,7 +18,7 @@
                 <label for="password">Password</label>
                 <input type="password" name="password">
             </div>
-            <input type="submit">
+            <input class="btn btn-custom-lighten btn-large" type="submit">
         </form>
     </div>
 
@@ -36,8 +39,9 @@
                 <label for="password">Password</label>
                 <input type="password" name="password">
             </div>
-            <input type="submit">
+             <input class="btn btn-custom-lighten btn-large" type="submit">
         </form>
+    </div>
     </div>
 </html>
 
