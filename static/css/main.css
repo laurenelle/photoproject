@@ -59,59 +59,13 @@ div#photobox{
 display
 */
 
-
 div#caption{
   
-
 }
 
 div#votes{
   float: right;
 }
-
-/*
-CREATE A VOTES CLASS*/
-
-/*
-.copyright_style {font-face: arial; font-size: 10px;}*/
-
-/*.votesgrid
-
-.votesgrid ul {
-  list-style: none;
-  margin: 50px auto 0;
-  width: 800px;  
-  }
-
-.votesgrid li {
-  float: left;
-  margin: 0 30px 30px 30px;
-  } 
-
-.votesgrid li a:hover img {
-  opacity:0.3;  filter:alpha(opacity=30);
-  }
-
-.votesgrid li img {
-  background-color: white;
-  padding: 7px; margin: 0;
-
-  width: 192px;
-  height: 221px;
-  }
-
-
-.votesgrid li:first-child img {
-  width: 192px;
-  height: 221px;
-}
-.votesgrid li a {
-  display: block;
-  }  */    
-
-/*
----------------------------*/
-
 
 ul {
   list-style: none;
@@ -132,12 +86,6 @@ a:hover,
 a:focus {
   color: #005580;
   text-decoration: underline;
-}
-
-.img-rounded {
-  -webkit-border-radius: 7px;
-     -moz-border-radius: 7px;
-          border-radius: 7px;
 }
 
 li:first-child img {
@@ -169,7 +117,8 @@ li img {
 /*-------------------------------*/
 
 body {
-  margin: 0;
+  width: 90%;
+  margin: 0 auto;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 20px;
   line-height: 30px;
@@ -183,8 +132,15 @@ body {
 /*  background-image: url("../img/Blueradialgradient.png");*/
 /*  background-image: url("../img/gradientbluegreen.png");*/
   background-size:cover;
-  background-repeat:repeat;
-};
+  background-repeat:repeat;}
+  #content {overflow: auto;}
+  #nav, #feature, #footer {margin: 1%;}
+  #nav, #footer {
+    background-color: #efefef;
+    padding: 0.5em;
+  }
+
+
 
 
 

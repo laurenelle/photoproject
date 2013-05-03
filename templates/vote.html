@@ -12,7 +12,7 @@
 
     <li><div id="photobox">
 
-    	<a href="{{url_for("userpage", id=photo.id)}} "></br>
+    	<a href="{{url_for('uploaded_file',filename=photo.filename)}}" rel="lightbox" title="{{photo.caption}}"></br>
 		<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded"/></a>
 	<div>
 
@@ -23,7 +23,7 @@
 		<div id="votes">
 		    <!-- <form id="upvoteform{{photo.id}}" action="{{url_for("vote")}}" method="POST">
  -->		    
-				 <form action="/vote" method="post">
+				 <form action="/vote" method="post" id="upvoteform{{photo.id}}" >
 	
 		    	<input type="hidden" id="photoid" name="photoid" value="{{photo.id}}">
 		    	<input type="hidden" id="photoowner" name="photoowner" value="{{photo.user_id}}">
@@ -65,7 +65,7 @@
         });
     });
     function displayResults(html){
-      $("#results_container").html(html)
+      $("#vote_results").html(html)
     }
 
         $("#upvote_listen").on("click", function(event){
