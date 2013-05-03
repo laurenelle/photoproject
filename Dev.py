@@ -203,7 +203,7 @@ def uploadfile():
 
             user = db_session.query(User).filter_by(id=g.user_id).one()
             # create a template that shows the view of an uploaded photo and then the user's other photos
-            return redirect(url_for('uploaded_file',filename=filename))      
+            return redirect(url_for('userpage'))      
     
     return render_template("upload.html")
 

@@ -10,3 +10,5 @@ u.photo
 u.user
 u.vote
 twitteroauth.py
+
+*.pyc

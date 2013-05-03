@@ -49,6 +49,9 @@ class Photo(Base):
 	up_vote = Column(Integer, default=0)
 	down_vote = Column(Integer, default=0)
 	thumbnail = Column(String(101), nullable=True)
+	location_level1 = 
+	location_level2 = 
+	location_level3 =
 
 	#remove the "/uploads" from the file_location and thumbnail so lightboxes render properly
 	@property

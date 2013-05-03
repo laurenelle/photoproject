@@ -112,7 +112,7 @@ mapTypeControlOptions: {
     var marker = new google.maps.Marker({
       position: latlng,
       map: map,
-      draggable:true,
+      draggable:false,
       animation: google.maps.Animation.DROP
     });
     google.maps.event.addListener(marker, "mouseover", function() {
@@ -130,19 +130,22 @@ mapTypeControlOptions: {
       if (infoBubble) infoBubble.close();
       infoBubble = new InfoBubble({
         content: content, 
-        //MAX WIDTH NOT WORKING
         // maxWidth: 300,
         // shadowStyle: 1,
         padding: 20,
         // backgroundColor: 'rgb(255, 255, 255)',
+        //rounds corners:
         borderRadius: 10,
         // arrowSize: 10,
         borderWidth: 1,
         // borderColor: '#2c2c2c',
         disableAutoPan: true,
         hideCloseButton: true,
-        // minWidth: 100;
+        // minWidth: 100,
         // arrowPosition: 30
+        hideCloseButton: false,
+        //change color of closebutton...
+        hideCloseButtonColor: '#2c2c2c',
       });
       infoBubble.open(map, marker);
     });
