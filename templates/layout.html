@@ -12,36 +12,62 @@
          <script src="/static/lightbox2/js/jquery-1.7.2.min.js"></script>
 <script src="/static/lightbox2/js/lightbox.js"></script>
 <link href="/static/lightbox2/css/lightbox.css" rel="stylesheet" />
-    </head>
+  </head>
 
 <body>
 
-        <h1 class="customfont">Wanderlust</h1>
-<div class="container">
-<div class="navbar navbar-fixed-top center">
+<!--         <h1 class="customfont">Wanderlust</h1> -->
+
+<div class="navbar navbar-inverse navbar-fixed-top">
      <div class="navbar-inner">
-
-
-
-    <ul class="nav">
+    <div class="nav">
       <li class="active">
-     
       <li><a href="{{url_for('userpage')}}">You</a></li>
       <li><a href="/map">Your Map</a></li>
       <li><a href="/upload">Upload</a></li>
       <li><a href="/vote">Vote</a></li>
       <li><a href="/popular">Fresh</a></li>
+      <li><form class="navbar-search pull-left">
+          <input type="text" class="search-query" placeholder="Search">
+      </li></form>
+<!--       stored as user_id in a session -->
+      {% if 'user_id' in session %}
       <li><a href="/logout">Logout</a></li>
+      {% else %}
       <li><a href="/">Login</a></li>
-
+      {% endif %}
     </ul> 
   </div>
+</div> 
 </div>
-<div class="container">
+
+
+<!-- <div class="navbar navbar-fixed-top center">
+     <div class="navbar-inner">
+    <ul class="nav">
+      <li class="active">
+      <li><a href="{{url_for('userpage')}}">You</a></li>
+      <li><a href="/map">Your Map</a></li>
+      <li><a href="/upload">Upload</a></li>
+      <li><a href="/vote">Vote</a></li>
+      <li><a href="/popular">Fresh</a></li>
+      stored as user_id in a session
+      {% if 'user_id' in session %}
+      <li><a href="/logout">Logout</a></li>
+      {% else %}
+      <li><a href="/">Login</a></li>
+      {% endif %}
+    </ul> 
+  </div>
+</div>  -->
+
+
 </br>
 </br>
-  <div>
-</div>
+
+
+
+    </div>
 <div class="container">  
  
 {% block body %}{% endblock %}
@@ -50,7 +76,6 @@
 
 
         <a href="http://www.cornify.com" onclick="cornify_add();return false;"><img src="" width="14" height="14" border="0" alt="   " /></a><script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
-      </div>
-    </div>
+
   </body>
 </html>

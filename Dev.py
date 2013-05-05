@@ -6,7 +6,7 @@ import model
 import re
 import time
 import os
-import forms
+# import forms
 # import bcrypt
 
 from sqlalchemy import select, func, types, sql, update
@@ -156,7 +156,7 @@ def userpage():
 def logout():
 
     del session['user_id']
-    return render_template("logout.html")
+    return render_template("index.html")
 
 
 @app.route('/upload', methods=['GET', 'POST'])

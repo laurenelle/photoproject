@@ -90,8 +90,8 @@
      
 /*div, img, hr, ul, li, img {
   border: 1px solid red;
-}
-*/
+}*/
+
 /*TRANSPARENT NAV BAR*/
 /*change to a transluscent white?*/
 
@@ -177,12 +177,15 @@ li a:hover img {
 
 li img {
   background-color: white;
-  padding: 7px; margin: 0;
+  padding: 0px; margin: 0;
 }
 
 /*-------------------------------*/
 
+
+
 body {
+  padding-top: 100px;
   width: 90%;
   margin: 0 auto;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -201,7 +204,7 @@ body {
   background-repeat:repeat;}
   #content {overflow: auto;}
   
-   .navbar-inner{
+/*   .navbar-inner{
     background:transparent !important;
     }
 .navbar-inner container{
@@ -216,6 +219,6 @@ body {
 #banner{
     background:transparent !important;
     }​
-  }
+  }*/
 
 
