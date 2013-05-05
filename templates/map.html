@@ -18,6 +18,9 @@
     <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></script>
 <!--     watercolor map style -->
     <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.1"></script>
+
+    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+
     <script type="text/javascript">
       //create a single infoBubble that will be shared among the markers
       var infoBubble;
@@ -91,6 +94,8 @@ mapTypeControlOptions: {
 
         map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
 
+        var markers = [];
+
         {% for photo in photos %}
 
           var latlng{{photo.id}} = new google.maps.LatLng({{photo.latitude}}, {{photo.longitude}});
@@ -101,10 +106,12 @@ mapTypeControlOptions: {
 
           var content{{photo.id}} = '<div><img src="{{photo.thumbnail}}"><p>{{photo.caption}}</p></div>';
           // create a marker
-          createMarker("marker{{photo.id}}", latlng{{photo.id}}, content{{photo.id}});
+          var marker{{photo.id}} = createMarker("marker{{photo.id}}", latlng{{photo.id}}, content{{photo.id}});
+          markers.push(marker{{photo.id}});
 
         {% endfor %}
 
+        var markerCluster = new MarkerClusterer(map, markers);
       }
 
   function createMarker(name, latlng, content) {
@@ -115,6 +122,7 @@ mapTypeControlOptions: {
       draggable:false,
       animation: google.maps.Animation.DROP
     });
+
     google.maps.event.addListener(marker, "mouseover", function() {
       // if an info window exists close it, this function is called whenever mouseover a different marker
       //only called when the mouseover event happens - dynamic
@@ -141,14 +149,15 @@ mapTypeControlOptions: {
         // borderColor: '#2c2c2c',
         disableAutoPan: true,
         hideCloseButton: true,
-        // minWidth: 100,
+        // minWidth: 100
         // arrowPosition: 30
         hideCloseButton: false,
-        //change color of closebutton...
+        //change closebutton color?
         hideCloseButtonColor: '#2c2c2c',
       });
       infoBubble.open(map, marker);
     });
+    return marker;
   }
 
       google.maps.event.addDomListener(window, 'load', init);
