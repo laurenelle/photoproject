@@ -1,5 +1,5 @@
 from PIL import Image
-from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash, session, request, g
+from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash, session, request, g, json, jsonify
 from werkzeug import secure_filename
 from model import session as db_session, User, Photo, Vote, Tag, Photo_Tag, Location
 import model
@@ -92,7 +92,7 @@ def register():
 
 @app.route("/popular", methods=['GET', 'POST'])
 def popular():
-
+    # more recent votes carry more weight
     sql = """select v.photo_id, p.file_location, 
     sum( 1 / ( (extract(epoch from now()) - extract(epoch from v.timestamp)) ) * value ) as POPULAR 
     from votes v inner join photos p on p.id = v.photo_id group by v.photo_id, p.file_location order by 3 desc;"""
@@ -229,6 +229,23 @@ def addlocation():
    
         return redirect(url_for('userpage')) 
     return render_template("upload2.html")
+
+@app.route('/photosearch', methods=['POST', 'GET'])
+def photosearch():
+    if request.method == 'POST':
+        search = request.form['searchText']
+        goo = geocoders.GoogleV3()
+        geocodes = goo.geocode(search, exactly_one=False)
+        l2 = str(geocodes)
+        latitude = lat2(l2)
+        longitude = lon2(l2)
+        #latlng becomes tne new map center and zoom in for new view
+
+        #calculate based on a 25 mile radius
+
+        # return json object back to map.html
+        return jsonify(latitude=latitude, longitude=longitude)
+
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):

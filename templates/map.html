@@ -9,7 +9,7 @@
     </style>
 
     <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC_M1BWtN62aRUFVduggenGNTLF3pqSKk&sensor=false">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC_M1BWtN62aRUFVduggenGNTLF3pqSKk&sensor=false&libraries=places">
     </script>
 
 
@@ -19,8 +19,7 @@
 <!--     watercolor map style -->
     <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.1"></script>
 
-    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
-
+    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>  
 
     <script type="text/javascript">
       //create a single infoBubble that will be shared among the markers
@@ -98,21 +97,25 @@ mapTypeControlOptions: {
         var markers = [];
 
         {% for photo in photos %}
+          {% if photo.latitude != None and photo.longitude != None %}
+            var latlng{{photo.id}} = new google.maps.LatLng({{photo.latitude}}, {{photo.longitude}});
+            //SKIP over photos missing latlng
+            // if (latlng == null){
 
-          var latlng{{photo.id}} = new google.maps.LatLng({{photo.latitude}}, {{photo.longitude}});
-          //SKIP over photos missing latlng
-          // if (latlng == null){
+            // }
 
-          // }
-
-          var content{{photo.id}} = '<div><img src="{{photo.thumbnail}}"><p>{{photo.caption}}</p></div>';
-          // create a marker
-          var marker{{photo.id}} = createMarker("marker{{photo.id}}", latlng{{photo.id}}, content{{photo.id}});
-          markers.push(marker{{photo.id}});
-
+            var content{{photo.id}} = '<div><img src="{{photo.thumbnail}}"><p>{{photo.caption}}</p></div>';
+            // create a marker
+            var marker{{photo.id}} = createMarker("marker{{photo.id}}", latlng{{photo.id}}, content{{photo.id}});
+            markers.push(marker{{photo.id}});
+          {% endif %}
         {% endfor %}
 
         var markerCluster = new MarkerClusterer(map, markers);
+
+        // Location autocomplete
+        var input = /** @type {HTMLInputElement} */(document.getElementById('searchTextField'));
+        var autocomplete = new google.maps.places.Autocomplete(input);
       }
 
   function createMarker(name, latlng, content) {
@@ -162,13 +165,51 @@ mapTypeControlOptions: {
   }
 
       google.maps.event.addDomListener(window, 'load', init);
-      google.maps.event.trigger(map, "resize");
+      // google.maps.event.trigger(map, "resize");
 
     </script>
+
+<script>
+function search(evt) {
+  var searchText = document.getElementById("searchTextField").value
+  
+  var form = {
+    searchText: searchText
+  };
+
+  $.ajax({
+    type: "post",
+    url: "/photosearch",
+    data: form,
+    success: displayResults
+  });
+
+  return false;
+};
+
+function displayResults(json){
+  var latitude = json.latitude;
+  var longitude = json.longitude;
+  map.setCenter(new google.maps.LatLng(latitude, longitude));
+  map.setZoom(10);
+
+}
+
+$(function() {
+  $("div#search").on("click", "button.btn-search" , search);
+  // $("a.votebutton").click(vote);
+});
+</script>    
  
 {% endblock %}
 
 {% block body %}
+
+    <div id="search">
+
+      Location: <input class="input-xxlarge" name=search id="searchTextField" type="text" onkeyup="if (event.keyCode == 13) search(event)">
+      <button type=submit id="searchSubmit" class="btn btn-primary btn-search" data-loading-text="Loading...">Submit</button>
+    </div>
 
 <div id="map-canvas" ></div>
 
