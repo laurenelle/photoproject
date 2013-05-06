@@ -20,7 +20,6 @@ function vote(evt) {
   var id = button.attr("photoid");
   var vote = button.attr("vote");
   var owner = parseInt(button.attr("owner"));
-
   var form = {
     photoid: id,
     photoowner: owner,
@@ -45,6 +44,7 @@ $(function() {
   $("div#vote_results").on("click", "a.votebutton" , vote);
   // $("a.votebutton").click(vote);
 });
+
 </script>
 
 {% endblock %}

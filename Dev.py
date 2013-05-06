@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageChops, ImageOps
 from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash, session, request, g, json, jsonify
 from werkzeug import secure_filename
 from model import session as db_session, User, Photo, Vote, Tag, Photo_Tag, Location
@@ -109,7 +109,6 @@ def map():
 
 @app.route("/vote", methods=['GET', 'POST'])
 def vote():
-
     allphotos=db_session.query(Photo).all()
     
     if request.form:
@@ -120,24 +119,27 @@ def vote():
 
 
         if vote == "upvote":
-            v = Vote(value=1, give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
-            db_session.add(v)
-            p = db_session.query(Photo).filter_by(id=photoid).one()
-            p.up_vote = Photo.up_vote + 1
-            db_session.add(p)
-            db_session.commit()
-
-            return render_template("_vote.html", u=g.user, photos=allphotos)
-
+            vote_value = 1
         elif vote == "downvote":
-            v = Vote(value=-1, give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
-            db_session.add(v)
-            p = db_session.query(Photo).filter_by(id=photoid).one()
-            p.down_vote = Photo.down_vote + 1
-            db_session.add(p)
-            db_session.commit()
+            vote_value = -1    
 
-            return render_template("_vote.html", u=g.user, photos=allphotos)
+        v = Vote(value=vote_value, give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
+        db_session.add(v)
+        p = db_session.query(Photo).filter_by(id=photoid).one()
+        if vote == "upvote":
+            p.up_vote = Photo.up_vote + 1
+        elif vote == "downvote":
+            p.down_vote = Photo.down_vote + 1        
+        db_session.add(p)
+        db_session.commit()
+
+        sql = """select distinct v.photo_id
+                from votes v where v.give_vote_user_id = %s and v.value > 0;""" % (g.user_id)
+        upvotes = db_session.execute(sql)
+        sql = """select distinct v.photo_id
+                from votes v where v.give_vote_user_id = %s and v.value < 0;""" % (g.user_id)
+        downvotes = db_session.execute(sql)
+        return render_template("_vote.html", u=g.user, photos=allphotos, upvotes=upvotes, downvotes=downvotes)
 
     return render_template("vote.html", u=g.user, photos=allphotos)
 
