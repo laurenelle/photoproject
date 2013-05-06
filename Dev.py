@@ -109,7 +109,16 @@ def map():
 
 @app.route("/vote", methods=['GET', 'POST'])
 def vote():
-    allphotos=db_session.query(Photo).all()
+    allphotos=db_session.query(Photo).all()       
+    sql = """select distinct v.photo_id
+            from votes v where v.give_vote_user_id = %s and v.value > 0;""" % (g.user_id)
+    # print sql
+    upvotes = [ vote[0] for vote in db_session.execute(sql) ]
+    print upvotes
+    sql = """select distinct v.photo_id
+            from votes v where v.give_vote_user_id = %s and v.value < 0;""" % (g.user_id)
+    downvotes = [ vote[0] for vote in db_session.execute(sql) ]
+
     
     if request.form:
 
@@ -117,31 +126,34 @@ def vote():
         photoid = request.form['photoid']
         photoowner = request.form['photoowner']
 
+        v = db_session.query(Vote).filter_by(give_vote_user_id=g.user_id, photo_id=photoid).first()
+        if not v:
+            v = Vote(give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
+            db_session.add(v)
 
-        if vote == "upvote":
-            vote_value = 1
-        elif vote == "downvote":
-            vote_value = -1    
-
-        v = Vote(value=vote_value, give_vote_user_id=g.user_id, photo_id=photoid, receive_vote_user_id=photoowner)
-        db_session.add(v)
         p = db_session.query(Photo).filter_by(id=photoid).one()
+
         if vote == "upvote":
+            v.value = 1
             p.up_vote = Photo.up_vote + 1
         elif vote == "downvote":
+            v.value = -1
             p.down_vote = Photo.down_vote + 1        
-        db_session.add(p)
+        
         db_session.commit()
-
         sql = """select distinct v.photo_id
-                from votes v where v.give_vote_user_id = %s and v.value > 0;""" % (g.user_id)
-        upvotes = db_session.execute(sql)
+        from votes v where v.give_vote_user_id = %s and v.value > 0;""" % (g.user_id)
+        # print sql
+        upvotes = [ vote[0] for vote in db_session.execute(sql) ]
+        print upvotes
         sql = """select distinct v.photo_id
                 from votes v where v.give_vote_user_id = %s and v.value < 0;""" % (g.user_id)
-        downvotes = db_session.execute(sql)
+        downvotes = [ vote[0] for vote in db_session.execute(sql) ]
+
+
         return render_template("_vote.html", u=g.user, photos=allphotos, upvotes=upvotes, downvotes=downvotes)
 
-    return render_template("vote.html", u=g.user, photos=allphotos)
+    return render_template("vote.html", u=g.user, photos=allphotos, upvotes=upvotes, downvotes=downvotes)
 
 
 @app.route("/userpage")
@@ -235,8 +247,11 @@ def addlocation():
 @app.route('/photosearch', methods=['POST', 'GET'])
 def photosearch():
     if request.method == 'POST':
+        print "POST"
         search = request.form['searchText']
+        print search
         goo = geocoders.GoogleV3()
+        print "GOO:", goo
         geocodes = goo.geocode(search, exactly_one=False)
         l2 = str(geocodes)
         latitude = lat2(l2)
@@ -246,6 +261,7 @@ def photosearch():
         #calculate based on a 25 mile radius
 
         # return json object back to map.html
+        
         return jsonify(latitude=latitude, longitude=longitude)
 
 

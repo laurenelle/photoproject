@@ -9,14 +9,15 @@
   </p></div>
 </header>
 
-<h2></h2>
 <div id="vote_results">
 {% include "_vote.html" %}
 </div>
-
 <script>
 function vote(evt) {
+  console.log("Someone is voting");
   var button = $(this);
+  // button.addClass("btn-info");
+  button.addClass("disabled");
   var id = button.attr("photoid");
   var vote = button.attr("vote");
   var owner = parseInt(button.attr("owner"));
@@ -37,6 +38,8 @@ function vote(evt) {
 };
 
 function displayResults(html){
+  console.log("POST")
+  console.log(html)
   $("#vote_results").html(html)
 }
 
