@@ -125,6 +125,7 @@ img {
 #map_canvas img,
 .google-maps img {
   max-width: none;
+  text-align: center;
 }
 
 button,
