@@ -99,10 +99,6 @@ mapTypeControlOptions: {
         {% for photo in photos %}
           {% if photo.latitude != None and photo.longitude != None %}
             var latlng{{photo.id}} = new google.maps.LatLng({{photo.latitude}}, {{photo.longitude}});
-            //SKIP over photos missing latlng
-            // if (latlng == null){
-
-            // }
 
             var content{{photo.id}} = '<div><img src="{{photo.thumbnail}}"><p>{{photo.caption}}</p></div>';
             // create a marker
@@ -204,12 +200,8 @@ $(function() {
 {% endblock %}
 
 {% block body %}
-<header class="jumbotron subhead">
-  <div class="container">
-    <h1>JavaScript</h1>
-    <p class="lead">Bring Bootstrap's components to life—now with 13 custom jQuery plugins.
-  </p></div>
-</header>
+
+
 
     <div id="search">
 

@@ -88,9 +88,9 @@
  opacity:0.3;  filter:alpha(opacity=40);
  }*/
      
-/*div, img, hr, ul, li, img {
+div, img, hr, ul, li, img {
   border: 1px solid red;
-}*/
+}
 
 /*TRANSPARENT NAV BAR*/
 /*change to a transluscent white?*/
@@ -130,9 +130,6 @@ div.votes {
   text-align: center;
   font-size: 0.8em;
 }
-
-
-
 
 /*when photobox= hover
 display
@@ -187,7 +184,20 @@ li img {
 }
 
 /*-------------------------------*/
-
+.jumbotron:after {
+content: '';
+display: block;
+position: absolute;
+text-align: center;
+height: 275px;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+background-color: #18e99f;
+/*background: url("../img/blue-beige-clouds.png") center;*/
+opacity: .2;
+}
 
 
 body {

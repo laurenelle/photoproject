@@ -17,7 +17,7 @@
 
 <!--         <h1 class="customfont">Wanderlust</h1> -->
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top center">
      <div class="navbar-inner">
     <div class="nav">
       <li class="active">
@@ -37,27 +37,6 @@
 </div> 
 </div>
 
-
-<!-- <div class="navbar navbar-fixed-top center">
-     <div class="navbar-inner">
-    <ul class="nav">
-      <li class="active">
-      <li><a href="{{url_for('userpage')}}">You</a></li>
-      <li><a href="/map">Your Map</a></li>
-      <li><a href="/upload">Upload</a></li>
-      <li><a href="/vote">Vote</a></li>
-      <li><a href="/popular">Fresh</a></li>
-      stored as user_id in a session
-      {% if 'user_id' in session %}
-      <li><a href="/logout">Logout</a></li>
-      {% else %}
-      <li><a href="/">Login</a></li>
-      {% endif %}
-    </ul> 
-  </div>
-</div>  -->
-
-
 </br>
 </br>
 
@@ -65,13 +44,11 @@
 
     </div>
 <div class="container">  
+
  
 {% block body %}{% endblock %}
       
         </div>
-
-
-        <a href="http://www.cornify.com" onclick="cornify_add();return false;"><img src="" width="14" height="14" border="0" alt="   " /></a><script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 
   </body>
 </html>

@@ -337,6 +337,7 @@ a:focus {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
+  text-align: center;
   width: 940px;
 }
 
@@ -3989,6 +3990,8 @@ input[type="submit"].btn.btn-mini {
   margin-bottom: 20px;
   margin-left: 0;
   list-style: none;
+  text-align: center ;
+  ;
 }
 
 .nav > li > a {
@@ -6221,7 +6224,10 @@ a.badge:focus {
   font-weight: 200;
   line-height: 30px;
   color: inherit;
-  background-color: #eeeeee;
+/*  background-color: #eeeeee;*/
+  background: url("../img/blue-beige-clouds.png") center;
+  opacity: .8;
+
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
