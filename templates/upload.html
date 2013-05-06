@@ -6,17 +6,14 @@
 <div class="hero-unit">
     <title>Upload new File</title>
     <h1>Upload a Photo</h1>
+    <br/>
     <div id="upload">
     <form action="{{url_for("uploadfile")}}" method="POST" enctype=multipart/form-data>
-</br>
-      File: <input type=file name=file><br>
-  </br>
-    Caption: <input type=text name=caption ><br>
-
-<br>
+<div align="center">File: <input type=file name=file></div><br/>
+<div align="center"><input type=text name=caption placeholder="add a caption"></div><br/>
 <!-- <button type=submit class="btn-custom-darken" data-loading-text="Loading...">Upload</button>
  -->
-<input class="btn btn-custom-lighten btn-large" type="submit" name-upload>
+<input class="btn-custom-gblue btn-large" type="submit" name-upload>
 
 </form>
 </div>

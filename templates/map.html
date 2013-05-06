@@ -100,7 +100,7 @@ mapTypeControlOptions: {
           {% if photo.latitude != None and photo.longitude != None %}
             var latlng{{photo.id}} = new google.maps.LatLng({{photo.latitude}}, {{photo.longitude}});
 
-            var content{{photo.id}} = '<div><img src="{{photo.thumbnail}}"><p>{{photo.caption}}</p></div>';
+            var content{{photo.id}} = '<div><a href="{{url_for('uploaded_file',filename=photo.filename)}}" rel="lightbox" title="{{photo.caption}}"><img src="{{photo.thumbnail}}" alt="{{photo.caption}}"/></a></div>';
             // create a marker
             var marker{{photo.id}} = createMarker("marker{{photo.id}}", latlng{{photo.id}}, content{{photo.id}});
             markers.push(marker{{photo.id}});
@@ -140,7 +140,7 @@ mapTypeControlOptions: {
         content: content, 
         // maxWidth: 300,
         // shadowStyle: 1,
-        padding: 20,
+        padding: 15,
         // backgroundColor: 'rgb(255, 255, 255)',
         //rounds corners:
         borderRadius: 10,
@@ -149,9 +149,10 @@ mapTypeControlOptions: {
         // borderColor: '#2c2c2c',
         disableAutoPan: true,
         hideCloseButton: true,
-        // minWidth: 100
+        minWidth: 100,
+        minHeight: 100,
         // arrowPosition: 30
-        hideCloseButton: false,
+        hideCloseButton: true,
         //change closebutton color?
         hideCloseButtonColor: '#2c2c2c',
       });
@@ -206,9 +207,10 @@ $(function() {
     <div id="search">
 
       Location: <input class="input-xxlarge" name=search id="searchTextField" type="text" onkeyup="if (event.keyCode == 13) search(event)">
-      <button type=submit id="searchSubmit" class="btn btn-primary btn-search" data-loading-text="Loading...">Submit</button>
+      <button type=submit id="searchSubmit" class="btn btn-custom-manila btn-large" data-loading-text="Loading...">Submit</button>
     </div>
 
 <div id="map-canvas" ></div>
+
 
 {% endblock %}

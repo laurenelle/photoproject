@@ -2,16 +2,17 @@
 {% block body %}
 <header class="jumbotron subhead">
   <div class="container">
-    <h1>JavaScript</h1>
+    <h1>Your Photos</h1>
     <p class="lead">Bring Bootstrap's components to life—now with 13 custom jQuery plugins.
   </p></div>
 </header>
 <p>
 </p>
-<ul class="usergrid">
+<ul>
     {% for photo in photos %}
-    <li><a href="{{url_for('uploaded_file',filename=photo.filename)}}" rel="lightbox" title="{{photo.caption}}"> 
-    	<img src="{{url_for('uploaded_file', filename=photo.filename)}}" alt="{{photo.caption}}" class="img-rounded" /><p></p></a>
+    <li> <a href="{{url_for('uploaded_file',filename=photo.filename)}}" rel="lightbox" title="{{photo.caption}}">
+		      <img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded"/>
+        </a>
     </li>
 
     {% else %}
@@ -20,5 +21,8 @@
     <!--     img src should technically be the thumbnail, but the thumbnail is saved in a way that renders blurry -->
 </ul>
 {% endblock %}
+
+
+
 
 

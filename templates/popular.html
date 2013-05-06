@@ -9,15 +9,13 @@
 </header>
 <p>
 </p>
-<ul class="usergrid">
+<ul>
     {% for photo in photos %}
     
-    <li><a href="{{url_for("popular")}}">{{photo.id}} 
-    	<img src="{{photo.file_location}}" alt="{{photo.caption}}" height="200" width="200" class="img-rounded"/></a>
+    <li><a href="/{{photo.file_location}}" rel="lightbox" title="{{photo.caption}}"> 
+    	<img src="{{photo.file_location}}" alt="{{photo.caption}}" class="img-rounded" /><p></p></a>
     </li>
 
     {% endfor %}
 </ul>
 {% endblock %}
-
-

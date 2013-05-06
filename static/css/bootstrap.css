@@ -339,6 +339,7 @@ a:focus {
 .navbar-fixed-bottom .container {
   text-align: center;
   width: 940px;
+  padding-top: 20px;
 }
 
 .span12 {
