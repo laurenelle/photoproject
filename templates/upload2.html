@@ -8,8 +8,8 @@
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC_M1BWtN62aRUFVduggenGNTLF3pqSKk&sensor=true&libraries=places">
     </script>
-
-    <title>Places Autocomplete</title>
+<div class="hero-unit">
+    <h1></h1>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <link href="/maps/documentation/javascript/examples/default.css" rel="stylesheet">
@@ -25,15 +25,16 @@
 	</head>
 
 
-    <title>Where'd you take your photo?</title>
-    <h1>Where'd you take your photo?</h1>
+
+    <h3>Where'd you take your photo?</h3>
     <div id="addlocation">
     <div id="panel" >
       <form action="{{url_for("addlocation")}}" method="POST" enctype=multipart/form-data>
       City: <input class="input-xxlarge" name=city id="searchTextField" type="text">
-      <button type=submit class="btn btn-primary" data-loading-text="Loading...">Submit</button>
+      <button type=submit class="btn-custom-gblue btn-large" data-loading-text="Loading...">Submit</button>
     </form>
     </div>
+  </div>
 
 </html>
 

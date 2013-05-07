@@ -2,26 +2,25 @@
     {% for photo in photos |sort(attribute="up_vote",reverse=True)%}
     <li>
       <div id="photobox">
-        <a href="{{url_for('uploaded_file',filename=photo.filename)}}" rel="lightbox" title="{{photo.caption}}">
-		      <img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded"/>
-        </a>
-	 
-	      <div class="caption"></div>
-		    <div class="votes">
+    	<a href="{{url_for('uploaded_file',filename=photo.filename)}}" rel="lightbox" title="{{photo.caption}}">
+    		
 
-				{% if photo.id in upvotes %}
-				{% set up_status="btn-info" %}
-				{% elif photo.id in downvotes %}
-				{% set down_status="btn-info" %}
-				{% endif %}
-				  <a id="up_{{photo.id}}" class="btn votebutton {{up_status}}" photoid="{{photo.id}}" vote="upvote" owner="{{photo.user_id}}" href="#"><i class="icon-arrow-up"></i></a>
-				  <a id="down_{{photo.id}}" class="btn votebutton {{down_status}}" photoid="{{photo.id}}" vote="downvote" owner="{{photo.user_id}}" href="#"><i class="icon-arrow-down"></i></a>
-				{% set up_status= "" %}
-				{% set down_status = "" %}
-
-	      </div>
-		  </div>
-
-	  </li>
+	      <img src="{{photo.file_location}}" alt="{{photo.caption}}" height="150" width="150" class="img-rounded"/>
+	    </a>
+	     <div class="caption"></div>
+		 <div class="votes">
+			{% if photo.id in upvotes %}
+			{% set up_status="btn-info" %}
+			{% elif photo.id in downvotes %}
+			{% set down_status="btn-info" %}
+			{% endif %}
+			  <a id="up_{{photo.id}}" class="btn votebutton {{up_status}}" photoid="{{photo.id}}" vote="upvote" owner="{{photo.user_id}}" href="#"><i class="icon-arrow-up"></i></a>
+			{{photo.up_vote - photo.down_vote}}
+			  <a id="down_{{photo.id}}" class="btn votebutton {{down_status}}" photoid="{{photo.id}}" vote="downvote" owner="{{photo.user_id}}" href="#"><i class="icon-arrow-down"></i></a>
+			{% set up_status= "" %}
+			{% set down_status = "" %}
+      	</div>
+	  </div>
+	</li>
 	{% endfor %}
 </ul>

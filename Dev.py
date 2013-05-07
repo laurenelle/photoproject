@@ -92,7 +92,7 @@ def register():
 
 @app.route("/popular", methods=['GET', 'POST'])
 def popular():
-    # more recent votes carry more weight
+    # more recent votes carry more weight, 1/x over time vote weight goes down dramatically
     sql = """select v.photo_id, p.file_location, p.caption,
     sum( 1 / ( (extract(epoch from now()) - extract(epoch from v.timestamp)) ) * value ) as POPULAR 
     from votes v inner join photos p on p.id = v.photo_id group by p.file_location, v.photo_id, p.caption order by 4 desc;"""
@@ -112,7 +112,6 @@ def vote():
     allphotos=db_session.query(Photo).all()       
     sql = """select distinct v.photo_id
             from votes v where v.give_vote_user_id = %s and v.value > 0;""" % (g.user_id)
-    # print sql
     upvotes = [ vote[0] for vote in db_session.execute(sql) ]
     print upvotes
     sql = """select distinct v.photo_id
@@ -143,11 +142,9 @@ def vote():
         db_session.commit()
         sql = """select distinct v.photo_id
         from votes v where v.give_vote_user_id = %s and v.value > 0;""" % (g.user_id)
-        # print sql
         upvotes = [ vote[0] for vote in db_session.execute(sql) ]
-        print upvotes
         sql = """select distinct v.photo_id
-                from votes v where v.give_vote_user_id = %s and v.value < 0;""" % (g.user_id)
+        from votes v where v.give_vote_user_id = %s and v.value < 0;""" % (g.user_id)
         downvotes = [ vote[0] for vote in db_session.execute(sql) ]
 
 
@@ -256,11 +253,6 @@ def photosearch():
         l2 = str(geocodes)
         latitude = lat2(l2)
         longitude = lon2(l2)
-        #latlng becomes tne new map center and zoom in for new view
-
-        #calculate based on a 25 mile radius
-
-        # return json object back to map.html
         
         return jsonify(latitude=latitude, longitude=longitude)
 

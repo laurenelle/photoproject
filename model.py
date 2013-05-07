@@ -16,8 +16,6 @@ from wtforms import Form, BooleanField, TextField, PasswordField, validators
 
 
 engine = create_engine("postgres://lauren:@localhost/lauren", echo=False)
-
-#db = postgresql.open("postgres://localhost/lauren")
 session = scoped_session(sessionmaker(bind=engine, autocommit = False, autoflush = False))
 
 Base = declarative_base()

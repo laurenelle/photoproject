@@ -14,9 +14,7 @@
 </div>
 <script>
 function vote(evt) {
-  console.log("Someone is voting");
   var button = $(this);
-  // button.addClass("btn-info");
   button.addClass("disabled");
   var id = button.attr("photoid");
   var vote = button.attr("vote");
@@ -38,7 +36,6 @@ function vote(evt) {
 };
 
 function displayResults(html){
-  console.log("POST")
   console.log(html)
   $("#vote_results").html(html)
 }

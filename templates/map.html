@@ -162,7 +162,7 @@ mapTypeControlOptions: {
   }
 
       google.maps.event.addDomListener(window, 'load', init);
-      // google.maps.event.trigger(map, "resize");
+
 
     </script>
 
@@ -194,6 +194,7 @@ function displayResults(json){
 
 $(function() {
   $("div#search").on("click", "button.btn-search" , search);
+
 });
 </script>    
  
@@ -206,7 +207,7 @@ $(function() {
     <div id="search">
 
       Location: <input class="input-xxlarge" name=search id="searchTextField" type="text" onkeyup="if (event.keyCode == 13) search(event)">
-      <button type=submit id="searchSubmit" class="btn btn-custom-manila btn-large" data-loading-text="Loading...">Submit</button>
+      <button type=submit id="searchSubmit" class="btn-custom-manila btn-large" data-loading-text="Loading...">Submit</button>
     </div>
 
 <div id="map-canvas" ></div>
