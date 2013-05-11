@@ -3,48 +3,47 @@
 {% block body %}
 
 <header class="jumbotron subhead">
-  <div class="container">
-    <h1>Cast Your Vote</h1>
-    <p class="lead">Vote for your favorite photos.
-  </p></div>
+  <title>Vote</title>
+    <div class="container">
+      <h1>Cast Your Vote</h1>
+      <p class="lead">Vote for your favorite photos.</p>
+    </div>
 </header>
 
 <div id="vote_results">
-{% include "_vote.html" %}
+  {% include "_vote.html" %}
 </div>
+
 <script>
-function vote(evt) {
-  var button = $(this);
-  button.addClass("disabled");
-  var id = button.attr("photoid");
-  var vote = button.attr("vote");
-  var owner = parseInt(button.attr("owner"));
-  var form = {
-    photoid: id,
-    photoowner: owner,
-    vote: vote
-  };
+  function vote(evt) {
+    var button = $(this);
+    button.addClass("disabled");
+    var id = button.attr("photoid");
+    var vote = button.attr("vote");
+    var owner = parseInt(button.attr("owner"));
+    var form = {
+      photoid: id,
+      photoowner: owner,
+      vote: vote
+    };
+    $.ajax({
+      type: "post",
+      url: "/vote",
+      data: form,
+      success: displayResults
+    });
 
-  $.ajax({
-    type: "post",
-    url: "/vote",
-    data: form,
-    success: displayResults
+    return false;
+    };
+
+  function displayResults(html){
+    console.log(html)
+    $("#vote_results").html(html)
+  }
+
+  $(function() {
+    $("div#vote_results").on("click", "a.votebutton" , vote);
   });
-
-  return false;
-};
-
-function displayResults(html){
-  console.log(html)
-  $("#vote_results").html(html)
-}
-
-$(function() {
-  $("div#vote_results").on("click", "a.votebutton" , vote);
-  // $("a.votebutton").click(vote);
-});
-
 </script>
 
 {% endblock %}

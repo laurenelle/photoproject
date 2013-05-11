@@ -11,18 +11,14 @@
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC_M1BWtN62aRUFVduggenGNTLF3pqSKk&sensor=false&libraries=places">
     </script>
-
-
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></script>
 <!--     watercolor map style -->
     <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.1"></script>
-
     <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>  
-
     <script type="text/javascript">
-      //create a single infoBubble that will be shared among the markers
+      //create a single infoBubble that's shared among the markers
       var infoBubble;
       
       function init() {
@@ -73,46 +69,40 @@ var layer = "watercolor";
 
   var styledMap = new google.maps.StyledMapType(styles,
     {name: "Styled Map"});
-
-
-        var mapOptions = {
-          center: new google.maps.LatLng(37.463, 122.255),
-          zoom: 2,
-          mapTypeId: layer,
-          panControl: false,
-          zoomControl: true,
-          mapTypeControl: false,
-          // scaleControl: true,
-          streetViewControl: false,
-          overviewMapControl: false,
+      var mapOptions = {
+        center: new google.maps.LatLng(37.463, 122.255),
+        zoom: 2,
+        mapTypeId: layer,
+        panControl: false,
+        zoomControl: true,
+        mapTypeControl: false,
+        // scaleControl: true,
+        streetViewControl: false,
+        overviewMapControl: false,
 
 mapTypeControlOptions: {
-      mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']}
+  mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']}
 
-        };
-        map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-        map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
-
-        var markers = [];
-
-        {% for photo in photos %}
-          {% if photo.latitude != None and photo.longitude != None %}
-            var latlng{{photo.id}} = new google.maps.LatLng({{photo.latitude}}, {{photo.longitude}});
-
-            var content{{photo.id}} = '<div><a href="{{url_for('uploaded_file',filename=photo.filename)}}" rel="lightbox" title="{{photo.caption}}"><img src="{{photo.thumbnail}}" alt="{{photo.caption}}"/></a></div>';
-            // create a marker
-            var marker{{photo.id}} = createMarker("marker{{photo.id}}", latlng{{photo.id}}, content{{photo.id}});
-            markers.push(marker{{photo.id}});
-          {% endif %}
+};
+        
+map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
+  var markers = [];
+    {% for photo in photos %}
+      {% if photo.latitude != None and photo.longitude != None %}
+        var latlng{{photo.id}} = new google.maps.LatLng({{photo.latitude}}, {{photo.longitude}});
+        var content{{photo.id}} = '<div><a href="{{url_for('uploaded_file',filename=photo.filename)}}" rel="lightbox" title="{{photo.caption}}"><img src="{{photo.thumbnail}}" alt="{{photo.caption}}"/></a></div>';
+        // create a marker
+        var marker{{photo.id}} = createMarker("marker{{photo.id}}", latlng{{photo.id}}, content{{photo.id}});
+        markers.push(marker{{photo.id}});
+        {% endif %}
         {% endfor %}
 
         var markerCluster = new MarkerClusterer(map, markers);
-
         // Location autocomplete
         var input = /** @type {HTMLInputElement} */(document.getElementById('searchTextField'));
         var autocomplete = new google.maps.places.Autocomplete(input);
-      }
+    }
 
   function createMarker(name, latlng, content) {
     //creates all the markers in the for loop
@@ -121,9 +111,9 @@ mapTypeControlOptions: {
       map: map,
       draggable:false,
       animation: google.maps.Animation.DROP
-    });
+  });
 
-    google.maps.event.addListener(marker, "mouseover", function() {
+  google.maps.event.addListener(marker, "mouseover", function() {
       // if an info window exists close it, this function is called whenever mouseover a different marker
       //only called when the mouseover event happens - dynamic
 
@@ -135,41 +125,39 @@ mapTypeControlOptions: {
 
 
 
-      if (infoBubble) infoBubble.close();
-      infoBubble = new InfoBubble({
-        content: content, 
-        // maxWidth: 300,
-        // shadowStyle: 1,
-        padding: 15,
-        // backgroundColor: 'rgb(255, 255, 255)',
-        //rounds corners:
-        borderRadius: 10,
-        // arrowSize: 10,
-        borderWidth: 1,
-        // borderColor: '#2c2c2c',
-        disableAutoPan: true,
-        hideCloseButton: true,
-        minWidth: 100,
-        minHeight: 100,
-        // arrowPosition: 30
-        hideCloseButton: true,
-        //change closebutton color?
-        hideCloseButtonColor: '#2c2c2c',
-      });
-      infoBubble.open(map, marker);
-    });
-    return marker;
-  }
+if (infoBubble) infoBubble.close();
+infoBubble = new InfoBubble({
+  content: content, 
+  // maxWidth: 300,
+  // shadowStyle: 1,
+  padding: 15,
+  // backgroundColor: 'rgb(255, 255, 255)',
+  //rounds corners:
+  borderRadius: 10,
+  // arrowSize: 10,
+  borderWidth: 1,
+  // borderColor: '#2c2c2c',
+  disableAutoPan: true,
+  hideCloseButton: true,
+  minWidth: 100,
+  minHeight: 100,
+  // arrowPosition: 30
+  hideCloseButton: true,
+  //change closebutton color?
+  hideCloseButtonColor: '#2c2c2c',
+});
+infoBubble.open(map, marker);
+});
+return marker;
+}
 
-      google.maps.event.addDomListener(window, 'load', init);
+google.maps.event.addDomListener(window, 'load', init);
 
-
-    </script>
+</script>
 
 <script>
 function search(evt) {
   var searchText = document.getElementById("searchTextField").value
-  
   var form = {
     searchText: searchText
   };
@@ -199,16 +187,17 @@ $(function() {
 </script>    
  
 {% endblock %}
-
 {% block body %}
 
 
+<title>Map</title>
 
-    <div id="search">
+<div id="search">
 
-      Location: <input class="input-xxlarge" name=search id="searchTextField" type="text" onkeyup="if (event.keyCode == 13) search(event)">
-      <button type=submit id="searchSubmit" class="btn-custom-manila btn-large" data-loading-text="Loading...">Submit</button>
-    </div>
+  Location: <input class="input-xxlarge" name=search id="searchTextField" type="text" onkeyup="if (event.keyCode == 13) search(event)">
+  <button type=submit id="searchSubmit" class="btn-custom-manila btn-large" data-loading-text="Loading...">Submit</button>
+
+</div>
 
 <div id="map-canvas" ></div>
 

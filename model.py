@@ -21,7 +21,7 @@ session = scoped_session(sessionmaker(bind=engine, autocommit = False, autoflush
 Base = declarative_base()
 Base.query = session.query_property()
 
-### Class declarations go here
+### Class declarations 
 
 class User(Base):
 	__tablename__ = "users"
@@ -32,7 +32,7 @@ class User(Base):
 	photos = relationship("Photo", backref="users", lazy="joined")
 	# users are the parents of the photo children
 
-#increment function for up and down vote based on when a vote is cast - write this function
+
 class Photo(Base):
 	__tablename__ = "photos"
 
@@ -97,7 +97,7 @@ class Location(Base):
 	neighborhood = Column(String(64), nullable=True)
 
 
-### End class declarations
+### End of class declarations
 
 
 def create_db():

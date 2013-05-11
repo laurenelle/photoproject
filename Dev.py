@@ -92,7 +92,7 @@ def register():
 
 @app.route("/popular", methods=['GET', 'POST'])
 def popular():
-    # more recent votes carry more weight, 1/x over time vote weight goes down dramatically
+    # more recent votes carry more weight, 1/x over time votes weight goes down dramatically
     sql = """select v.photo_id, p.file_location, p.caption,
     sum( 1 / ( (extract(epoch from now()) - extract(epoch from v.timestamp)) ) * value ) as POPULAR 
     from votes v inner join photos p on p.id = v.photo_id group by p.file_location, v.photo_id, p.caption order by 4 desc;"""
@@ -146,7 +146,6 @@ def vote():
         sql = """select distinct v.photo_id
         from votes v where v.give_vote_user_id = %s and v.value < 0;""" % (g.user_id)
         downvotes = [ vote[0] for vote in db_session.execute(sql) ]
-
 
         return render_template("_vote.html", u=g.user, photos=allphotos, upvotes=upvotes, downvotes=downvotes)
 
