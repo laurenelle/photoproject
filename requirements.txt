@@ -9,3 +9,4 @@ wsgiref==0.1.2
 geopy==0.95.1
 gunicorn==0.17.2
 PIL==1.1.7
+psycopg2==2.5
