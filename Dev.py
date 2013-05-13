@@ -11,7 +11,6 @@ import os
 
 from sqlalchemy import select, func, types, sql, update
 from allfunctions import *
-from K import *
 from geopy import geocoders
 
 
@@ -21,7 +20,7 @@ UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
 
 app = Flask(__name__)
-app.secret_key = 'K.key'
+app.secret_key = os.environ['SECRET_KEY']
 app.config['UPLOAD_PHOTO_FOLDER'] = UPLOAD_PHOTO_FOLDER
 app.config.from_object(__name__)
 
