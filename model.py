@@ -104,7 +104,7 @@ def create_db():
     Base.metadata.create_all(engine)
 
 
-def connect(db_uri="postgres://lauren:@localhost/lauren"):
+def connect(db_uri=database_url):
     global engine
     global session
     engine = create_engine(db_uri, echo=False) 
