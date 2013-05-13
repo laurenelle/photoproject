@@ -14,8 +14,8 @@ from wtforms import Form, BooleanField, TextField, PasswordField, validators
 
 
 
-
-engine = create_engine("postgres://lauren:@localhost/lauren", echo=False)
+database_url = os.environ['DATABASE_URL']
+engine = create_engine(database_url, echo=False)
 session = scoped_session(sessionmaker(bind=engine, autocommit = False, autoflush = False))
 
 Base = declarative_base()
