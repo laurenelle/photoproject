@@ -52,7 +52,7 @@ def home_page():
         return redirect(url_for("userpage"))
     return render_template("index.html")
 
-# breaks when user doesn't exist or submits wrong password
+
 @app.route("/login", methods=["POST"])
 def login():
     
@@ -69,7 +69,7 @@ def login():
     session['user_id'] = u.id
     return redirect(url_for("userpage"))
 
-# breaks when user already exists
+
 @app.route("/signup", methods=['POST'])
 def register():
     email = request.form['email']
