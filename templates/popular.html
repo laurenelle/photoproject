@@ -1,21 +1,39 @@
 {% extends 'layout.html' %}
 {% block body %}
 <header class="jumbotron subhead">
-	        <title>Fresh</title>
+          <title>Fresh</title>
   <div class="container">
     <h1>Fresh Views</h1>
     <p class="lead">Today's Most Popular Photos
   </p></div>
 </header>
+
+
+
+<div class="hero-unit-clear">
+    {% for photo in topPhoto %}
+
+    <div>
+      <img src="{{photo.file_location}}" alt="{{photo.caption}}" class="img-rounded featuredphoto" /></a>
+<!--     <p style="color:white;">{{photo.caption}}</p> -->
+    </div>
+    {% endfor %}
+
+</div>
+
 <p>
 </p>
+
 <ul>
     {% for photo in photos %}
     
     <li><a href="/{{photo.file_location}}" rel="lightbox" title="{{photo.caption}}"> 
-    	<img src="{{photo.file_location}}" alt="{{photo.caption}}" class="img-rounded" /></a>
+      <img src="{{photo.file_location}}" alt="{{photo.caption}}" class="img-rounded" /></a>
     </li>
 
     {% endfor %}
 </ul>
+
+
+
 {% endblock %}

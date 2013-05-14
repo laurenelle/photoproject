@@ -1,3 +1,43 @@
+.featuredphoto {
+  max-height: 400;
+  max-width:600;
+}
+
+.hero-unit-clear {
+  padding: 30px;
+  margin-bottom: 30px;
+  font-size: 18px;
+  font-weight: 200;
+  line-height: 30px;
+
+
+/*  background-color: #eeeeee;*/
+  background-color: black;
+/*  opacity: .8;*/
+
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+}
+
+.hero-unit-clear h1 {
+  margin-bottom: 0;
+  font-size: 60px;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: inherit;
+}
+
+.hero-unit-clear li {
+  line-height: 30px;
+}
+
+
+.hero-unit-clear img{
+  max-width: 600px;
+  max-height: auto;
+
+  }
 /*seaform green buttons for all pages*/
 
 
