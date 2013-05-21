@@ -13,9 +13,6 @@ from sqlalchemy import select, func, types, sql, update
 from allfunctions import *
 from geopy import geocoders
 
-
-#from flask_heroku import Heroku
-
 UPLOAD_PHOTO_FOLDER = '/Users/lauren/Desktop/PHOTOS'
 ALLOWED_EXTENSIONS = set(['PNG', 'png', 'jpg', 'JPG', 'jpeg','JPEG', 'gif', 'GIF'])
 
@@ -48,7 +45,10 @@ def shutdown_session(exception = None):
 @app.route('/')
 def home_page():
     
-    if g.user_id:
+    if g.user_id == None:
+        #add error message
+        flash("Please sign in first")
+    elif g.user_id:
         return redirect(url_for("userpage"))
     return render_template("index.html")
 
@@ -159,6 +159,7 @@ def vote():
 def userpage():
 
     if not g.user_id:
+        print "FLASH TEST"
         flash("Please log in", "warning")
         return redirect(url_for("/"))
 

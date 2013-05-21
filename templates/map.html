@@ -1,88 +1,88 @@
 {% extends 'layout.html' %}
 
 {% block head %}
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 100; padding: 50; }
-      #map-canvas { height: 655px; }
-    </style>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  
+  <style type="text/css">
+    html { height: 100% }
+    body { height: 100%; margin: 100; padding: 50; }
+    #map-canvas { height: 655px; }
+  </style>
 
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC_M1BWtN62aRUFVduggenGNTLF3pqSKk&sensor=false&libraries=places">
-    </script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></script>
-<!--     watercolor map style -->
-    <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.1"></script>
-    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>  
-    <script type="text/javascript">
-      //create a single infoBubble that's shared among the markers
-      var infoBubble;
+  <script type="text/javascript"
+    src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDC_M1BWtN62aRUFVduggenGNTLF3pqSKk&sensor=false&libraries=places">
+  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+  <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble.js"></script>
+  <!--     watercolor map style -->
+  <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.1"></script>
+  <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>  
+  <script type="text/javascript">
       
+  //create a single infoBubble that's shared among the markers
+  var infoBubble;    
       function init() {
          var styles = [
-    {
+      {
       stylers: [
         { hue: "#00ffe6" },
         { saturation: -44 }
-      ]
-    },{
+        ]
+      },{
       featureType: "road",
       elementType: "geometry",
       stylers: [
         { lightness: 100 },
         { visibility: "off" }
-      ]
-    },{
+        ]
+      },{
       featureType: "road",
       elementType: "labels",
       stylers: [
         { visibility: "off" }
-      ]
-    },
-    {
+        ]
+      },
+      {
       featureType: "water",
       stylers: [
         {color: "#7fc8ed"},
         { visibility: "on" }
-      ]
-    },
-    {
-        elementType: "labels",
-            stylers: [{
-            visibility: "off"
+        ]
+      },
+      {
+      elementType: "labels",
+        stylers: [{
+          visibility: "off"
         }]
-    }
-    ,{
+      },
+      {
       featureType: "landscape",
-      stylers: [
-        {color: "#2ECC71"},
-        { visibility: "on" }
-      ]  
-}
-
-  ];
+        stylers: [
+          {color: "#2ECC71"},
+          { visibility: "on" }
+          ]  
+        }
+      ];
 
 var layer = "watercolor";
 
-  var styledMap = new google.maps.StyledMapType(styles,
-    {name: "Styled Map"});
-      var mapOptions = {
-        center: new google.maps.LatLng(37.463, 122.255),
-        zoom: 2,
-        mapTypeId: layer,
-        panControl: false,
-        zoomControl: true,
-        mapTypeControl: false,
-        // scaleControl: true,
-        streetViewControl: false,
-        overviewMapControl: false,
+var styledMap = new google.maps.StyledMapType(styles,
+  {name: "Styled Map"});
+
+var mapOptions = {
+  center: new google.maps.LatLng(37.463, 122.255),
+  zoom: 2,
+  mapTypeId: layer,
+  panControl: false,
+  zoomControl: true,
+  mapTypeControl: false,
+  // scaleControl: true,
+  streetViewControl: false,
+  overviewMapControl: false,
 
 mapTypeControlOptions: {
   mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']}
-
 };
         
 map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -97,7 +97,6 @@ map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
         markers.push(marker{{photo.id}});
         {% endif %}
         {% endfor %}
-
         var markerCluster = new MarkerClusterer(map, markers);
         // Location autocomplete
         var input = /** @type {HTMLInputElement} */(document.getElementById('searchTextField'));
@@ -114,16 +113,8 @@ map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
   });
 
   google.maps.event.addListener(marker, "mouseover", function() {
-      // if an info window exists close it, this function is called whenever mouseover a different marker
-      //only called when the mouseover event happens - dynamic
-
-// InfoBubble.prototype.setMaxWidth = function(width) {
-//   this.set('maxWidth', width);
-// };
-// InfoBubble.prototype['setMaxWidth'] = InfoBubble.prototype.setMaxWidth;
-
-
-
+    // if an info window exists close it, this function is called whenever mouseover a different marker
+    //only called when the mouseover event happens - dynamic
 
 if (infoBubble) infoBubble.close();
 infoBubble = new InfoBubble({

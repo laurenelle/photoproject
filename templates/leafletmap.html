@@ -1,0 +1,27 @@
+
+
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+ <!--[if lte IE 8]>
+     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+ <![endif]-->
+
+
+<script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+
+
+<script>
+//creates a map in the map div, sets the view to to given latlng and specified zoom
+var map = L.map('llmap').setView([37.7750, 122.4183], 13);
+
+// add an OpenStreetMap tile layer
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+</script>
+
+
+
+<div id=​'llmap' style=​"width:​ 600px;​ height:​ 400px;​ position:​ relative;​" class=​"leaflet-container leaflet-fade-anim" tabindex=​"0">​…​</div>​
+
+
+

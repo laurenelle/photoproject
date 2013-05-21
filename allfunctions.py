@@ -41,11 +41,6 @@ def allowed_file(filename):
 
 def get_exif_data(image):
     """Returns a dictionary from the exif data of a PIL Image item. Also converts the GPS Tags"""
-    # there may be a less nested way to do this function. Since you don't have an else after your
-    # first if, you probably don't need it; you can use an exception there to return early.
-    # try for tag...
-    # except SomeError:
-    # return some_data
 
     exif_data = {}
     print "BEFORE"
@@ -72,9 +67,6 @@ def get_exif_data(image):
 
     return exif_data
 
-# is there a particular reason you're starting these variable names with _?
-# usually reserved and may not be imported when the file is imported
-
 def _get_if_exist(data, key):
     if key in data:
        return data[key]
@@ -85,9 +77,7 @@ def _get_if_exist(data, key):
 def _convert_to_degress(value):
 
     """Helper function to convert the GPS coordinates stored in the EXIF to degress in float format"""
-    # it would be easier to understand what this code does at a glance
-    # if the variables are named differently. Suggest naming value to what
-    # it is (ie gps_value) and rename dn, mn, and sn.
+
     d0 = value[0][0]
     d1 = value[0][1]
     d = float(d0) / float(d1)
